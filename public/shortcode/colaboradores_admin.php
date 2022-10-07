@@ -87,7 +87,7 @@ function colaboradores_admin(){
     foreach($emails_colaboradores as $email_colaborador){
         $peticion_moodle = file_get_contents('http://localhost/moodle/webservice/rest/server.php?wstoken=968f1132914db60ceb88bfb79830c9e7&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email.'&moodlewsrestformat=json');
         $colaborador_moodle =  json_decode($peticion_moodle);
-        echo "Roger";
+        
         echo "<tr>";
         echo "<td>".$colaborador_moodle[0]->username."</td>";
         echo "<td>".$colaborador_moodle[0]->firstname."</td>";
