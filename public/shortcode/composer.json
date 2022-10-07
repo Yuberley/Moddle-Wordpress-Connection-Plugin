@@ -1,0 +1,19 @@
+{
+    "name": "roger/shortcode",
+    "description": "API",
+    "license": "MTI",
+    "autoload": {
+        "psr-4": {
+            "Roger\\Shortcode\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "RogerRoldan",
+            "email": "rogerricardo09@gmail.com"
+        }
+    ],
+    "require": {
+        "automattic/woocommerce": "^3.1"
+    }
+}
