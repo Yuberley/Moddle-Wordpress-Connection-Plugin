@@ -1,7 +1,8 @@
 <?php
-include 'colaboradores_admin_table.php';
-//require_once plugin_dir_path(__FILE__).'../../includes/tablas/colaboradores_admin_table.php';
-require __DIR__ . '/vendor/autoload.php';
+//include 'colaboradores_admin_table.php';
+require_once plugin_dir_path(__FILE__).'../../../includes/tablas/colaboradores_admin_table.php';
+require_once plugin_dir_path(__FILE__).'../../../public/shortcode/vendor/autoload.php';
+
 use Automattic\WooCommerce\Client;
 
 function colaboradores_admin(){ 
@@ -11,9 +12,9 @@ function colaboradores_admin(){
     // $ordenes =  json_decode($peticion);  
     
     $woocommerce = new Client(
-        'http://localhost/primedigital/', 
-        'ck_5358437b6f9045461c6fa103fe2706d55b9b2e50', 
-        'cs_3d57e0bce1ddb74ec0e6baf7b7a827a050ee223f',
+        'http://179.32.53.160/primedigital/', 
+        'ck_8f0eab38e14f05e4a1df2a78d0dc00876042a326', 
+        'cs_370e922e21733e78a06e0ca55a8e4fb5177c1b3f',
         [
             'wp_api' => true,
             'version' => 'wc/v3',
@@ -31,7 +32,7 @@ function colaboradores_admin(){
     //trae todas las 10 ultimas ordenes que esten  en woocommerce
     foreach($ordenes as $orden){
         //filtra las ordenes que esten en estado processing
-        if($orden->status=="processing"){
+        if($orden->status=="processing" ){
 
             $orden_id = $orden->id;
             $id_user= $orden->customer_id;
@@ -79,7 +80,7 @@ function colaboradores_admin(){
             ];
           
             $update=$woocommerce->put('orders/'.$orden_id,$data);
-            echo "completed";
+           
         }
          
 
@@ -93,22 +94,20 @@ function colaboradores_admin(){
     tabla_superior();
     
     foreach($emails_colaboradores as $email_colaborador){
-        $peticion_moodle = file_get_contents('http://localhost/moodle/webservice/rest/server.php?wstoken=968f1132914db60ceb88bfb79830c9e7&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email.'&moodlewsrestformat=json');
+        $peticion_moodle = file_get_contents('http://localhost/moodle/webservice/rest/server.php?wstoken=ffdbb4a4f4102cf554cd040dd2ecde94&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email.'&moodlewsrestformat=json');
         $colaborador_moodle =  json_decode($peticion_moodle);
         
         echo "<tr>
         <td>".$colaborador_moodle[0]->username."</td>
         <td>".$colaborador_moodle[0]->firstname."</td>
         <td>".$colaborador_moodle[0]->lastname."</td>
+        <td>".$colaborador_moodle[0]->customfields[0]->value."</td>
         <td>".$colaborador_moodle[0]->email."</td>
         <td>".$colaborador_moodle[0]->city."</td>
         <td>".$colaborador_moodle[0]->country."</td>
         <td><button type='button' class='btn btn-outline-secondary'>Editar</button></td>
-        <tr>";
+        </tr>";
     }
-
-    
-        
 
     tabla_inferior();
 

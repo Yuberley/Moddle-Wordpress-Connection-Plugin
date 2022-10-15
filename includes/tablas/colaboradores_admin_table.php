@@ -52,6 +52,7 @@ function tabla_superior(){
                        <th scope="col">Usuario</th>
                        <th scope="col">Nombre </th>
                        <th scope="col">Apellido</th>
+                       <th scope="col">Documento</th>
                        <th scope="col">Email</th>
                        <th scope="col">Ciudad</th>
                        <th scope="col">Pais</th>
@@ -67,15 +68,7 @@ function tabla_superior(){
 function tabla_inferior(){
 
     echo '
-                    <tr>
-                    <td>Camilo22</td>
-                    <td>Camilo Esteban</td>
-                    <td>Morales Peña</td>
-                    <td>camilopeña@gmail.com</td>
-                    <td>Bogota</td>
-                    <td>Colombia</td>
-                    <td><button type="button" class="btn btn-outline-warning">Editar</button></td>
-                    </tr>
+
                </tbody>
            </table> 
        </div>
