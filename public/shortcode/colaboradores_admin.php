@@ -54,10 +54,7 @@ function colaboradores_admin(){
                 $tipo_licencia= strtolower($cadena_separada[2]);
                 $cantidad_licencia=$orden->line_items[0]->quantity;
             }
-       
-          
-        
-
+    
 
             //nombre de  el grupo
             $nombre_grupo=$empresa." ".$tipo_licencia." ".$fecha;
@@ -67,7 +64,7 @@ function colaboradores_admin(){
             $nombre = $wpdb->get_var($sql_nombre);
             
             //guarda el usuario en la tabla empresas
-            $sql_empresa = "INSERT INTO {$wpdb->prefix}empresas (id_user,nombre, empresa) VALUES ('$id_user','$nombre','$empresa')";
+            $sql_empresa = "INSERT INTO {$wpdb->prefix}empresas (id,nombre, empresa) VALUES ('$id_user','$nombre','$empresa')";
             $wpdb->query($sql_empresa);
 
             //crea el grupo
