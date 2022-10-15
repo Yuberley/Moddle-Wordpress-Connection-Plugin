@@ -36,7 +36,6 @@ function ActivarPlugin(){
     $sql_empresas= "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}empresas(
     `id` INT NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(45) NOT NULL,
-    `apellido` VARCHAR(45) NOT NULL,
     `empresa` VARCHAR(100) NULL,
     PRIMARY KEY (`id`));";
 
@@ -60,7 +59,7 @@ function ActivarPlugin(){
     `email` VARCHAR(45) NOT NULL,
     `id_empresa` INT NOT NULL,
     `id_grupo` INT NOT NULL,
-    PRIMARY KEY (`email`));";
+    PRIMARY KEY (`id`,`email`));";
 
     $wpdb->query($sql_colaboradores);
 }
