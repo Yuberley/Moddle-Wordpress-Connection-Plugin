@@ -99,7 +99,7 @@ function tabla_inferior(){
        
        <!-- Modal agregar usuario -->
        <div class="modal fade" id="modal_agregar_colaborador" data-bs-backdrop="static" tabindex="-1" >
-         <div class="modal-dialog ">
+         <div class="modal-dialog modal-lg modal-dialog-centered">
            <div class="modal-content">
              <div class="modal-header justify-content-center">
                <h5 class="modal-title mb-0" >Agregar Nuevo Colaborador</h5>
@@ -107,70 +107,83 @@ function tabla_inferior(){
              <div class="modal-body px-5">
                    <div>
                        <form  id="signup">
-                        <div class="mb-3">
-                               <label for="empresa" class="col-form-label">Empresa</label>
-                               <select class="form-select" >
-                                   <option selected>Seleccione una empresa</option>
-                                   <option value="1">Bancolombia</option>
-                                   <option value="2">Nutresa</option>
-                                   <option value="3">Sasoftco</option>
-                               </select>
-                           </div>
-                           <div class="mb-3">
-                               <label for="consolidado" class="col-form-label">Grupo</label>
-                               <select class="form-select">
-                                   <option selected>Seleccione un grupo</option>
-                                   <option value="1">Grupo 02-08-22</option>
-                                   <option value="2">Grupo 05-07-21</option>
-                                   <option value="3">Grupo 18-04-20</option>
-                               </select>
-                           </div>
-                           <div class="mb-3">
-                               <label  class="form-label" for="Nombre">Nombre</label>
-                               <input class="form-control" name="nombre" type="text" id="Nombre">
-                           </div>
-                           <div class="mb-3">
-                               <label class="form-label" for="apellido">Apellido</label>
-                               <input class="form-control" name="apellido" type="text" id="apellido">
-                           </div>
-                           <div class="mb-3">
-                               <label class="form-label" for="usuario">Usuario</label>
-                               <input class="form-control" name="usuario" type="email" id="email">
-                           </div>
-                           <div class="mb-3">
-                               <label class="form-label" for="email">Email</label>
-                               <input class="form-control" name="email" type="email" id="Name">
-                           </div>
-                           <div class="mb-3">
-                               <label class="form-label" for="password">Contraseña</label>
-                               <input class="form-control" name="password"  type="password" id="password">
-                           </div>
-                           <div class="mb-3">
-                               <label class="form-label" for="edad">Edad</label>
-                               <input class="form-control" name="edad" type="number" id="edad">
-                           </div>
-                           <div class="mb-3">
-                               <label class="form-label" for="ciudad">Ciudad</label>
-                               <input class="form-control" name="ciudad" type="text" id="ciudad">
-                           </div>
-                           <div class="mb-3">
-                               <label class="form-label" for="pais">Pais</label>
-                               <input class="form-control" name="pais" type="text" id="pais">
-                           </div>
-                           <div class="mb-3">
-                           <label class="form-label" for="pais">Tipo de Licencia: </label>
-                           <label class="form-label" for="pais">Basic </label>
-                           </div>
-                           <div class="mb-3 d-flex justify-content-center">
-                               <input type="submit" value="Agregar Colaborador">
-                           </div>
-                           <div class="msg"></div>
+                        <section class="d-flex align-items-center justify-content-center row">
+                            <div class="mb-3 col-12 col-sm-6">
+                                    <label for="empresa" class="col-form-label">Empresa</label>
+                                    <select class="form-select" >
+                                        <option selected>Seleccione una empresa</option>
+                                        <option value="1">Bancolombia</option>
+                                        <option value="2">Nutresa</option>
+                                        <option value="3">Sasoftco</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label for="consolidado" class="col-form-label">Grupo</label>
+                                    <select class="form-select">
+                                        <option selected>Seleccione un grupo</option>
+                                        <option value="1">Grupo 02-08-22</option>
+                                        <option value="2">Grupo 05-07-21</option>
+                                        <option value="3">Grupo 18-04-20</option>
+                                    </select>
+                                </div>
+                        </section>
+                        <section class="d-flex align-items-center justify-content-center row">
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label  class="form-label" for="Nombre">Nombre</label>
+                                    <input class="form-control" name="nombre" type="text" id="Nombre" required>
+                                </div>
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="apellido">Apellido</label>
+                                    <input class="form-control" name="apellido" type="text" id="apellido" required>
+                                </div>
+                        </section>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="usuario">Usuario</label>
+                                    <input class="form-control" name="usuario" type="email" id="email" required>
+                                </div>
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="documento">Documento</label>
+                                    <input class="form-control" name="documento" type="number" id="docimento" required>
+                                </div>
+                            </section>
+                            <div class="mb-3">
+                                <label class="form-label" for="email">Email</label>
+                                <input class="form-control" name="email" type="email" id="Name" required>
+                            </div>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="password">Contraseña</label>
+                                    <input class="form-control" name="password"  type="password" id="password" required>
+                                </div>
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="edad">Edad</label>
+                                    <input class="form-control" name="edad" type="number" id="edad" required>
+                                </div>
+                            </section>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="ciudad">Ciudad</label>
+                                    <input class="form-control" name="ciudad" type="text" id="ciudad" required>
+                                </div>
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="pais">Pais</label>
+                                    <input class="form-control" name="pais" type="text" id="pais" required>
+                                </div>
+                            </section>
+                            <div class="mb-3">
+                            <label class="form-label" for="pais">Tipo de Licencia: </label>
+                            <label class="form-label" for="pais">Basic </label>
+                            </div>
+                            <div class="mb-3 d-flex justify-content-center">
+                                <input type="submit" value="Agregar Colaborador">
+                            </div>
+                            <div class="msg"></div>
                        </form>
                    </div>
              </div>
              <div class="modal-footer justify-content-center">
                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cerrar</button>
-             
              </div>
            </div>
          </div>
