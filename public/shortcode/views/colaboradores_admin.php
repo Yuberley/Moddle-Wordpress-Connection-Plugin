@@ -10,9 +10,10 @@ function colaboradores_admin(){
     
     $keyWoocommerce = getWoocommerceKey();
     
+    
     $woocommerce = new Client(
-        'http://179.32.53.160/primedigital/', 
-        
+        //'http://179.32.53.160/primedigital/', 
+        getWoocommerceUrl(),
         $keyWoocommerce["public"],
         $keyWoocommerce["private"],
         [
@@ -21,6 +22,7 @@ function colaboradores_admin(){
             'query_string_auth' => true
             ]
         );
+
         $ordenes = $woocommerce->get('orders');
         
     //variable global para consultas en la base de datos
@@ -96,7 +98,7 @@ function colaboradores_admin(){
     tabla_superior();
     
     foreach($emails_colaboradores as $email_colaborador){
-        $peticion_moodle = file_get_contents('http://localhost/moodle/webservice/rest/server.php?wstoken=ffdbb4a4f4102cf554cd040dd2ecde94&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email.'&moodlewsrestformat=json');
+        $peticion_moodle = file_get_contents(getMoodleUrl().'/webservice/rest/server.php?wstoken='.getMoodleKey().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email.'&moodlewsrestformat=json');
         $colaborador_moodle =  json_decode($peticion_moodle);
         
         echo "<tr>
