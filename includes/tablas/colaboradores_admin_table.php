@@ -1,7 +1,14 @@
 <?php
 
 function tabla_superior(){
-   
+    global $wpdb;
+
+    $sql_empresa="SELECT * FROM {$wpdb->prefix}empresas";
+    $empresas=$wpdb->get_results($sql_empresa);
+
+    $sql_grupo="SELECT * FROM {$wpdb->prefix}grupos";
+    $grupos=$wpdb->get_results($sql_grupo);
+
    echo '
     <body >
        <div class="container mt-5">
@@ -20,19 +27,24 @@ function tabla_superior(){
                <div class="col-md-3">
                    <label for="empresa">Empresa: </label>
                    <select class="form-select" >
-                       <option selected>Seleccione una Empresa</option>
-                       <option value="1">Sasoftco</option>
-                       <option value="2">Bancolombia</option>
-                       <option value="3">Cafesalud</option>
+                       <option selected>Seleccione una Empresa</option>';
+
+                        foreach($empresas as $empresa){
+                            echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
+                        }
+
+    echo '                   
                    </select>
                </div>
                <div class="col-md-3">
                    <label for="grupos">Grupo: </label>
                    <select class="form-select" >
-                       <option selected>Seleccione un Grupo</option>
-                       <option value="1">Grupo 02-08-22</option>
-                       <option value="2">Grupo 19-03-21</option>
-                       <option value="3">Grupo 30/03-20</option>
+                       <option selected>Seleccione un Grupo</option>';
+                        foreach($grupos as $grupo){
+                            echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
+                        }
+                      
+    echo '                   
                    </select>
                </div>
                
