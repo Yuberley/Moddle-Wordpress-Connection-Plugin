@@ -16,17 +16,18 @@ function tabla_superior(){
            <div class="row">
                <div class="col-md-8"><h1>COLABORADORES</h1></div>
            </div>
+           <form action="colaboradores_admin.php" method="post">
            <div class="row">
                <div class="col-md-4"> 
                   <br>
                    <div class="input-group mb-3">
-                       <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Reporte">
+                       <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
                    </div>
                </div>
                <div class="col-md-1"></div>
                <div class="col-md-3">
                    <label for="empresa">Empresa: </label>
-                   <select class="form-select" >
+                   <select class="form-select"  name="select_empresa">
                        <option selected>Seleccione una Empresa</option>';
 
                         foreach($empresas as $empresa){
@@ -38,7 +39,7 @@ function tabla_superior(){
                </div>
                <div class="col-md-3">
                    <label for="grupos">Grupo: </label>
-                   <select class="form-select" >
+                   <select class="form-select name="select_grupo" >
                        <option selected>Seleccione un Grupo</option>';
                         foreach($grupos as $grupo){
                             echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
@@ -50,10 +51,11 @@ function tabla_superior(){
                
                <div class="col-md-1">
                    <br>
-                   <button class="btn btn-secondary" type="button" id="button-addon2">Filtrar</button>
+                   <button class="btn btn-secondary" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
                </div>
 
            </div> 
+           </form>
        </div>
        
        <div class="container mt-5">
