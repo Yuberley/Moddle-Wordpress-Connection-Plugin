@@ -16,7 +16,7 @@ function tabla_superior(){
            <div class="row">
                <div class="col-md-8"><h1>COLABORADORES</h1></div>
            </div>
-           <form  method="POST">
+           <form method="POST">
            <div class="row">
                <div class="col-md-4"> 
                   <br>
@@ -27,7 +27,7 @@ function tabla_superior(){
                <div class="col-md-1"></div>
                <div class="col-md-3">
                    <label for="empresa">Empresas: </label>
-                   <select class="form-select"  name="select_empresa">
+                   <select class="form-select"  name="select_empresa" id="select_empresa">
                     <option selected value="0">Seleccione una Empresa</option>';
                         foreach($empresas as $empresa){
                             echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
@@ -145,12 +145,12 @@ function tabla_inferior(){
              </div>
              <div class="modal-body px-5">
                    <div>
-                       <form  id="signup"  method="POST" >
+                       <form id="filtro" method="POST" >
                         <section class="d-flex align-items-center justify-content-center row">
                             <div class="mb-3 col-12 col-sm-6">
                                     <label for="empresa" class="col-form-label">Empresa</label>
-                                    <select class="form-select" name="empresa">
-                                        <option selected>Seleccione una empresa</option>';
+                                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this);">
+                                        <option selected value="0">Seleccione una empresa</option>';
                                         foreach($empresas as $empresa){
                                             echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
                                         }
@@ -158,15 +158,17 @@ function tabla_inferior(){
                                     </select>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
-                                    <label for="consolidado" class="col-form-label">Grupo</label>
-                                    <select class="form-select" name="grupo">
-                                        <option selected>Seleccione un grupo</option>';
+                                    <select hidden class="form-select" name="grupos" id="grupos">';
                                         foreach($grupos as $grupo){
                                             echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
                                         }
 
                                        
                     echo '          </select>
+                                    <label for="consolidado" class="col-form-label">Grupo</label>
+                                    <select class="form-select" name="gruposInner" id="gruposInner" required>
+
+                                    </select>
                                 </div>
                         </section>
                         <section class="d-flex align-items-center justify-content-center row">
@@ -231,9 +233,26 @@ function tabla_inferior(){
          </div>
        </div>
 
+      <script>
+            
+            let grupos = document.getElementById("grupos");
 
+            function filterGroups(event){
+                console.log(event.options[event.selectedIndex].text);
+
+                let options_grupos = "";
+                for(let i = 0; i < grupos.options.length; i++){
+                    if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
+                        options_grupos += "<option value="+grupos.options[i].value+">"+grupos.options[i].text+"</option>";
+                    }
+                }
+                document.getElementById("gruposInner").innerHTML = options_grupos;
+                console.log("data ", options_grupos);
+            }
+
+         </script>
  
-   </body>   '; 
+   </body>'; 
 
 
 
