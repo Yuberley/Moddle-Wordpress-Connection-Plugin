@@ -12,11 +12,10 @@ function tabla_superior(){
    echo '
     <body >
        <div class="container mt-5">
-  
            <div class="row">
                <div class="col-md-8"><h1>COLABORADORES</h1></div>
            </div>
-           <form action="colaboradores_admin.php" method="post">
+           <form  method="POST">
            <div class="row">
                <div class="col-md-4"> 
                   <br>
@@ -26,10 +25,9 @@ function tabla_superior(){
                </div>
                <div class="col-md-1"></div>
                <div class="col-md-3">
-                   <label for="empresa">Empresa: </label>
+                   <label for="empresa">Empresas: </label>
                    <select class="form-select"  name="select_empresa">
-                       <option selected>Seleccione una Empresa</option>';
-
+                    <option selected value="0">Seleccione una Empresa</option>';
                         foreach($empresas as $empresa){
                             echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
                         }
@@ -38,9 +36,9 @@ function tabla_superior(){
                    </select>
                </div>
                <div class="col-md-3">
-                   <label for="grupos">Grupo: </label>
-                   <select class="form-select name="select_grupo" >
-                       <option selected>Seleccione un Grupo</option>';
+                   <label for="grupos">Grupos: </label>
+                   <select class="form-select" name="select_grupo">
+                    <option selected value="0">Seleccione un Grupo</option>';
                         foreach($grupos as $grupo){
                             echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
                         }
