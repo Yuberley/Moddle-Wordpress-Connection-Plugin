@@ -56,7 +56,7 @@ function ActivarPlugin(){
     `id` INT NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(45) NOT NULL,
     `apellido` VARCHAR(45) NOT NULL,
-    `email` VARCHAR(45) NOT NULL,
+    `email` VARCHAR(45) NOT NULL UNIQUE,
     `id_empresa` INT NOT NULL,
     `id_grupo` INT NOT NULL,
     PRIMARY KEY (`id`,`email`));";

@@ -1,4 +1,5 @@
 <?php
+require_once plugin_dir_path( __FILE__ ) . '../../settings/enviroment.php';
 
 function tabla_superior(){
     global $wpdb;
@@ -80,7 +81,45 @@ function tabla_superior(){
 }
 
 function tabla_inferior(){
+    global $wpdb;
 
+    $sql_empresa="SELECT * FROM {$wpdb->prefix}empresas";
+    $empresas=$wpdb->get_results($sql_empresa);
+
+    $sql_grupo="SELECT * FROM {$wpdb->prefix}grupos";
+    $grupos=$wpdb->get_results($sql_grupo);
+
+    if(isset($_POST['agregar_colaborador'])){
+
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $usuario = $_POST['usuario'];
+        $documento = $_POST['documento'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $edad = $_POST['edad'];
+        $ciudad = $_POST['ciudad'];
+        $pais = $_POST['pais'];
+        $tipo_licencia = $_POST['tipo_licencia'];
+        $empresa = $_POST['empresa'];
+        $grupo = $_POST['grupo'];
+
+        
+        $sql="INSERT INTO {$wpdb->prefix}colaboradores (nombre,apellido,email,id_empresa,id_grupo)  VALUES('$nombre', '$apellido',  '$email', '$empresa', '$grupo')";
+        $respuesta=$wpdb->query($sql);
+        
+        if($respuesta){
+            //agregar usuario en moodle
+            $peticion_md = file_get_contents(getMoodleUrl().'/webservice/rest/server.php?wstoken='.getMoodleKey().'&moodlewsrestformat=json&wsfunction=core_user_create_users&users[0][username]='.$usuario.'&users[0][firstname]='.$nombre.'&users[0][lastname]='.$apellido.'&users[0][email]='.$email.'&users[0][customfields][0][type]=identification&users[0][customfields][0][value]='.$documento.'&users[0][city]='.$ciudad.'&users[0][country]='.$pais.'&users[0][createpassword]=1');
+            
+
+            $respuesta_md = json_decode($peticion_md);
+            var_dump($respuesta_md);}
+          else{
+            echo '<script>alert("Error al agregar el colaborador")</script>';}
+        
+       }
+       
     echo '
 
                </tbody>
@@ -108,25 +147,28 @@ function tabla_inferior(){
              </div>
              <div class="modal-body px-5">
                    <div>
-                       <form  id="signup">
+                       <form  id="signup"  method="POST" >
                         <section class="d-flex align-items-center justify-content-center row">
                             <div class="mb-3 col-12 col-sm-6">
                                     <label for="empresa" class="col-form-label">Empresa</label>
-                                    <select class="form-select" >
-                                        <option selected>Seleccione una empresa</option>
-                                        <option value="1">Bancolombia</option>
-                                        <option value="2">Nutresa</option>
-                                        <option value="3">Sasoftco</option>
+                                    <select class="form-select" name="empresa">
+                                        <option selected>Seleccione una empresa</option>';
+                                        foreach($empresas as $empresa){
+                                            echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
+                                        }
+                    echo '
                                     </select>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label for="consolidado" class="col-form-label">Grupo</label>
-                                    <select class="form-select">
-                                        <option selected>Seleccione un grupo</option>
-                                        <option value="1">Grupo 02-08-22</option>
-                                        <option value="2">Grupo 05-07-21</option>
-                                        <option value="3">Grupo 18-04-20</option>
-                                    </select>
+                                    <select class="form-select" name="grupo">
+                                        <option selected>Seleccione un grupo</option>';
+                                        foreach($grupos as $grupo){
+                                            echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
+                                        }
+
+                                       
+                    echo '          </select>
                                 </div>
                         </section>
                         <section class="d-flex align-items-center justify-content-center row">
@@ -142,7 +184,7 @@ function tabla_inferior(){
                             <section class="d-flex align-items-center justify-content-center row">
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="usuario">Usuario</label>
-                                    <input class="form-control" name="usuario" type="email" id="email" required>
+                                    <input class="form-control" name="usuario" type="text"  required>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="documento">Documento</label>
@@ -178,7 +220,7 @@ function tabla_inferior(){
                             <label class="form-label" for="pais">Basic </label>
                             </div>
                             <div class="mb-3 d-flex justify-content-center">
-                                <input type="submit" value="Agregar Colaborador">
+                                <input type="submit" name="agregar_colaborador" value="Agregar Colaborador">
                             </div>
                             <div class="msg"></div>
                        </form>
@@ -194,6 +236,7 @@ function tabla_inferior(){
 
  
    </body>   '; 
+
 
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
+require_once plugin_dir_path(__FILE__ ) . '../../../settings/enviroment.php';
 require_once plugin_dir_path(__FILE__).'../../../includes/tablas/colaboradores_admin_table.php';
 require_once plugin_dir_path(__FILE__).'../../../public/shortcode/vendor/autoload.php';
 
@@ -100,7 +100,7 @@ function colaboradores_admin(){
     foreach($emails_colaboradores as $email_colaborador){
         $peticion_moodle = file_get_contents(getMoodleUrl().'/webservice/rest/server.php?wstoken='.getMoodleKey().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email.'&moodlewsrestformat=json');
         $colaborador_moodle =  json_decode($peticion_moodle);
-        
+        if($colaborador_moodle[0]!=""){
         echo "<tr>
         <td>".$colaborador_moodle[0]->username."</td>
         <td>".$colaborador_moodle[0]->firstname."</td>
@@ -110,7 +110,7 @@ function colaboradores_admin(){
         <td>".$colaborador_moodle[0]->city."</td>
         <td>".$colaborador_moodle[0]->country."</td>
         <td><button type='button' class='btn btn-outline-secondary'>Editar</button></td>
-        </tr>";
+        </tr>";}
     }
 
     tabla_inferior();
