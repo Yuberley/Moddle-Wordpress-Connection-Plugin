@@ -1,6 +1,6 @@
 <?php
 
-require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
+require_once plugin_dir_path(__FILE__ ) . '../../../settings/enviroment.php';
 require_once plugin_dir_path(__FILE__).'../../../includes/tablas/colaboradores_admin_table.php';
 require_once plugin_dir_path(__FILE__).'../../../public/shortcode/vendor/autoload.php';
 
