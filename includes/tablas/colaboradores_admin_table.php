@@ -27,7 +27,7 @@ function tabla_superior(){
                <div class="col-md-1"></div>
                <div class="col-md-3">
                    <label for="empresa">Empresas: </label>
-                   <select class="form-select"  name="select_empresa" id="select_empresa">
+                   <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this);">
                     <option selected value="0">Seleccione una Empresa</option>';
                         foreach($empresas as $empresa){
                             echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
@@ -37,15 +37,17 @@ function tabla_superior(){
                    </select>
                </div>
                <div class="col-md-3">
-                   <label for="grupos">Grupos: </label>
-                   <select class="form-select" name="select_grupo">
-                    <option selected value="0">Seleccione un Grupo</option>';
+                   <select hidden class="form-select" name="select_grupo" id="grupos">';
                         foreach($grupos as $grupo){
                             echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
                         }
                       
     echo '                   
                    </select>
+                   <label for="grupos">Grupos: </label>
+                    <select class="form-select" name="gruposInner" id="gruposInner" required>
+
+                    </select>
                </div>
                
                <div class="col-md-1">
@@ -149,7 +151,7 @@ function tabla_inferior(){
                         <section class="d-flex align-items-center justify-content-center row">
                             <div class="mb-3 col-12 col-sm-6">
                                     <label for="empresa" class="col-form-label">Empresa</label>
-                                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this);">
+                                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroupsModal(this);">
                                         <option selected value="0">Seleccione una empresa</option>';
                                         foreach($empresas as $empresa){
                                             echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
@@ -158,15 +160,15 @@ function tabla_inferior(){
                                     </select>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
-                                    <select hidden class="form-select" name="grupos" id="grupos">';
+                                    <select hidden class="form-select" name="grupos" id="gruposModal">';
                                         foreach($grupos as $grupo){
                                             echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
                                         }
 
                                        
                     echo '          </select>
-                                    <label for="consolidado" class="col-form-label">Grupo</label>
-                                    <select class="form-select" name="gruposInner" id="gruposInner" required>
+                                    <label for="consolidado" class="col-form-label">Grupos</label>
+                                    <select class="form-select" name="gruposInnerModal" id="gruposInnerModal" required>
 
                                     </select>
                                 </div>
@@ -215,10 +217,6 @@ function tabla_inferior(){
                                     <input class="form-control" name="pais" type="text" id="pais" required>
                                 </div>
                             </section>
-                            <div class="mb-3">
-                            <label class="form-label" for="pais">Tipo de Licencia: </label>
-                            <label class="form-label" for="pais">Basic </label>
-                            </div>
                             <div class="mb-3 d-flex justify-content-center">
                                 <input type="submit" name="agregar_colaborador" value="Agregar Colaborador">
                             </div>
@@ -247,6 +245,22 @@ function tabla_inferior(){
                     }
                 }
                 document.getElementById("gruposInner").innerHTML = options_grupos;
+                console.log("data ", options_grupos);
+            }
+
+
+            let gruposModal = document.getElementById("gruposModal");
+
+            function filterGroupsModal(event){
+                console.log(event.options[event.selectedIndex].text);
+
+                let options_grupos = "";
+                for(let i = 0; i < gruposModal.options.length; i++){
+                    if(gruposModal.options[i].text.includes(event.options[event.selectedIndex].text)){
+                        options_grupos += "<option value="+gruposModal.options[i].value+">"+gruposModal.options[i].text+"</option>";
+                    }
+                }
+                document.getElementById("gruposInnerModal").innerHTML = options_grupos;
                 console.log("data ", options_grupos);
             }
 
