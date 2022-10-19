@@ -27,7 +27,7 @@ function reportes_usuario(){
         <div class="container mt-5">
             
             <table class="table table-hover order-table" id="table">
-                <thead class="table-dark">
+                <thead style="background-color: #041541; color: white;">
                     <tr>
                         <th scope="col">Grupo</th>
                         <th scope="col">Nombre </th>

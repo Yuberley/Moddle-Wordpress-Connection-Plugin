@@ -61,8 +61,8 @@ function tabla_superior(){
        
        <div class="container mt-5">
            
-           <table class="table order-table table-hover " id="table" >
-               <thead class="table-dark">
+           <table class="table order-table table-hover" id="table" >
+               <thead style="background-color: #041541; color: white;">
                     <tr>
                        <th scope="col">Usuario</th>
                        <th scope="col">Nombre </th>
@@ -89,11 +89,13 @@ function tabla_inferior(){
     $sql_grupo="SELECT * FROM {$wpdb->prefix}grupos";
     $grupos=$wpdb->get_results($sql_grupo);
 
+    
+    
     if(isset($_POST['agregar_colaborador'])){
-
+        
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
-        $usuario = $_POST['usuario'];
+        $usuario = strtolower($_POST['usuario']);
         $documento = $_POST['documento'];
         $email = $_POST['email'];
         $password = $_POST['password'];
@@ -101,22 +103,32 @@ function tabla_inferior(){
         $ciudad = $_POST['ciudad'];
         $pais = $_POST['pais'];
         $tipo_licencia = $_POST['tipo_licencia'];
-        $empresa = $_POST['empresa'];
-        $grupo = $_POST['grupo'];
-
+        $empresa = $_POST['empresas'];
+        $grupo = $_POST['gruposInnerModal'];
         
-        $sql="INSERT INTO {$wpdb->prefix}colaboradores (nombre,apellido,email,id_empresa,id_grupo)  VALUES('$nombre', '$apellido',  '$email', '$empresa', '$grupo')";
-        $respuesta=$wpdb->query($sql);
-        
-        if($respuesta){
-            //agregar usuario en moodle
-            $peticion_md = file_get_contents(getMoodleUrl().'/webservice/rest/server.php?wstoken='.getMoodleKey().'&moodlewsrestformat=json&wsfunction=core_user_create_users&users[0][username]='.$usuario.'&users[0][firstname]='.$nombre.'&users[0][lastname]='.$apellido.'&users[0][email]='.$email.'&users[0][customfields][0][type]=identification&users[0][customfields][0][value]='.$documento.'&users[0][city]='.$ciudad.'&users[0][country]='.$pais.'&users[0][createpassword]=1');
-            
+        $CANTIDAD_INSCRITOS = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupo'";
+        $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS);
 
-            $respuesta_md = json_decode($peticion_md);
-            var_dump($respuesta_md);}
-          else{
-            echo '<script>alert("Error al agregar el colaborador")</script>';}
+        $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupo'";
+        $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
+
+        if( $CANTIDAD_INSCRITOS_EN_GRUPO < $CANTIDAD_MAXIMA_EN_GRUPO ){
+            $sql = "INSERT INTO {$wpdb->prefix}colaboradores (nombre, apellido, email, id_empresa, id_grupo) VALUES ('$nombre', '$apellido', '$email', '$empresa', '$grupo')";
+            $respuesta = $wpdb->query($sql);
+
+            if($respuesta){
+                //agregar usuario en moodle
+                $peticion_md = file_get_contents(getMoodleUrl().'/webservice/rest/server.php?wstoken='.getMoodleKey().'&moodlewsrestformat=json&wsfunction=core_user_create_users&users[0][username]='.$usuario.'&users[0][firstname]='.$nombre.'&users[0][lastname]='.$apellido.'&users[0][email]='.$email.'&users[0][customfields][0][type]=identification&users[0][customfields][0][value]='.$documento.'&users[0][city]='.$ciudad.'&users[0][country]='.$pais.'&users[0][createpassword]=1');
+    
+                $respuesta_md = json_decode($peticion_md);
+            } else {
+                echo '<script>alert("Error al agregar el colaborador")</script>';
+            }
+
+        } else {
+            echo '<script>alert("No se puede agregar mas colaboradores a este grupo")</script>';
+        }
+        
         
        }
        
