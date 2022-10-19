@@ -29,7 +29,7 @@ function reporte_consolidado(){
         <div class="container mt-5">
             
             <table class="table table-hover" id="table" >
-                <thead class="table-dark">
+                <thead style="background-color: #041541; color: white;">
                     <tr>
                         <th scope="col">Nombre </th>
                         <th scope="col">Apellido</th>

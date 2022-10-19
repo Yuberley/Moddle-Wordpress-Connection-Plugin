@@ -96,7 +96,7 @@ function colaboradores_admin(){
 
     if (isset($_POST['filtrar'])){
         $empresaId = $_POST['select_empresa'];
-        $grupoId = $_POST['select_grupo'];
+        $grupoId = $_POST['gruposInner'];
         $slq_email_colaboradores = "SELECT email FROM {$wpdb->prefix}colaboradores WHERE id_empresa='$empresaId' AND id_grupo='$grupoId'";
         $emails_colaboradores = $wpdb->get_results($slq_email_colaboradores);
 
@@ -106,16 +106,18 @@ function colaboradores_admin(){
             $peticion_moodle = file_get_contents(getMoodleUrl().'/webservice/rest/server.php?wstoken='.getMoodleKey().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email.'&moodlewsrestformat=json');
             $colaborador_moodle =  json_decode($peticion_moodle);
             
-            echo "<tr>
-            <td>".$colaborador_moodle[0]->username."</td>
-            <td>".$colaborador_moodle[0]->firstname."</td>
-            <td>".$colaborador_moodle[0]->lastname."</td>
-            <td>".$colaborador_moodle[0]->customfields[0]->value."</td>
-            <td>".$colaborador_moodle[0]->email."</td>
-            <td>".$colaborador_moodle[0]->city."</td>
-            <td>".$colaborador_moodle[0]->country."</td>
-            <td><button type='button' class='btn btn-outline-secondary'>Editar</button></td>
-            </tr>";
+            if( $colaborador_moodle[0]->email != "" ){
+                echo "<tr>
+                    <td>".$colaborador_moodle[0]->username."</td>
+                    <td>".$colaborador_moodle[0]->firstname."</td>
+                    <td>".$colaborador_moodle[0]->lastname."</td>
+                    <td>".$colaborador_moodle[0]->customfields[0]->value."</td>
+                    <td>".$colaborador_moodle[0]->email."</td>
+                    <td>".$colaborador_moodle[0]->city."</td>
+                    <td>".$colaborador_moodle[0]->country."</td>
+                    <td><button type='button' class='btn btn-outline-secondary'>Editar</button></td>
+                </tr>";
+            }
         }
 
     }else{
