@@ -1,7 +1,11 @@
 <?php
-require_once plugin_dir_path( __FILE__ ) . '../../settings/enviroment.php';
+require_once plugin_dir_path(__FILE__ ) . '../../settings/enviroment.php';
+require_once plugin_dir_path(__FILE__).'../../src/vendor/autoload.php';
+require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 
-function tabla_superior_reportes(){
+function reportes_admin(){
+
+
     global $wpdb;
 
     $sql_empresa="SELECT * FROM {$wpdb->prefix}empresas";
@@ -11,89 +15,86 @@ function tabla_superior_reportes(){
     $grupos=$wpdb->get_results($sql_grupo);
 
    echo '
-    <body >
-       <div class="container mt-5">
-           <div class="row">
-               <div class="col-md-8"><h1>REPORTES</h1></div>
-           </div>
-           <form method="POST">
-           <div class="row">
-               <div class="col-md-4"> 
-                  <br>
-                   <div class="input-group mb-3">
-                       <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
-                   </div>
-               </div>
-               <div class="col-md-1"></div>
-               <div class="col-md-3">
-                   <label for="empresa">Empresas: </label>
-                   <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this);">
-                    <option selected value="0">Seleccione una Empresa</option>';
-                        foreach($empresas as $empresa){
-                            echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
-                        }
+        <body >
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-8"><h1>REPORTES</h1></div>
+            </div>
+            <form method="POST">
+            <div class="row">
+                <div class="col-md-4"> 
+                    <br>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <label for="empresa">Empresas: </label>
+                    <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this);">
+                        <option selected value="0">Seleccione una Empresa</option>';
+                            foreach($empresas as $empresa){
+                                echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
+                            }
 
-    echo '                   
-                   </select>
-               </div>
-               <div class="col-md-3">
-                   <select hidden class="form-select" name="select_grupo" id="grupos">';
-                        foreach($grupos as $grupo){
-                            echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
-                        }
-                      
-    echo '                   
-                   </select>
-                   <label for="grupos">Grupos: </label>
-                    <select class="form-select" name="gruposInner" id="gruposInner" required>
-
+        echo '                   
                     </select>
-               </div>
-               
-               <div class="col-md-1">
-                   <br>
-                   <button class="btn btn-secondary" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
-               </div>
+                </div>
+                <div class="col-md-3">
+                    <select hidden class="form-select" name="select_grupo" id="grupos">';
+                            foreach($grupos as $grupo){
+                                echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
+                            }
+                        
+        echo '                   
+                    </select>
+                    <label for="grupos">Grupos: </label>
+                        <select class="form-select" name="gruposInner" id="gruposInner" required>
 
-           </div> 
-           </form>
-</div>
-
-<div class="container mt-5">
-    
-    <table class="table table-hover order-table" id="table">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">Grupo</th>
-                <th scope="col">Nombre </th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Documento</th>
-                <th scope="col">Email</th>
+                        </select>
+                </div>
                 
-                
-            </tr>
-        </thead>
-        <tbody id="personas">
-            <!-- Aqui se cargan los datos de la base de datos -->
-            <tr>
-            <td>Prime</td>
-            <td>Juan Andres</td>
-            <td>Perez Garcia</td>
-            <td>100.663.773</td>
-            <td>juan@gmail.com</td>
+                <div class="col-md-1">
+                    <br>
+                    <button class="btn btn-secondary" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
+                </div>
 
-            </tr>';
-}
+            </div> 
+            </form>
+    </div>
+
+    <div class="container mt-5">
+        
+        <table class="table table-hover order-table" id="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Grupo</th>
+                    <th scope="col">Nombre </th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Email</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody id="personas">
+                <!-- Aqui se cargan los datos de la base de datos -->
+                <tr>
+                <td>Prime</td>
+                <td>Juan Andres</td>
+                <td>Perez Garcia</td>
+                <td>100.663.773</td>
+                <td>juan@gmail.com</td>
+
+                </tr>';
 
 
-
-function tabla_inferior_reportes(){
-    echo '
+                echo '
 
                 </tbody>
             </table> 
     </div>
- <div class="container mt-5">
+    <div class="container mt-5">
 
     <div class="row">
         <div class="col-md-9">
@@ -107,11 +108,11 @@ function tabla_inferior_reportes(){
             </div>
         </div>
     </div>
-</div>
+    </div>
 
 
-<!-- Modal Reporte Cursos -->
-<div class="modal fade" id="modal_reporte_curso" data-bs-backdrop="static" tabindex="-1" >
+    <!-- Modal Reporte Cursos -->
+    <div class="modal fade" id="modal_reporte_curso" data-bs-backdrop="static" tabindex="-1" >
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
@@ -158,11 +159,11 @@ function tabla_inferior_reportes(){
             </div>
         </div>
     </div>
-</div>
+    </div>
 
 
-<!-- Modal Reporte Consolidado -->
-<div class="modal fade" id="modal_reporte_consolidado" data-bs-backdrop="static" tabindex="-1" >
+    <!-- Modal Reporte Consolidado -->
+    <div class="modal fade" id="modal_reporte_consolidado" data-bs-backdrop="static" tabindex="-1" >
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
@@ -218,13 +219,13 @@ function tabla_inferior_reportes(){
             </div>
         </div>
     </div>
-</div>
+    </div>
 
-<script>
+    <script>
             
-let grupos = document.getElementById("grupos");
+    let grupos = document.getElementById("grupos");
 
-function filterGroups(event){
+    function filterGroups(event){
     console.log(event.options[event.selectedIndex].text);
 
     let options_grupos = "";
@@ -235,13 +236,17 @@ function filterGroups(event){
     }
     document.getElementById("gruposInner").innerHTML = options_grupos;
     console.log("data ", options_grupos);
+    }
+
+
+
+    </script>
+
+
+    </body>  ';
+
+    return data_table_dinamic();
+
 }
 
-
-
-</script>
-
-
-</body>  ';
-
-}
+add_shortcode('reportes_admin', 'reportes_admin');

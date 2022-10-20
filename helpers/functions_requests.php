@@ -10,6 +10,21 @@ function getMoodle(){
     return $moodle;
 }
 
+function getWoocommerce(){
+    $keyWoocommerce = getWoocommerceKey();
+    $woocommerce = new \Automattic\WooCommerce\Client(
+        getWoocommerceUrl(),
+        $keyWoocommerce["public"],
+        $keyWoocommerce["private"],
+        [
+            'wp_api' => true,
+            'version' => 'wc/v3',
+            'query_string_auth' => true
+            ]
+        );
+    return $woocommerce;
+}
+
 function getMoodleToken(){
     $moodle = getMoodle();
     $response = $moodle->request('POST', '/login/token.php', [

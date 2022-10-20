@@ -18,14 +18,13 @@ define('PATH', plugin_dir_path(__FILE__));
 
 
 //shorcode Head
-require_once PATH."public/shortcode/views/head.php";
-//shortcode
-require_once PATH."public/shortcode/views/colaboradores_usuario.php";
-require_once PATH."public/shortcode/views/colaboradores_admin.php";
-require_once PATH."public/shortcode/views/reportes_usuario.php";
-require_once PATH."public/shortcode/views/reportes_admin.php";
-require_once PATH."public/shortcode/views/reporte_curso.php";
-require_once PATH."public/shortcode/views/reporte_consolidado.php";
+require_once PATH."src/views/head.php";
+require_once PATH."src/views/colaboradores_usuario.php";
+require_once PATH."src/views/colaboradores_admin.php";
+require_once PATH."src/views/reportes_usuario.php";
+require_once PATH."src/views/reportes_admin.php";
+require_once PATH."src/views/reporte_curso.php";
+require_once PATH."src/views/reporte_consolidado.php";
 
 
 //crear tablas en la base de datos al activar el plugin

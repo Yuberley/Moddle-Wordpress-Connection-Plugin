@@ -1,96 +1,17 @@
 <?php
-require_once plugin_dir_path( __FILE__ ) . '../../settings/enviroment.php';
+require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
 
-function tabla_superior(){
+function modal_agregar_colaborador(){
+    
     global $wpdb;
-
+    
     $sql_empresa="SELECT * FROM {$wpdb->prefix}empresas";
     $empresas=$wpdb->get_results($sql_empresa);
-
+    
     $sql_grupo="SELECT * FROM {$wpdb->prefix}grupos";
     $grupos=$wpdb->get_results($sql_grupo);
-
-   echo '
-    <body >
-       <div class="container mt-5">
-           <div class="row">
-               <div class="col-md-8"><h1>COLABORADORES</h1></div>
-           </div>
-           <form method="POST">
-           <div class="row">
-               <div class="col-md-4"> 
-                  <br>
-                   <div class="input-group mb-3">
-                       <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
-                   </div>
-               </div>
-               <div class="col-md-1"></div>
-               <div class="col-md-3">
-                   <label for="empresa">Empresas: </label>
-                   <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this);">
-                    <option selected value="0">Seleccione una Empresa</option>';
-                        foreach($empresas as $empresa){
-                            echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
-                        }
-
-    echo '                   
-                   </select>
-               </div>
-               <div class="col-md-3">
-                   <select hidden class="form-select" name="select_grupo" id="grupos">';
-                        foreach($grupos as $grupo){
-                            echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
-                        }
-                      
-    echo '                   
-                   </select>
-                   <label for="grupos">Grupos: </label>
-                    <select class="form-select" name="gruposInner" id="gruposInner" required>
-
-                    </select>
-               </div>
-               
-               <div class="col-md-1">
-                   <br>
-                   <button class="btn btn-secondary" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
-               </div>
-
-           </div> 
-           </form>
-       </div>
-       
-       <div class="container mt-5">
-           
-           <table class="table order-table table-hover" id="table" >
-               <thead style="background-color: #041541; color: white;">
-                    <tr>
-                       <th scope="col">Usuario</th>
-                       <th scope="col">Nombre </th>
-                       <th scope="col">Apellido</th>
-                       <th scope="col">Documento</th>
-                       <th scope="col">Email</th>
-                       <th scope="col">Ciudad</th>
-                       <th scope="col">Pais</th>
-                       <th scope="col">Ajustes</th>
-                       
-                   </tr>
-               </thead>
-               <tbody id="personas">
-   '; 
-
-}
-
-function tabla_inferior(){
-    global $wpdb;
-
-    $sql_empresa="SELECT * FROM {$wpdb->prefix}empresas";
-    $empresas=$wpdb->get_results($sql_empresa);
-
-    $sql_grupo="SELECT * FROM {$wpdb->prefix}grupos";
-    $grupos=$wpdb->get_results($sql_grupo);
-
     
-    
+     
     if(isset($_POST['agregar_colaborador'])){
         
         $nombre = $_POST['nombre'];
@@ -104,52 +25,40 @@ function tabla_inferior(){
         $pais = $_POST['pais'];
         $tipo_licencia = $_POST['tipo_licencia'];
         $empresa = $_POST['empresas'];
-        $grupo = $_POST['gruposInnerModal'];
+        $grupo = $_POST['grupos'];
         
         $CANTIDAD_INSCRITOS = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupo'";
         $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS);
-
+    
         $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupo'";
         $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
-
+    
         if( $CANTIDAD_INSCRITOS_EN_GRUPO < $CANTIDAD_MAXIMA_EN_GRUPO ){
+    
             $sql = "INSERT INTO {$wpdb->prefix}colaboradores (nombre, apellido, email, id_empresa, id_grupo) VALUES ('$nombre', '$apellido', '$email', '$empresa', '$grupo')";
             $respuesta = $wpdb->query($sql);
-
+    
             if($respuesta){
+    
                 //agregar usuario en moodle
                 $peticion_md = file_get_contents(getMoodleUrl().'/webservice/rest/server.php?wstoken='.getMoodleKey().'&moodlewsrestformat=json&wsfunction=core_user_create_users&users[0][username]='.$usuario.'&users[0][firstname]='.$nombre.'&users[0][lastname]='.$apellido.'&users[0][email]='.$email.'&users[0][customfields][0][type]=identification&users[0][customfields][0][value]='.$documento.'&users[0][city]='.$ciudad.'&users[0][country]='.$pais.'&users[0][createpassword]=1');
     
                 $respuesta_md = json_decode($peticion_md);
+    
             } else {
+    
                 echo '<script>alert("Error al agregar el colaborador")</script>';
             }
-
+    
         } else {
-            echo '<script>alert("No se puede agregar mas colaboradores a este grupo")</script>';
+            
+            echo '<script>alert("No se puede agregar el colaborador, se ha alcanzado el limite de licencias")</script>';
+    
         }
-        
-        
-       }
-       
-    echo '
+            
+    }
 
-               </tbody>
-           </table> 
-       </div>
-       <div class="container mt-5">
-       
-       <div class="row">
-           <div class="col-md-8"><h1></h1></div>
-               <div class="col-md-4"> 
-                   <div class="input-group mb-3 d-flex justify-content-end">
-                   <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_agregar_colaborador" >Agregar Nuevo Colaborador</button>
-                   </div>
-               </div>
-           </div>
-       </div>
-       
-       
+    echo '
        <!-- Modal agregar usuario -->
        <div class="modal fade" id="modal_agregar_colaborador" data-bs-backdrop="static" tabindex="-1" >
          <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -163,7 +72,7 @@ function tabla_inferior(){
                         <section class="d-flex align-items-center justify-content-center row">
                             <div class="mb-3 col-12 col-sm-6">
                                     <label for="empresa" class="col-form-label">Empresa</label>
-                                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroupsModal(this);">
+                                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this);">
                                         <option selected value="0">Seleccione una empresa</option>';
                                         foreach($empresas as $empresa){
                                             echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
@@ -172,7 +81,7 @@ function tabla_inferior(){
                                     </select>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
-                                    <select hidden class="form-select" name="grupos" id="gruposModal">';
+                                    <select hidden class="form-select" name="grupos" id="grupos">';
                                         foreach($grupos as $grupo){
                                             echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
                                         }
@@ -180,7 +89,7 @@ function tabla_inferior(){
                                        
                     echo '          </select>
                                     <label for="consolidado" class="col-form-label">Grupos</label>
-                                    <select class="form-select" name="gruposInnerModal" id="gruposInnerModal" required>
+                                    <select class="form-select" name="grupos" id="gruposInsert" required>
 
                                     </select>
                                 </div>
@@ -241,45 +150,6 @@ function tabla_inferior(){
              </div>
            </div>
          </div>
-       </div>
-
-      <script>
-            
-            let grupos = document.getElementById("grupos");
-
-            function filterGroups(event){
-                console.log(event.options[event.selectedIndex].text);
-
-                let options_grupos = "";
-                for(let i = 0; i < grupos.options.length; i++){
-                    if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
-                        options_grupos += "<option value="+grupos.options[i].value+">"+grupos.options[i].text+"</option>";
-                    }
-                }
-                document.getElementById("gruposInner").innerHTML = options_grupos;
-                console.log("data ", options_grupos);
-            }
-
-
-            let gruposModal = document.getElementById("gruposModal");
-
-            function filterGroupsModal(event){
-                console.log(event.options[event.selectedIndex].text);
-
-                let options_grupos = "";
-                for(let i = 0; i < gruposModal.options.length; i++){
-                    if(gruposModal.options[i].text.includes(event.options[event.selectedIndex].text)){
-                        options_grupos += "<option value="+gruposModal.options[i].value+">"+gruposModal.options[i].text+"</option>";
-                    }
-                }
-                document.getElementById("gruposInnerModal").innerHTML = options_grupos;
-                console.log("data ", options_grupos);
-            }
-
-         </script>
- 
-   </body>'; 
-
-
+       </div>';     
 
 }
