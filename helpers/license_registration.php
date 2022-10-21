@@ -21,13 +21,15 @@ function licenseRegistration(){
                 
                 $orden_id = $orden->id;
                 $id_user = $orden->customer_id;
-                // $nombre = $orden->billing->first_name;
-                // $apellido = $orden->billing->last_name;
                 $empresa = $orden->billing->company;
-                // $email=$orden->billing->email;
                 $fechaconvert = $orden->date_created;
                 $separador_fecha = explode("T", $fechaconvert);
                 $fecha = $separador_fecha[0];       
+                
+                //consulta el nombre de la empresa en la base de datos
+                $sql_nombre_empresa = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$id_user'";
+                $empresa = $wpdb->get_var($sql_nombre_empresa);
+                
 
                 $cadena = $item->name;
                 $separador = " ";
@@ -41,14 +43,24 @@ function licenseRegistration(){
                     $cantidad_licencia=$orden->line_items[0]->quantity;
                 }
         
-                // obtiene el nombre de  el grupo
+                // obtiene el nombre de  el grupo y revisa si esta repetido   
                 $nombre_grupo = $empresa." ".$tipo_licencia." ".$fecha;
+                $sql_grupos_existentes = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE nombre = '$nombre_grupo'";
+                $grupo_existente = $wpdb->get_var($sql_grupos_existentes);
+                
+                $digito_final_grupo = 1;
+                while ($grupo_existente != null) {
+                    $digito_final_grupo++;
+                    $nombre_grupo .= " Grupo ".$digito_final_grupo;
+                    $sql_grupos_existentes = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE nombre = '$nombre_grupo'";
+                    $grupo_existente = $wpdb->get_var($sql_grupos_existentes);
+                }
 
                 //consulta si los datos de usuario en la base de datos
                 $sql_nombre = "SELECT display_name FROM {$wpdb->prefix}users WHERE ID = $id_user";
                 $nombre = $wpdb->get_var($sql_nombre);
                 
-                //guarda la emrpresa en la base de datos
+                //guarda la empresa en la base de datos
                 $sql_empresa = "INSERT INTO {$wpdb->prefix}empresas (id,nombre, empresa) VALUES ('$id_user','$nombre','$empresa')";
                 $wpdb->query($sql_empresa);
 

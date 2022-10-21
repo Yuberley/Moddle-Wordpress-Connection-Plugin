@@ -61,12 +61,28 @@ function colaboradores_admin(){
                     <td>".$colaborador_moodle[0]->email."</td>
                     <td>".$colaborador_moodle[0]->city."</td>
                     <td>".$colaborador_moodle[0]->country."</td>
-                    <td><button type='button' class='btn btn-outline-secondary'>Editar</button></td>
+                    <td><button type='button' class='btn btn-outline-secondary'>Editar</button>
+                    <form method='post' action=''>
+                        <input type='hidden' name='email' value='".$colaborador_moodle[0]->email."'>
+                        <button type='submit' class='btn btn-outline-danger' name='eliminar'>Eliminar</button>
+                    
+                    </td>
                 </tr>";
             }
         }
     }
 
+    // funcion para eliminar colaboradores
+if(isset($_POST['eliminar'])){  
+    $email = $_POST['email'];
+    $sql_eliminar_colaborador = "DELETE FROM {$wpdb->prefix}colaboradores WHERE email = '$email'";
+    $wpdb->query($sql_eliminar_colaborador);
+
+    $peticion_buscar_id_moodle = file_get_contents(getMoodleUrl().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email);
+    $colaborador_id_moodle = json_decode($peticion_buscar_id_moodle);
+    $id_moodle = $colaborador_id_moodle[0]->id;
+    $peticion_suspender_colaborador= file_get_contents(getMoodleUrl().'&wsfunction=core_user_update_users&users[0][id]='.$id_moodle.'&users[0][suspended]=1');
+}
 
     echo '
         <body >
