@@ -12,8 +12,6 @@ function colaboradores_admin(){
     
     global $wpdb;
     licenseRegistration();
-
-
     
     $colaboradores = "";
 
