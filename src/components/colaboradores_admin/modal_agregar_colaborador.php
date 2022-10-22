@@ -1,6 +1,7 @@
 <?php
 
 require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
+require_once plugin_dir_path( __FILE__ ) . '../../../helpers/remove_accent.php';
 
 function modal_agregar_colaborador(){
     
@@ -17,10 +18,9 @@ function modal_agregar_colaborador(){
         
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
-        $usuario = strtolower($_POST['usuario']);
+        $usuario = remove_accent( strtolower( $_POST['usuario'] ) );
         $documento = $_POST['documento'];
         $email = $_POST['email'];
-        $password = $_POST['password'];
         $edad = $_POST['edad'];
         $ciudad = $_POST['ciudad'];
         $pais = $_POST['pais'];
@@ -33,6 +33,8 @@ function modal_agregar_colaborador(){
     
         $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupo'";
         $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
+        
+        var_dump($usuario);
     
         if( $CANTIDAD_INSCRITOS_EN_GRUPO < $CANTIDAD_MAXIMA_EN_GRUPO ){
     
@@ -74,21 +76,14 @@ function modal_agregar_colaborador(){
                             <div class="mb-3 col-12 col-sm-6">
                                     <label for="empresa" class="col-form-label">Empresa</label>
                                     <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this);">
-                                        <option selected value="0">Seleccione una empresa</option>';
-                                        foreach($empresas as $empresa){
-                                            echo '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
-                                        }
-                    echo '
+                                        <option selected value="0">Seleccione una empresa</option>
+                                        '.select_empresas().'
                                     </select>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
-                                    <select hidden class="form-select" name="grupos" id="grupos">';
-                                        foreach($grupos as $grupo){
-                                            echo '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
-                                        }
-
-                                       
-                    echo '          </select>
+                                    <select hidden class="form-select" name="grupos" id="grupos">
+                                        '.select_grupos().'
+                                    </select>
                                     <label for="consolidado" class="col-form-label">Grupos</label>
                                     <select class="form-select" name="grupos" id="gruposInsert" required>
 
@@ -108,21 +103,17 @@ function modal_agregar_colaborador(){
                             <section class="d-flex align-items-center justify-content-center row">
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="usuario">Usuario</label>
-                                    <input class="form-control" name="usuario" type="text"  required>
+                                    <input class="form-control" name="usuario" type="text" placeholder="Se registrará sin acentos" required>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="documento">Documento</label>
                                     <input class="form-control" name="documento" type="number" id="docimento" required>
                                 </div>
                             </section>
-                            <div class="mb-3">
-                                <label class="form-label" for="email">Email</label>
-                                <input class="form-control" name="email" type="email" id="Name" required>
-                            </div>
                             <section class="d-flex align-items-center justify-content-center row">
                                 <div class="mb-3 col-12 col-sm-6">
-                                    <label class="form-label" for="password">Contraseña</label>
-                                    <input class="form-control" name="password"  type="password" id="password" required>
+                                    <label class="form-label" for="email">Email</label>
+                                    <input class="form-control" name="email" type="email" id="email" required>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="edad">Edad</label>
@@ -136,7 +127,10 @@ function modal_agregar_colaborador(){
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="pais">Pais</label>
-                                    <input class="form-control" name="pais" type="text" id="pais" required>
+                                    <select class="form-select" name="pais" id="pais" required>
+                                        <option selected value="CO">Colombia</option>
+                                        <option selected value="MX">México</option>
+                                    </select>
                                 </div>
                             </section>
                             <div class="mb-3 d-flex justify-content-center">

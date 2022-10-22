@@ -1,6 +1,6 @@
 <?php
 
-function eliminar_tildes($cadena){
+function remove_accent($cadena){
 
     //Codificamos la cadena en formato utf8 en caso de que nos de errores
     // $cadena = utf8_encode($cadena);
