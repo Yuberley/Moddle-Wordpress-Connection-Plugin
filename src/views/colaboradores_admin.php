@@ -12,12 +12,33 @@ function colaboradores_admin(){
     
     global $wpdb;
     licenseRegistration();
+
+    $CANTIDAD_DISPONIBLE = '0';
+    $CANTIDAD_MAXIMA_EN_GRUPO = '0';
+    $EMPRESA = 'Sin seleccionar';
+    $GRUPO = 'Sin seleccionar';
     
     $colaboradores = "";
 
     if (isset($_POST['filtrar'])){
         $empresaId = $_POST['select_empresa'];
         $grupoId = $_POST['gruposInner'];
+
+        $EMPRESA = "SELECT nombre FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
+        $EMPRESA = $wpdb->get_results($EMPRESA);
+        $EMPRESA = $EMPRESA[0]->nombre;
+        $GRUPO = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupoId'";
+        $GRUPO = $wpdb->get_results($GRUPO);
+        $GRUPO = $GRUPO[0]->nombre;
+
+        $CANTIDAD_INSCRITOS = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupoId'";
+        $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS);
+
+        $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupoId'";
+        $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
+
+        $CANTIDAD_DISPONIBLE = $CANTIDAD_MAXIMA_EN_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
+
         $slq_email_colaboradores = "SELECT email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
         $emails_colaboradores = $wpdb->get_results($slq_email_colaboradores);
     
@@ -25,7 +46,6 @@ function colaboradores_admin(){
             $peticion_moodle = file_get_contents(getMoodleUrl().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email);
             $colaborador_moodle = json_decode($peticion_moodle);
 
-            
             if( $colaborador_moodle[0]->email != "" ){               
                 
                 $colaboradores .= "
@@ -103,9 +123,21 @@ if(isset($_POST['eliminar'])){
                </div> 
                </form>
            </div>
-           
+
+            <section class="float-start ms-3" id="cantidad_licencias">
+                    <label class="text-muted">Empresa: </label>
+                    <span class="badge bg-dark">'.$EMPRESA.'</span>
+                    <label class="ps-2 text-muted">Grupo: </label>
+                    <span class="badge bg-dark">'.$GRUPO.'</span>
+            </section>
+            <section class="float-end me-5" id="cantidad_licencias">
+                    <label class="text-muted">Cantidad de licencias: </label>
+                    <span class="badge bg-primary">'.$CANTIDAD_MAXIMA_EN_GRUPO.'</span>
+                    <label class="ps-2 text-muted">Licencias disponibles: </label>
+                    <span class="badge bg-primary">'.$CANTIDAD_DISPONIBLE.'</span>
+            </section>
+
            <div class="container mt-5">
-               
                <table class="table order-table table-hover" id="table" >
                    <thead style="background-color: #041541; color: white;">
                         <tr>
@@ -141,9 +173,8 @@ if(isset($_POST['eliminar'])){
         '.modal_agregar_colaborador().'
         
         <script>
-            let grupos = document.getElementById("grupos");
             function filterGroups(event){
-
+                let grupos = document.getElementById("grupos");
                 let options_grupos = "";
                 for(let i = 0; i < grupos.options.length; i++){
                     if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
@@ -152,7 +183,6 @@ if(isset($_POST['eliminar'])){
                 }
                 document.getElementById("gruposInner").innerHTML = options_grupos;
                 document.getElementById("gruposInsert").innerHTML = options_grupos;
-                
             }
 
         </script>
