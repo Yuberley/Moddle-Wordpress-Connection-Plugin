@@ -6,36 +6,14 @@ require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
 require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_agregar_colaborador.php';
 require_once plugin_dir_path(__FILE__) . '../../src/vendor/autoload.php';
 require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
+require_once plugin_dir_path(__FILE__) . '../../helpers/functions_selects.php';
 
 function colaboradores_admin(){ 
     
     global $wpdb;
     licenseRegistration();
 
-    function select_empresas(){
-        global $wpdb;
-        $opcionesEmpresas = '';
-        $sql_empresas = "SELECT * FROM {$wpdb->prefix}empresas";
-        $empresas = $wpdb->get_results($sql_empresas);
-        foreach($empresas as $empresa){
-            $opcionesEmpresas .= '<option value="'.$empresa->id.'">'.$empresa->empresa.'</option>';
-        }
-        
-        return $opcionesEmpresas;
-    }
-    
-    function select_grupos(){
-        global $wpdb;
-        $opcionesGrupos = '';
-        $sql_grupos = "SELECT * FROM {$wpdb->prefix}grupos";
-        $grupos = $wpdb->get_results($sql_grupos);
 
-        foreach($grupos as $grupo){
-            $opcionesGrupos .= '<option value="'.$grupo->id.'">'.$grupo->nombre.'</option>';
-        }
-
-        return $opcionesGrupos;
-    }
     
     $colaboradores = "";
 
@@ -61,11 +39,14 @@ function colaboradores_admin(){
                     <td>".$colaborador_moodle[0]->email."</td>
                     <td>".$colaborador_moodle[0]->city."</td>
                     <td>".$colaborador_moodle[0]->country."</td>
-                    <td><button type='button' class='btn btn-outline-secondary'>Editar</button>
-                    <form method='post' action=''>
+                    <td>
+                    <div class='d-flex align-items-center'>
+                    <button type='button' class='btn btn-outline-secondary'>Editar</button>
+                    <form method='post' >
                         <input type='hidden' name='email' value='".$colaborador_moodle[0]->email."'>
-                        <button type='submit' class='btn btn-outline-danger' name='eliminar'>Eliminar</button>
-                    
+                        <button type='submit' class='btn btn-outline-danger ms-1' name='eliminar'>Eliminar</button>
+                    </form>
+                    </div>
                     </td>
                 </tr>";
             }
