@@ -24,7 +24,6 @@ function modal_agregar_colaborador(){
         $edad = $_POST['edad'];
         $ciudad = $_POST['ciudad'];
         $pais = $_POST['pais'];
-        $tipo_licencia = $_POST['tipo_licencia'];
         $empresa = $_POST['empresas'];
         $grupo = $_POST['grupos'];
         
@@ -33,8 +32,6 @@ function modal_agregar_colaborador(){
     
         $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupo'";
         $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
-        
-        var_dump($usuario);
     
         if( $CANTIDAD_INSCRITOS_EN_GRUPO < $CANTIDAD_MAXIMA_EN_GRUPO ){
     
@@ -103,7 +100,7 @@ function modal_agregar_colaborador(){
                             <section class="d-flex align-items-center justify-content-center row">
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="usuario">Usuario</label>
-                                    <input class="form-control" name="usuario" type="text" placeholder="Se registrará sin acentos" required>
+                                    <input class="form-control" name="usuario" type="text" placeholder="Se registrará sin acentos y en minúscula" required>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="documento">Documento</label>
@@ -133,15 +130,14 @@ function modal_agregar_colaborador(){
                                     </select>
                                 </div>
                             </section>
-                            <div class="mb-3 d-flex justify-content-center">
-                                <input type="submit" name="agregar_colaborador" value="Agregar Colaborador">
+                            <div class="mb-3 d-flex justify-content-center" id="button_inner">
+                                <input type="submit" name="agregar_colaborador" value="Agregar Colaborador" id="agregar_colaborador">
                             </div>
-                            <div class="msg"></div>
                        </form>
                    </div>
              </div>
              <div class="modal-footer justify-content-center">
-               <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cerrar</button>
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_modal">Cerrar</button>
              </div>
            </div>
          </div>

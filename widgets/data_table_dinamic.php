@@ -5,6 +5,11 @@ function data_table_dinamic(){
     $config = '
         <script>
         $("#table").DataTable( {
+            scrollX: true,
+            "responsive": true,
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            "bScrollCollapse": true,
             language: {
                 "search": "Buscar: ",
                 "info": "Mostrando del _START_ al _END_ de _TOTAL_ datos",
@@ -20,7 +25,7 @@ function data_table_dinamic(){
                 "zeroRecords":    "No se encontraron datos"
                 
             }, 
-            searching: false
+            searching: false,
         } );
         </script>';
 

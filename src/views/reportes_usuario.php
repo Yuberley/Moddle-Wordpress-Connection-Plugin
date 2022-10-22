@@ -186,6 +186,7 @@ function reportes_usuario(){
 
         <script>
         $("#table").DataTable( {
+            scrollX: true,
             language: {
                 "search": "Buscar: ",
                 "info": "Mostrando del _START_ al _END_ de _TOTAL_ datos",
@@ -200,7 +201,8 @@ function reportes_usuario(){
                 "zeroRecords":    "No se encontraron datos"
                 
             },
-            searching: false
+            searching: false,
+            
         } );
         </script>
 
