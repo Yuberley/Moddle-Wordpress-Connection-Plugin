@@ -26,21 +26,26 @@ echo '
                     </select>
                 </div>
                 <div class="mb-3 ">
-                    <select hidden class="form-select" name="grupos" id="grupos">'
-                    .select_grupos().
-                    ' </select>
+                    <select hidden class="form-select" name="grupos" id="grupos">
+                        '.select_grupos().' 
+                    </select>
                     <label  class="col-form-label">Grupos</label>
-                    <select class="form-select" name="grupos" id="gruposInsert" required>
+                    <select class="form-select" name="grupos" id="gruposInsert" required onChange="filterCourses(this);">
+                    
 
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label">Curso:</label>
-                    <select class="form-select" >
-                        <option selected>Seleccione un curso</option>
-                        <option value="1">Servicio al Cliente</option>
-                        <option value="2">Finanzas Personales</option>
-                        <option value="3">Negocios y Emprendimiento</option>
+                    <label  class="col-form-label">Curso:</label>
+                    <select name="cursos_basic" id="cursos_basic" hidden class="form-select" >
+                       '.select_cursos_basic().'
+                    </select>
+                    
+                    <select name="cursos_premium" id="cursos_premium" class="form-select" hidden >
+                       '.select_cursos_premium().'
+                    </select>
+                    <select name="curso" id="cursos_inner" class="form-select" required>
+
                     </select>
                 </div>
                 <div class="d-flex justify-content-center">
