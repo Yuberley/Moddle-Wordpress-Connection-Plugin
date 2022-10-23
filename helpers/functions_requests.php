@@ -30,7 +30,7 @@ function getMoodleToken(){
     $response = $moodle->request('POST', '/login/token.php', [
         'form_params' => [
             'username' => 'admin',
-            'password' => 'admin',
+            'password' => 'Cuenta123*',
             'service' => 'moodle_mobile_app',
         ]
     ]);
