@@ -8,27 +8,25 @@ function modal_editar_colaborador(){
 
     if( isset($_POST['editar_colaborador']) ){
 
-        $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
-        $email = $_POST['email'];
-        $empresa = $_POST['empresas'];
-        $grupo = $_POST['grupos'];
+        $idWordPress = $_POST['idWordpressEditar'];
+        $idMoodle = $_POST['idMoodleEditar'];
+        $nombre = $_POST['nombreEditar'];
+        $apellido = $_POST['apellidoEditar'];
+        $usuario = $_POST['usuarioEditar'];
+        $documento = $_POST['documentoEditar'];
+        $email = $_POST['emailEditar'];
+        $ciudad = $_POST['ciudadEditar'];
+        $pais = $_POST['paisEditar'];
 
-        $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email', id_empresa = '$empresa', id_grupo = '$grupo' WHERE id = '$id'";
+        $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idWordPress'";
+
+        var_dump($sql);
+
         $respuesta = $wpdb->query($sql);
 
-        if($respuesta){
+        var_dump($respuesta);
 
-            //editar usuario en moodle
-            $peticion_md = file_get_contents(getMoodleUrl().'&wsfunction=core_user_update_users&users[0][id]='.$id.'&users[0][firstname]='.$nombre.'&users[0][lastname]='.$apellido.'&users[0][email]='.$email);
 
-            $respuesta_md = json_decode($peticion_md);
-
-        } else {
-
-            echo '<script>alert("Error al editar el colaborador")</script>';
-        }
 
     }
 
@@ -43,16 +41,18 @@ function modal_editar_colaborador(){
              <div class="modal-body px-5">
                    <div>
                        <form id="editar" method="POST">
-                        <section class="d-flex align-items-center justify-content-center row">
-                                <div class="mb-3 col-12 col-sm-6">
-                                    <label  class="form-label" for="nombreEditar">Nombre</label>
-                                    <input class="form-control" name="nombreEditar" type="text" id="nombreEditar" required>
-                                </div>
-                                <div class="mb-3 col-12 col-sm-6">
-                                    <label class="form-label" for="apellidoEditar">Apellido</label>
-                                    <input class="form-control" name="apellidoEditar" type="text" id="apellidoEditar" required>
-                                </div>
-                        </section>
+                            <input hidden class="form-control" name="idWordpressEditar" type="text" id="idWordpressEditar" required>
+                            <input hidden class="form-control" name="idMoodleEditar" type="text" id="idMoodleEditar" required>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                    <div class="mb-3 col-12 col-sm-6">
+                                        <label  class="form-label" for="nombreEditar">Nombre</label>
+                                        <input class="form-control" name="nombreEditar" type="text" id="nombreEditar" required>
+                                    </div>
+                                    <div class="mb-3 col-12 col-sm-6">
+                                        <label class="form-label" for="apellidoEditar">Apellido</label>
+                                        <input class="form-control" name="apellidoEditar" type="text" id="apellidoEditar" required>
+                                    </div>
+                            </section>
                             <section class="d-flex align-items-center justify-content-center row">
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="usuarioEditar">Usuario</label>

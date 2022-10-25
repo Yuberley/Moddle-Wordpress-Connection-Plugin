@@ -2,14 +2,6 @@
 
 require_once plugin_dir_path( __FILE__ ) . '../settings/enviroment.php';
 
-function getMoodle(){
-    $moodle = new \GuzzleHttp\Client([
-        'base_uri' => getMoodleUrl(),
-        'timeout'  => 2.0,
-    ]);
-    return $moodle;
-}
-
 function getWoocommerce(){
     $keyWoocommerce = getWoocommerceKey();
     $woocommerce = new \Automattic\WooCommerce\Client(
@@ -25,6 +17,14 @@ function getWoocommerce(){
     return $woocommerce;
 }
 
+function getMoodle(){
+    $moodle = new \GuzzleHttp\Client([
+        'base_uri' => 'http://179.32.53.160/moodle',
+        'timeout'  => 2.0,
+    ]);
+    return $moodle;
+}
+
 function getMoodleToken(){
     $moodle = getMoodle();
     $response = $moodle->request('POST', '/login/token.php', [
@@ -37,7 +37,6 @@ function getMoodleToken(){
     $token = json_decode($response->getBody()->getContents());
     return $token->token;
 }
-
 
 function getMoodleUser($id){
     $moodle = getMoodle();

@@ -9,21 +9,17 @@ require_once plugin_dir_path(__FILE__) . '../../src/vendor/autoload.php';
 require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_selects.php';
 
+
 function colaboradores_admin(){ 
     
     global $wpdb;
     licenseRegistration();
-
-    $TokenMoodle = getMoodleToken();
-    var_dump($TokenMoodle);
-
-
-
+    
     $CANTIDAD_DISPONIBLE = '0';
     $CANTIDAD_MAXIMA_EN_GRUPO = '0';
     $EMPRESA = 'Sin seleccionar';
     $GRUPO = 'Sin seleccionar';
-    
+
     $colaboradores = "";
 
     if (isset($_POST['filtrar'])){
@@ -45,7 +41,8 @@ function colaboradores_admin(){
 
         $CANTIDAD_DISPONIBLE = $CANTIDAD_MAXIMA_EN_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
 
-        $slq_email_colaboradores = "SELECT email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
+
+        $slq_email_colaboradores = "SELECT id, email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
         $emails_colaboradores = $wpdb->get_results($slq_email_colaboradores);
     
         foreach($emails_colaboradores as $email_colaborador){
@@ -54,6 +51,8 @@ function colaboradores_admin(){
 
             if( $colaborador_moodle[0]->email != "" ){   
                 
+                $idWordpress = $email_colaborador->id;
+                $idMoodle = '`'.$colaborador_moodle[0]->id.'`';
                 $firstname = '`'.$colaborador_moodle[0]->firstname.'`';
                 $lastname = '`'.$colaborador_moodle[0]->lastname.'`';
                 $username = '`'.$colaborador_moodle[0]->username.'`';
@@ -78,7 +77,7 @@ function colaboradores_admin(){
                                 class="btn btn-secondary"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#modal_editar_colaborador"
-                                onclick="editarColaborador('.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">
+                                onclick="editarColaborador('.$idWordpress.', '.$idMoodle.', '.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">
                                 Editar</button>
                             <form method="POST" >
                                 <input type="hidden" name="email" value="'.$colaborador_moodle[0]->email.'">
@@ -194,31 +193,9 @@ if(isset($_POST['eliminar'])){
 
         <!-- Modal editar colaborador -->
         '.modal_editar_colaborador().'
-        
-        <script>
-            function filterGroups(event){
-                let grupos = document.getElementById("grupos");
-                let options_grupos = "";
-                for(let i = 0; i < grupos.options.length; i++){
-                    if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
-                        options_grupos += "<option value="+grupos.options[i].value+">"+grupos.options[i].text+"</option>";
-                    }
-                }
-                document.getElementById("gruposInner").innerHTML = options_grupos;
-                document.getElementById("gruposInsert").innerHTML = options_grupos;
-            }
 
-            function editarColaborador(nombre, apellido, usuario, documento, email, ciudad, pais){
-                document.getElementById("nombreEditar").value = nombre;
-                document.getElementById("apellidoEditar").value = apellido;
-                document.getElementById("usuarioEditar").value = usuario;
-                document.getElementById("documentoEditar").value = documento;
-                document.getElementById("emailEditar").value = email;
-                document.getElementById("ciudadEditar").value = ciudad;
-                document.getElementById("paisEditar").value = pais;
-            }
-
-        </script>
+        <script src='.plugin_dir_url(__FILE__)."../../assets/js/filterGroups.js".' ></script>
+        <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
  
    </body>'; 
 
