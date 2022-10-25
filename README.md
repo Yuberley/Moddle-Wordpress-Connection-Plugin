@@ -1,5 +1,5 @@
 
-# Moodle Wordpress Connection-Plugin ✅
+# Moodle-Wordpress Plugin Connection ✅
 
 * **Conexión entre moodle y wordpress:** *Usando en EndPoint de moodle y creando los EndPoints en WooCommerce.* 🧿
 
