@@ -19,7 +19,7 @@ function getWoocommerce(){
 
 function getMoodle(){
     $moodle = new \GuzzleHttp\Client([
-        'base_uri' => 'http://179.32.53.160/moodle',
+        'base_uri' => 'http://179.32.53.160/moodle/',
         'timeout'  => 2.0,
     ]);
     return $moodle;
@@ -27,7 +27,7 @@ function getMoodle(){
 
 function getMoodleToken(){
     $moodle = getMoodle();
-    $response = $moodle->request('POST', '/login/token.php', [
+    $response = $moodle->request('POST', 'login/token.php', [
         'form_params' => [
             'username' => 'admin',
             'password' => 'Cuenta123*',
@@ -54,12 +54,13 @@ function getMoodleUser($id){
 
 function getMoodleUserByEmail($email){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
-            'wstoken' => getMoodleToken(),
-            'wsfunction' => 'core_user_get_users',
-            'criteria[0][key]' => 'email',
-            'criteria[0][value]' => $email,
+            'wstoken' => 'ffdbb4a4f4102cf554cd040dd2ecde94',
+            'wsfunction' => 'core_user_get_users_by_field',
+            'field' => 'username',
+            'values[0]' => 'saitama',
+            'moodlewsrestformat' => 'json',
         ]
     ]);
     $user = json_decode($response->getBody()->getContents());
@@ -68,7 +69,7 @@ function getMoodleUserByEmail($email){
 
 function getMoodleUserByUsername($username){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
             'wsfunction' => 'core_user_get_users',

@@ -19,12 +19,8 @@ function modal_editar_colaborador(){
         $pais = $_POST['paisEditar'];
 
         $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idWordPress'";
-
-        var_dump($sql);
-
         $respuesta = $wpdb->query($sql);
 
-        var_dump($respuesta);
 
 
 
