@@ -5,45 +5,94 @@ require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
 function modal_editar_colaborador(){
 
     global $wpdb;
-    $id = $_POST['id'];
-    $sql_colaborador = "SELECT * FROM {$wpdb->prefix}colaboradores WHERE id = '$id'";
-    $colaborador = $wpdb->get_results($sql_colaborador);
-    $colaborador = $colaborador[0];
 
-    $sql_empresa = "SELECT * FROM {$wpdb->prefix}empresas WHERE id = '$colaborador->id_empresa'";
-    $empresa = $wpdb->get_results($sql_empresa);
-    $empresa = $empresa[0];
+    if( isset($_POST['editar_colaborador']) ){
 
-    $sql_grupo = "SELECT * FROM {$wpdb->prefix}grupos WHERE id = '$colaborador->id_grupo'";
-    $grupo = $wpdb->get_results($sql_grupo);
-    $grupo = $grupo[0];
+        $idWordPress = $_POST['idWordpressEditar'];
+        $idMoodle = $_POST['idMoodleEditar'];
+        $nombre = $_POST['nombreEditar'];
+        $apellido = $_POST['apellidoEditar'];
+        $usuario = $_POST['usuarioEditar'];
+        $documento = $_POST['documentoEditar'];
+        $email = $_POST['emailEditar'];
+        $ciudad = $_POST['ciudadEditar'];
+        $pais = $_POST['paisEditar'];
 
-    $sql_cursos = "SELECT * FROM {$wpdb->prefix}cursos WHERE id_empresa = '$colaborador->id_empresa'";
-    $cursos = $wpdb->get_results($sql_cursos);
+        $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idWordPress'";
 
-    $sql_cursos_colaborador = "SELECT * FROM {$wpdb->prefix}cursos_colaborador WHERE id_colaborador = '$id'";
-    $cursos_colaborador = $wpdb->get_results($sql_cursos_colaborador);
+        var_dump($sql);
 
-    $cursos_colaborador_array = array();
-    foreach($cursos_colaborador as $curso_colaborador){
-        array_push($cursos_colaborador_array, $curso_colaborador->id_curso);
+        $respuesta = $wpdb->query($sql);
+
+        var_dump($respuesta);
+
+
+
     }
 
-    $cursos_colaborador_array = json_encode($cursos_colaborador_array);
-
-    $sql_cursos_colaborador = "SELECT * FROM {$wpdb->prefix}cursos_colaborador WHERE id_colaborador = '$id'";
-    $cursos_colaborador = $wpdb->get_results($sql_cursos_colaborador);
-
-    $cursos_colaborador_array = array();
-    foreach($cursos_colaborador as $curso_colaborador){
-        array_push($cursos_colaborador_array, $curso_colaborador->id_curso);
-    }
-
-    $cursos_colaborador_array = json_encode($cursos_colaborador_array);
-
-    $peticion_moodle = file_get_contents(getMoodleUrl().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$colaborador->email.'&moodlewsrestformat=json');
-
-    $respuesta_moodle = json_decode($peticion_moodle);
-
+    echo '
+       <!-- Modal agregar usuario -->
+       <div class="modal fade" id="modal_editar_colaborador" data-bs-backdrop="static" tabindex="-1" >
+         <div class="modal-dialog modal-lg modal-dialog-centered">
+           <div class="modal-content">
+             <div class="modal-header justify-content-center">
+               <h5 class="modal-title mb-0">Editar Colaborador</h5>
+             </div>
+             <div class="modal-body px-5">
+                   <div>
+                       <form id="editar" method="POST">
+                            <input hidden class="form-control" name="idWordpressEditar" type="text" id="idWordpressEditar" required>
+                            <input hidden class="form-control" name="idMoodleEditar" type="text" id="idMoodleEditar" required>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                    <div class="mb-3 col-12 col-sm-6">
+                                        <label  class="form-label" for="nombreEditar">Nombre</label>
+                                        <input class="form-control" name="nombreEditar" type="text" id="nombreEditar" required>
+                                    </div>
+                                    <div class="mb-3 col-12 col-sm-6">
+                                        <label class="form-label" for="apellidoEditar">Apellido</label>
+                                        <input class="form-control" name="apellidoEditar" type="text" id="apellidoEditar" required>
+                                    </div>
+                            </section>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="usuarioEditar">Usuario</label>
+                                    <input class="form-control" name="usuarioEditar" id="usuarioEditar" type="text" required>
+                                </div>
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="documentoEditar">Documento</label>
+                                    <input class="form-control" name="documentoEditar" id="documentoEditar" type="number"  required>
+                                </div>
+                            </section>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                <div class="mb-3 col-12">
+                                    <label class="form-label" for="emailEditar">Email</label>
+                                    <input class="form-control" name="emailEditar" id="emailEditar" type="email" required>
+                                </div>
+                            </section>
+                            <section class="d-flex align-items-center justify-content-center row">
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="ciudadEditar">Ciudad</label>
+                                    <input class="form-control" name="ciudadEditar" id="ciudadEditar" type="text" required>
+                                </div>
+                                <div class="mb-3 col-12 col-sm-6">
+                                    <label class="form-label" for="paisEditar">Pais</label>
+                                    <select class="form-select" name="paisEditar" id="paisEditar" required>
+                                        <option selected value="CO">Colombia</option>
+                                        <option selected value="MX">México</option>
+                                    </select>
+                                </div>
+                            </section>
+                            <div class="mb-3 d-flex justify-content-center" id="button_inner">
+                                <input type="submit" name="editar_colaborador" value="Actualizar Información" id="editar_colaborador">
+                            </div>
+                       </form>
+                   </div>
+             </div>
+             <div class="modal-footer justify-content-center">
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_modal">Cerrar</button>
+             </div>
+           </div>
+         </div>
+       </div>';
 
 }

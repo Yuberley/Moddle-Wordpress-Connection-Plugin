@@ -5,7 +5,7 @@ function data_table_dinamic(){
     $config = '
         <script>
         $("#table").DataTable( {
-            scrollX: true,
+            "scrollX": true,
             "responsive": true,
             "sScrollX": "100%",
             "sScrollXInner": "100%",

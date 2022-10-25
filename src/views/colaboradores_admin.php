@@ -4,9 +4,11 @@ require_once plugin_dir_path(__FILE__) . '../../settings/enviroment.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/license_registration.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
 require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_agregar_colaborador.php';
+require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_editar_colaborador.php';
 require_once plugin_dir_path(__FILE__) . '../../src/vendor/autoload.php';
 require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_selects.php';
+
 
 function colaboradores_admin(){ 
     
@@ -18,6 +20,11 @@ function colaboradores_admin(){
     $EMPRESA = 'Sin seleccionar';
     $GRUPO = 'Sin seleccionar';
     
+    $CANTIDAD_DISPONIBLE = '0';
+    $CANTIDAD_MAXIMA_EN_GRUPO = '0';
+    $EMPRESA = 'Sin seleccionar';
+    $GRUPO = 'Sin seleccionar';
+
     $colaboradores = "";
 
     if (isset($_POST['filtrar'])){
@@ -39,34 +46,51 @@ function colaboradores_admin(){
 
         $CANTIDAD_DISPONIBLE = $CANTIDAD_MAXIMA_EN_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
 
-        $slq_email_colaboradores = "SELECT email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
+
+        $slq_email_colaboradores = "SELECT id, email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
         $emails_colaboradores = $wpdb->get_results($slq_email_colaboradores);
     
         foreach($emails_colaboradores as $email_colaborador){
             $peticion_moodle = file_get_contents(getMoodleUrl().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email);
             $colaborador_moodle = json_decode($peticion_moodle);
 
-            if( $colaborador_moodle[0]->email != "" ){               
+            if( $colaborador_moodle[0]->email != "" ){   
                 
-                $colaboradores .= "
+                $idWordpress = $email_colaborador->id;
+                $idMoodle = '`'.$colaborador_moodle[0]->id.'`';
+                $firstname = '`'.$colaborador_moodle[0]->firstname.'`';
+                $lastname = '`'.$colaborador_moodle[0]->lastname.'`';
+                $username = '`'.$colaborador_moodle[0]->username.'`';
+                $document = '`'.$colaborador_moodle[0]->customfields[0]->value.'`';
+                $email = '`'.$colaborador_moodle[0]->email.'`';
+                $city = '`'.$colaborador_moodle[0]->city.'`';
+                $country = '`'.$colaborador_moodle[0]->country.'`';
+                
+                $colaboradores .= '
                 <tr>
-                    <td>".$colaborador_moodle[0]->username."</td>
-                    <td>".$colaborador_moodle[0]->firstname."</td>
-                    <td>".$colaborador_moodle[0]->lastname."</td>
-                    <td>".$colaborador_moodle[0]->customfields[0]->value."</td>
-                    <td>".$colaborador_moodle[0]->email."</td>
-                    <td>".$colaborador_moodle[0]->city."</td>
-                    <td>".$colaborador_moodle[0]->country."</td>
+                    <td>'.$colaborador_moodle[0]->username.'</td>
+                    <td>'.$colaborador_moodle[0]->firstname.'</td>
+                    <td>'.$colaborador_moodle[0]->lastname.'</td>
+                    <td>'.$colaborador_moodle[0]->customfields[0]->value.'</td>
+                    <td>'.$colaborador_moodle[0]->email.'</td>
+                    <td>'.$colaborador_moodle[0]->city.'</td>
+                    <td>'.$colaborador_moodle[0]->country.'</td>
                     <td>
-                    <div class='d-flex align-items-center'>
-                    <button type='button' class='btn btn-outline-secondary'>Editar</button>
-                    <form method='post' >
-                        <input type='hidden' name='email' value='".$colaborador_moodle[0]->email."'>
-                        <button type='submit' class='btn btn-outline-danger ms-1' name='eliminar'>Eliminar</button>
-                    </form>
-                    </div>
+                        <div class="d-flex align-items-center">
+                            <button 
+                                class="btn btn-outline-secondary" 
+                                class="btn btn-secondary"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal_editar_colaborador"
+                                onclick="editarColaborador('.$idWordpress.', '.$idMoodle.', '.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">
+                                Editar</button>
+                            <form method="POST" >
+                                <input type="hidden" name="email" value="'.$colaborador_moodle[0]->email.'">
+                                <button type="submit" class="btn btn-outline-danger ms-1" name="eliminar">Eliminar</button>
+                            </form>
+                        </div>
                     </td>
-                </tr>";
+                </tr>';
             }
         }
     }
@@ -115,30 +139,31 @@ if(isset($_POST['eliminar'])){
                         </select>
                    </div>
                    
-                   <div class="col-md-1">
+                   <div class="col-md-1 float-end">
                        <br>
-                       <button class="btn btn-secondary" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
+                       <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
                    </div>
     
                </div> 
                </form>
+
+               <section class="float-start" id="cantidad_licencias">
+                       <label class="text-muted">Empresa: </label>
+                       <span class="badge bg-dark">'.$EMPRESA.'</span>
+                       <label class="ps-2 text-muted">Grupo: </label>
+                       <span class="badge bg-dark">'.$GRUPO.'</span>
+               </section>
+               <section class="float-end" id="cantidad_licencias">
+                       <label class="text-muted">Cantidad de licencias: </label>
+                       <span class="badge bg-primary">'.$CANTIDAD_MAXIMA_EN_GRUPO.'</span>
+                       <label class="ps-2 text-muted">Licencias disponibles: </label>
+                       <span class="badge bg-primary">'.$CANTIDAD_DISPONIBLE.'</span>
+               </section>
            </div>
 
-            <section class="float-start ms-3" id="cantidad_licencias">
-                    <label class="text-muted">Empresa: </label>
-                    <span class="badge bg-dark">'.$EMPRESA.'</span>
-                    <label class="ps-2 text-muted">Grupo: </label>
-                    <span class="badge bg-dark">'.$GRUPO.'</span>
-            </section>
-            <section class="float-end me-5" id="cantidad_licencias">
-                    <label class="text-muted">Cantidad de licencias: </label>
-                    <span class="badge bg-primary">'.$CANTIDAD_MAXIMA_EN_GRUPO.'</span>
-                    <label class="ps-2 text-muted">Licencias disponibles: </label>
-                    <span class="badge bg-primary">'.$CANTIDAD_DISPONIBLE.'</span>
-            </section>
 
            <div class="container mt-5">
-               <table class="table order-table table-hover" id="table" >
+               <table class="table order-table table-hover border" id="table" >
                    <thead style="background-color: #041541; color: white;">
                         <tr>
                            <th scope="col">Usuario</th>
@@ -149,7 +174,6 @@ if(isset($_POST['eliminar'])){
                            <th scope="col">Ciudad</th>
                            <th scope="col">Pais</th>
                            <th scope="col">Ajustes</th>
-                           
                        </tr>
                    </thead>
                    <tbody id="personas">
@@ -163,29 +187,20 @@ if(isset($_POST['eliminar'])){
            <div class="col-md-8"><h1></h1></div>
                <div class="col-md-4"> 
                    <div class="input-group mb-3 d-flex justify-content-end">
-                   <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_agregar_colaborador" >Agregar Nuevo Colaborador</button>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_agregar_colaborador">Agregar Nuevo Colaborador</button>
                    </div>
                </div>
            </div>
        </div>
        
-       <!-- Modal agregar usuario -->
+       <!-- Modal agregar colaborador -->
         '.modal_agregar_colaborador().'
-        
-        <script>
-            function filterGroups(event){
-                let grupos = document.getElementById("grupos");
-                let options_grupos = "";
-                for(let i = 0; i < grupos.options.length; i++){
-                    if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
-                        options_grupos += "<option value="+grupos.options[i].value+">"+grupos.options[i].text+"</option>";
-                    }
-                }
-                document.getElementById("gruposInner").innerHTML = options_grupos;
-                document.getElementById("gruposInsert").innerHTML = options_grupos;
-            }
 
-        </script>
+        <!-- Modal editar colaborador -->
+        '.modal_editar_colaborador().'
+
+        <script src='.plugin_dir_url(__FILE__)."../../assets/js/filterGroups.js".' ></script>
+        <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
  
    </body>'; 
 

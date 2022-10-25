@@ -21,7 +21,6 @@ function modal_agregar_colaborador(){
         $usuario = remove_accent( strtolower( $_POST['usuario'] ) );
         $documento = $_POST['documento'];
         $email = $_POST['email'];
-        $edad = $_POST['edad'];
         $ciudad = $_POST['ciudad'];
         $pais = $_POST['pais'];
         $empresa = $_POST['empresas'];
@@ -108,13 +107,9 @@ function modal_agregar_colaborador(){
                                 </div>
                             </section>
                             <section class="d-flex align-items-center justify-content-center row">
-                                <div class="mb-3 col-12 col-sm-6">
+                                <div class="mb-3 col-12">
                                     <label class="form-label" for="email">Email</label>
                                     <input class="form-control" name="email" type="email" id="email" required>
-                                </div>
-                                <div class="mb-3 col-12 col-sm-6">
-                                    <label class="form-label" for="edad">Edad</label>
-                                    <input class="form-control" name="edad" type="number" id="edad" required>
                                 </div>
                             </section>
                             <section class="d-flex align-items-center justify-content-center row">
