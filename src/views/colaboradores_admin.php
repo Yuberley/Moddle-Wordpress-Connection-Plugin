@@ -15,11 +15,14 @@ function colaboradores_admin(){
     global $wpdb;
     licenseRegistration();
 
-    $CANTIDAD_DISPONIBLE = '0';
-    $CANTIDAD_MAXIMA_EN_GRUPO = '0';
-    $EMPRESA = 'Sin seleccionar';
-    $GRUPO = 'Sin seleccionar';
+    $userByEmail = getMoodleUserByEmail('saitama@gmail.com');
+    var_dump($userByEmail);
     
+    $userByUsername = getMoodleUserByUsername('saitama');
+    var_dump($userByUsername);
+
+
+
     $CANTIDAD_DISPONIBLE = '0';
     $CANTIDAD_MAXIMA_EN_GRUPO = '0';
     $EMPRESA = 'Sin seleccionar';
@@ -68,6 +71,7 @@ function colaboradores_admin(){
                 
                 $colaboradores .= '
                 <tr>
+                    <td><img src="'.$colaborador_moodle[0]->profileimageurlsmall.'" /></td>
                     <td>'.$colaborador_moodle[0]->username.'</td>
                     <td>'.$colaborador_moodle[0]->firstname.'</td>
                     <td>'.$colaborador_moodle[0]->lastname.'</td>
@@ -166,14 +170,15 @@ if(isset($_POST['eliminar'])){
                <table class="table order-table table-hover border" id="table" >
                    <thead style="background-color: #041541; color: white;">
                         <tr>
-                           <th scope="col">Usuario</th>
-                           <th scope="col">Nombre </th>
-                           <th scope="col">Apellido</th>
-                           <th scope="col">Documento</th>
-                           <th scope="col">Email</th>
-                           <th scope="col">Ciudad</th>
-                           <th scope="col">Pais</th>
-                           <th scope="col">Ajustes</th>
+                            <th scope="col">Avatar</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Nombre </th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Documento</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Ciudad</th>
+                            <th scope="col">Pais</th>
+                            <th scope="col">Ajustes</th>
                        </tr>
                    </thead>
                    <tbody id="personas">
