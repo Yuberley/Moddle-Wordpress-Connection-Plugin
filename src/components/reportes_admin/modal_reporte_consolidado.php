@@ -1,4 +1,7 @@
 <?php
+require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
+require_once plugin_dir_path( __FILE__ ) . '../../../helpers/functions_selects.php';
+
 
 function modal_reporte_consolidado(){
     echo '
@@ -12,12 +15,21 @@ function modal_reporte_consolidado(){
             <div class="modal-body ">
             <form>
                     <div class="mb-3">
+                    <select class="select select_custom" multiple multiselect-search="true" multiselect-select-all="true">
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                    <option value="4">Four</option>
+                    <option value="5">Five</option>
+                    <option value="6">Six</option>
+                    <option value="7">Seven</option>
+                    <option value="8">Eight</option>
+                </select>
+
                         <label for="empresa" class="col-form-label">Empresa</label>
                         <select class="form-select" >
                             <option selected>Seleccione una empresa</option>
-                            <option value="1">Bancolombia</option>
-                            <option value="2">Nutresa</option>
-                            <option value="3">Sasoftco</option>
+                           '.select_empresas().'
                         </select>
                     </div>
                     <div class="mb-3">
@@ -59,5 +71,8 @@ function modal_reporte_consolidado(){
         </div>
     </div>
     </div>
+
+
+
 ';
 }
