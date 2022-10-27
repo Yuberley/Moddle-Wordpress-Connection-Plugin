@@ -2,6 +2,7 @@ var style = document.createElement('style');
 style.setAttribute("id","multiselect_dropdown_styles");
 style.innerHTML = `
 .multiselect-dropdown{
+  width: 100% !important;
   display: inline-block;
   padding: 2px 5px 0px 5px;
   border-radius: 4px;
@@ -89,11 +90,11 @@ function MultiselectDropdown(options){
   var config={
     search:true,
     height:'15rem',
-    placeholder:'select',
+    placeholder:'Seleccione una o más opciones',
     txtSelected:'selected',
-    txtAll:'All',
-    txtRemove: 'Remove',
-    txtSearch:'search',
+    txtAll:'Todos',
+    txtRemove: 'Eliminar',
+    txtSearch:'Buscar',
     ...options
   };
   function newEl(tag,attrs){

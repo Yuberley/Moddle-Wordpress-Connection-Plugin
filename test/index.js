@@ -1,5 +1,8 @@
+let grupos = document.getElementById("grupos");
+
 function filterGroups(event){
-    let grupos = document.getElementById("grupos");
+    console.log(event.options[event.selectedIndex].text);
+
     let options_grupos = "";
     for(let i = 0; i < grupos.options.length; i++){
         if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
@@ -7,5 +10,5 @@ function filterGroups(event){
         }
     }
     document.getElementById("gruposInner").innerHTML = options_grupos;
-    document.getElementById("gruposInsert").innerHTML = options_grupos;
+    console.log("data ", options_grupos);
 }

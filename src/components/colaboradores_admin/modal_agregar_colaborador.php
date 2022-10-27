@@ -71,17 +71,17 @@ function modal_agregar_colaborador(){
                         <section class="d-flex align-items-center justify-content-center row">
                             <div class="mb-3 col-12 col-sm-6">
                                     <label for="empresa" class="col-form-label">Empresa</label>
-                                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this);">
+                                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this,`grupos_agregar_get`,`grupos_agregar_set`);">
                                         <option selected value="0">Seleccione una empresa</option>
                                         '.select_empresas().'
                                     </select>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
-                                    <select hidden class="form-select" name="grupos" id="grupos">
+                                    <select hidden class="form-select" name="grupos" id="grupos_agregar_get">
                                         '.select_grupos().'
                                     </select>
                                     <label for="consolidado" class="col-form-label">Grupos</label>
-                                    <select class="form-select" name="grupos" id="gruposInsert" required>
+                                    <select class="form-select" name="grupos" id="grupos_agregar_set" required>
 
                                     </select>
                                 </div>
