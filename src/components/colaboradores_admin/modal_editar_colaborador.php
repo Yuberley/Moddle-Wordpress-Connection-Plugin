@@ -10,9 +10,9 @@ function modal_editar_colaborador(){
 
         $idWordPress = $_POST['idWordpressEditar'];
         $idMoodle = $_POST['idMoodleEditar'];
+        $usuario = $_POST['usuarioEditar'];
         $nombre = $_POST['nombreEditar'];
         $apellido = $_POST['apellidoEditar'];
-        $usuario = $_POST['usuarioEditar'];
         $documento = $_POST['documentoEditar'];
         $email = $_POST['emailEditar'];
         $ciudad = $_POST['ciudadEditar'];
@@ -21,8 +21,23 @@ function modal_editar_colaborador(){
         $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idWordPress'";
         $respuesta = $wpdb->query($sql);
 
+        $user = [
+            'id' => $idMoodle,
+            'username' => $usuario,
+            'firstname' => $nombre,
+            'lastname' => $apellido,
+            'email' => $email,
+            'city' => $ciudad,
+            'country' => $pais,
+            'customfields' => [
+                    'type' => 'text',
+                    'value' => $documento,
+                    'name' => 'identification',
+            ]
+        ];
 
-
+        $updateUserResponse = updateMoodleUser($idMoodle, $user);
+        var_dump($updateUserResponse);
 
     }
 
@@ -52,7 +67,7 @@ function modal_editar_colaborador(){
                             <section class="d-flex align-items-center justify-content-center row">
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="usuarioEditar">Usuario</label>
-                                    <input class="form-control" name="usuarioEditar" id="usuarioEditar" type="text" required>
+                                    <input class="form-control text-lowercase" name="usuarioEditar" id="usuarioEditar"  onChange="removeAccents(this);" type="text" required>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="documentoEditar">Documento</label>
@@ -74,7 +89,10 @@ function modal_editar_colaborador(){
                                     <label class="form-label" for="paisEditar">Pais</label>
                                     <select class="form-select" name="paisEditar" id="paisEditar" required>
                                         <option selected value="CO">Colombia</option>
-                                        <option selected value="MX">México</option>
+                                        <option value="EC">Ecuador</option>
+                                        <option value="PE">Perú</option>
+                                        <option value="MX">México</option>
+                                        <option value="US">Estados Unidos</option>
                                     </select>
                                 </div>
                             </section>

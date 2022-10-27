@@ -16,9 +16,6 @@ function colaboradores_admin(){
     licenseRegistration();
 
 
-
-
-
     $CANTIDAD_DISPONIBLE = '0';
     $CANTIDAD_MAXIMA_EN_GRUPO = '0';
     $EMPRESA = 'Sin seleccionar';
@@ -202,6 +199,7 @@ if(isset($_POST['eliminar'])){
 
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
+        <script src='.plugin_dir_url(__FILE__)."../../assets/js/removeAccents.js".' ></script>
  
    </body>'; 
 
