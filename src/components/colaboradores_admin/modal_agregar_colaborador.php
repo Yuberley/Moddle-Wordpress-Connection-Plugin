@@ -39,20 +39,26 @@ function modal_agregar_colaborador(){
     
             if($respuesta){
     
-                //agregar usuario en moodle
-                $peticion_md = file_get_contents(getMoodleUrl().'&wsfunction=core_user_create_users&users[0][username]='.$usuario.'&users[0][firstname]='.$nombre.'&users[0][lastname]='.$apellido.'&users[0][email]='.$email.'&users[0][customfields][0][type]=identification&users[0][customfields][0][value]='.$documento.'&users[0][city]='.$ciudad.'&users[0][country]='.$pais.'&users[0][createpassword]=1');
-    
-                $respuesta_md = json_decode($peticion_md);
+                $user = (object)[
+                    'username' => $usuario,
+                    'firstname' => $nombre,
+                    'lastname' => $apellido,
+                    'email' => $email,
+                    'city' => $ciudad,
+                    'country' => $pais,
+                    'document' => $documento,
+                    'customfield' => 'identification',
+                ];
+
+                $addUserRequest = addMoodleUser($user);
+                var_dump($addUserRequest);
     
             } else {
-    
                 echo '<script>alert("Error al agregar el colaborador")</script>';
             }
     
         } else {
-            
             echo '<script>alert("No se puede agregar el colaborador, se ha alcanzado el limite de licencias")</script>';
-    
         }
             
     }
