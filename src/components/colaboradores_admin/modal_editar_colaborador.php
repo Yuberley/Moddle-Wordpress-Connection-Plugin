@@ -21,7 +21,7 @@ function modal_editar_colaborador(){
         $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idWordPress'";
         $respuesta = $wpdb->query($sql);
 
-        $user = [
+        $user = (object)[
             'id' => $idMoodle,
             'username' => $usuario,
             'firstname' => $nombre,
@@ -29,11 +29,8 @@ function modal_editar_colaborador(){
             'email' => $email,
             'city' => $ciudad,
             'country' => $pais,
-            'customfields' => [
-                    'type' => 'text',
-                    'value' => $documento,
-                    'name' => 'identification',
-            ]
+            'document' => $documento,
+            'customfield' => 'identification',
         ];
 
         $updateUserResponse = updateMoodleUser($idMoodle, $user);

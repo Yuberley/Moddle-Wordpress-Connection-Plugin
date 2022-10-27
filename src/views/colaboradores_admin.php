@@ -15,7 +15,6 @@ function colaboradores_admin(){
     global $wpdb;
     licenseRegistration();
 
-
     $CANTIDAD_DISPONIBLE = '0';
     $CANTIDAD_MAXIMA_EN_GRUPO = '0';
     $EMPRESA = 'Sin seleccionar';

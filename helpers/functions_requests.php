@@ -43,10 +43,10 @@ function getMoodleUser($id){
     $response = $moodle->request('GET', '/webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_user_get_users',
             'criteria[0][key]' => 'id',
             'criteria[0][value]' => $id,
-            'moodlewsrestformat' => 'json',
         ]
     ]);
     $user = json_decode($response->getBody()->getContents());
@@ -58,6 +58,7 @@ function getMoodleUserByEmail($email){
     $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_user_get_users',
             'criteria[0][key]' => 'email',
             'criteria[0][value]' => $email,
@@ -69,9 +70,10 @@ function getMoodleUserByEmail($email){
 
 function getMoodleUserByUsername($username){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_user_get_users',
             'criteria[0][key]' => 'username',
             'criteria[0][value]' => $username,
@@ -83,9 +85,10 @@ function getMoodleUserByUsername($username){
 
 function getMoodleUserByField($field, $value){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_user_get_users',
             'criteria[0][key]' => $field,
             'criteria[0][value]' => $value,
@@ -97,9 +100,10 @@ function getMoodleUserByField($field, $value){
 
 function getMoodleUserCourses($id){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_enrol_get_users_courses',
             'userid' => $id,
         ]
@@ -110,9 +114,10 @@ function getMoodleUserCourses($id){
 
 function getMoodleCourse($id){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_course_get_courses',
             'options[ids][0]' => $id,
         ]
@@ -123,9 +128,10 @@ function getMoodleCourse($id){
 
 function getMoodleCourseByField($field, $value){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_course_get_courses',
             'options['.$field.']' => $value,
         ]
@@ -136,15 +142,38 @@ function getMoodleCourseByField($field, $value){
 
 function getMoodleCourseByFieldArray($field, $value){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', '/webservice/rest/server.php', [
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_course_get_courses',
             'options['.$field.'][]' => $value,
         ]
     ]);
     $course = json_decode($response->getBody()->getContents());
     return $course;
+}
+
+function addMoodleUser($user){
+    $moodle = getMoodle();
+    $response = $moodle->request('POST', 'webservice/rest/server.php', [
+        'form_params' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'core_user_create_users',
+            'users[0][username]' => $user->username,
+            'users[0][createpassword]' => 1,
+            'users[0][firstname]' => $user->firstname,
+            'users[0][lastname]' => $user->lastname,
+            'users[0][email]' => $user->email,
+            'users[0][city]' => $user->city,
+            'users[0][country]' => $user->country,
+            'users[0][customfields][0][value]' => $user->document,
+            'users[0][customfields][0][type]' => $user->customfield,
+        ]
+    ]);
+    $user = json_decode($response->getBody()->getContents());
+    return $user;
 }
 
 function updateMoodleUser($id, $data){
@@ -155,14 +184,14 @@ function updateMoodleUser($id, $data){
             'moodlewsrestformat' => 'json',
             'wsfunction' => 'core_user_update_users',
             'users[0][id]' => $id,
-            'users[0][username]' => $data["username"],
-            'users[0][firstname]' => $data["firstname"],
-            'users[0][lastname]' => $data["lastname"],
-            'users[0][email]' => $data["email"],
-            'users[0][city]' => $data["city"],
-            'users[0][country]' => $data["country"],
-            'users[0][customfields][0][value]' => $data["customfields"]["value"],
-            'users[0][customfields][0][type]' => $data["customfields"]["name"],
+            'users[0][username]' => $data->username,
+            'users[0][firstname]' => $data->firstname,
+            'users[0][lastname]' => $data->lastname,
+            'users[0][email]' => $data->email,
+            'users[0][city]' => $data->city,
+            'users[0][country]' => $data->country,
+            'users[0][customfields][0][value]' => $data->document,
+            'users[0][customfields][0][type]' => $data->customfield,
         ]
     ]);
     $user = json_decode($response->getBody()->getContents());
