@@ -124,17 +124,17 @@ if(isset($_POST['eliminar'])){
                    <div class="col-md-1"></div>
                    <div class="col-md-3">
                        <label for="empresa">Empresas: </label>
-                       <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this);">
+                       <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this,`grupos_get`,`grupos_set`);">
                         <option selected value="0">Seleccione una Empresa</option>
                             '.select_empresas().'                   
                        </select>
                    </div>
                    <div class="col-md-3">
-                       <select hidden class="form-select" name="select_grupo" id="grupos">
+                       <select hidden class="form-select" name="select_grupo" id="grupos_get">
                             '.select_grupos().'            
                        </select>
                        <label for="grupos">Grupos: </label>
-                        <select class="form-select" name="gruposInner" id="gruposInner" required>
+                        <select class="form-select" name="gruposInner" id="grupos_set" required>
     
                         </select>
                    </div>
@@ -200,7 +200,7 @@ if(isset($_POST['eliminar'])){
         <!-- Modal editar colaborador -->
         '.modal_editar_colaborador().'
 
-        <script src='.plugin_dir_url(__FILE__)."../../assets/js/filterGroups.js".' ></script>
+        <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
  
    </body>'; 
