@@ -42,7 +42,7 @@ function modal_reporte_consolidado(){
                             '.select_grupos().' 
                         </select>
                         <label  class="col-form-label">Grupos</label>
-                        <select class="form-select" name="grupos" id="grupos_consolidado_set" required onChange="filterCoursess(this,`consolidado_cursos_basic_get`,`consolidado_cursos_premium_get`,`consolidado_cursos_set`);">
+                        <select class="form-select" name="grupos" id="grupos_consolidado_set" required onChange="filterCoursesConsolidado(this,`consolidado_cursos_basic_get`,`consolidado_cursos_premium_get`,`consolidado_cursos_set`);">
                         
 
                         </select>

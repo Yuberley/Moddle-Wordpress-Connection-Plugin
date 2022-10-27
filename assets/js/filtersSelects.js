@@ -15,23 +15,29 @@ function filterCourses(event, get_element_basic, get_element_premium, set_elemen
     let cursos_premium = document.getElementById(get_element_premium);
     let cursos_inner = document.getElementById(set_element);
 
-    let options_cursos = `
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    <option value="4">Four</option>
-    <option value="5">Five</option>
-    <option value="6">Six</option>
-    <option value="7">Seven</option>
-    <option value="8">Eight</option>`;
-    console.log(options_cursos);
     if(event.options[event.selectedIndex].text.includes("basic")){
-        cursos_inner.innerHTML = options_cursos;
+        cursos_inner.innerHTML = cursos_basic.innerHTML;
         
         
     }
     if(event.options[event.selectedIndex].text.includes("premium")){
-        cursos_inner.innerHTML = options_cursos;
+        cursos_inner.innerHTML = cursos_premium.innerHTML;
+        
+    }
+        
+}
+
+function filterCoursesMultiselect(event, get_element_basic, get_element_premium, set_element){
+    let cursos_basic = document.getElementById(get_element_basic);
+    let cursos_premium = document.getElementById(get_element_premium);
+    let cursos_inner = document.getElementById(set_element);
+
+    if(event.options[event.selectedIndex].text.includes("basic")){
+        cursos_inner.innerHTML = cursos_basic.innerHTML;
+               
+    }
+    if(event.options[event.selectedIndex].text.includes("premium")){
+        cursos_inner.innerHTML = cursos_premium.innerHTML;
         
     }
         
