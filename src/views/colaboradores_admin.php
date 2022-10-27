@@ -15,11 +15,7 @@ function colaboradores_admin(){
     global $wpdb;
     licenseRegistration();
 
-    $userByEmail = getMoodleUserByEmail('saitama@gmail.com');
-    var_dump($userByEmail);
-    
-    $userByUsername = getMoodleUserByUsername('saitama');
-    var_dump($userByUsername);
+
 
 
 
@@ -34,9 +30,9 @@ function colaboradores_admin(){
         $empresaId = $_POST['select_empresa'];
         $grupoId = $_POST['gruposInner'];
 
-        $EMPRESA = "SELECT nombre FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
+        $EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
         $EMPRESA = $wpdb->get_results($EMPRESA);
-        $EMPRESA = $EMPRESA[0]->nombre;
+        $EMPRESA = $EMPRESA[0]->empresa;
         $GRUPO = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupoId'";
         $GRUPO = $wpdb->get_results($GRUPO);
         $GRUPO = $GRUPO[0]->nombre;

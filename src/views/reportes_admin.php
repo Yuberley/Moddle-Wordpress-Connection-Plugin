@@ -30,7 +30,7 @@ function reportes_admin(){
                 
                 $colaboradores .= "
                 <tr>
-
+                    <td><img src='".$colaborador_moodle[0]->profileimageurlsmall."' /></td>
                     <td>".$colaborador_moodle[0]->firstname."</td>
                     <td>".$colaborador_moodle[0]->lastname."</td>
                     <td>".$colaborador_moodle[0]->customfields[0]->value."</td>
@@ -59,18 +59,18 @@ function reportes_admin(){
                 <div class="col-md-1"></div>
                 <div class="col-md-3">
                     <label for="empresa">Empresas: </label>
-                    <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this);">
+                    <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this,`grupos_get`, `grupos_set`);">
                         <option selected value="0">Seleccione una Empresa</option>'
                            .select_empresas().
         '                   
                     </select>
                 </div>
                 <div class="col-md-3">
-                       <select hidden class="form-select" name="select_grupo" id="grupos">
+                       <select hidden class="form-select" name="select_grupo" id="grupos_get">
                             '.select_grupos().'            
                        </select>
                        <label for="grupos">Grupos: </label>
-                        <select class="form-select" name="gruposInner" id="gruposInner" required>
+                        <select class="form-select" name="gruposInner" id="grupos_set" required>
     
                         </select>
                 </div>
@@ -86,10 +86,10 @@ function reportes_admin(){
 
     <div class="container mt-5">
         
-        <table class="table table-hover order-table" id="table">
+        <table class="table table-hover order-table border" id="table">
             <thead style="background-color: #041541; color: white;">
                 <tr>
-
+                    <th scope="col">Avatar</th>
                     <th scope="col">Nombre </th>
                     <th scope="col">Apellido</th>
                     <th scope="col">Documento</th>
@@ -130,45 +130,9 @@ function reportes_admin(){
    
 
     
- <script>
-    let grupos = document.getElementById("grupos");
-    function filterGroups(event){
 
-        let options_grupos = `<option selected value="0">Seleccione un grupo</option>`;
-        for(let i = 0; i < grupos.options.length; i++){
-            if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
-                options_grupos += "<option value="+grupos.options[i].value+">"+grupos.options[i].text+"</option>";
-            }
-        }
-        document.getElementById("gruposInner").innerHTML = options_grupos;
-        document.getElementById("gruposInsert").innerHTML = options_grupos;
-        
-    }
-
-    let cursos_basic = document.getElementById("cursos_basic");
-    let cursos_premium = document.getElementById("cursos_premium");
-    let cursos_inner = document.getElementById("cursos_inner");
-
-    function filterCourses(event){
-        console.log(event.options[event.selectedIndex].text);
-        
-        if(event.options[event.selectedIndex].text.includes("basic")){
-            cursos_inner.innerHTML = cursos_basic.innerHTML;
-            
-            
-        }
-        if(event.options[event.selectedIndex].text.includes("premium")){
-            cursos_inner.innerHTML = cursos_premium.innerHTML;
-           
-        }
-        
-    }
-
-    
-
-</script>
-
-
+<script src='.plugin_dir_url(__FILE__)."../../assets/js/multiselectDropdown.js".' ></script>
+<script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
     </body>  ';
 
     return data_table_dinamic();
