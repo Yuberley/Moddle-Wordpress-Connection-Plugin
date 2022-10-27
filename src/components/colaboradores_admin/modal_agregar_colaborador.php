@@ -99,7 +99,7 @@ function modal_agregar_colaborador(){
                             <section class="d-flex align-items-center justify-content-center row">
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="usuario">Usuario</label>
-                                    <input class="form-control" name="usuario" type="text" placeholder="Se registrará sin acentos y en minúscula" required>
+                                    <input class="form-control text-lowercase" onChange="removeAccents(this);" name="usuario" id="usuario" type="text" placeholder="Se registrará sin acentos y en minúscula" required>
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="documento">Documento</label>
@@ -121,7 +121,10 @@ function modal_agregar_colaborador(){
                                     <label class="form-label" for="pais">Pais</label>
                                     <select class="form-select" name="pais" id="pais" required>
                                         <option selected value="CO">Colombia</option>
-                                        <option selected value="MX">México</option>
+                                        <option value="EC">Ecuador</option>
+                                        <option value="PE">Perú</option>
+                                        <option value="MX">México</option>
+                                        <option value="US">Estados Unidos</option>
                                     </select>
                                 </div>
                             </section>

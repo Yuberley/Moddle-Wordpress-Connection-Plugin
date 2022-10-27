@@ -1,3 +1,4 @@
+
 function editarColaborador(idWordpress, idMoodle, nombre, apellido, usuario, documento, email, ciudad, pais){
     document.getElementById("idMoodleEditar").value = idMoodle;
     document.getElementById("idWordpressEditar").value = idWordpress;

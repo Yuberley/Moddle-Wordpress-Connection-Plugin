@@ -15,13 +15,6 @@ function colaboradores_admin(){
     global $wpdb;
     licenseRegistration();
 
-    $userByEmail = getMoodleUserByEmail('saitama@gmail.com');
-    var_dump($userByEmail);
-    
-    $userByUsername = getMoodleUserByUsername('saitama');
-    var_dump($userByUsername);
-
-
 
     $CANTIDAD_DISPONIBLE = '0';
     $CANTIDAD_MAXIMA_EN_GRUPO = '0';
@@ -34,8 +27,8 @@ function colaboradores_admin(){
         $empresaId = $_POST['select_empresa'];
         $grupoId = $_POST['gruposInner'];
 
-        $EMPRESA = "SELECT nombre FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
-        $EMPRESA = $wpdb->get_results($EMPRESA);
+        $EMPRESA_QUERY = "SELECT nombre FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
+        $EMPRESA = $wpdb->get_results($EMPRESA_QUERY);
         $EMPRESA = $EMPRESA[0]->nombre;
         $GRUPO = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupoId'";
         $GRUPO = $wpdb->get_results($GRUPO);
@@ -206,6 +199,7 @@ if(isset($_POST['eliminar'])){
 
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/filterGroups.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
+        <script src='.plugin_dir_url(__FILE__)."../../assets/js/removeAccents.js".' ></script>
  
    </body>'; 
 

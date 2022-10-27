@@ -1,10 +1,9 @@
 <?php
+
 require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
 require_once plugin_dir_path( __FILE__ ) . '../../../helpers/functions_selects.php';
 
-
 function modal_reporte_curso() {
-
 
 
 echo '

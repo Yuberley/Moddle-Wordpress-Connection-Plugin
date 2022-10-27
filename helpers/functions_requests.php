@@ -20,23 +20,23 @@ function getWoocommerce(){
 function getMoodle(){
     $moodle = new \GuzzleHttp\Client([
         'base_uri' => 'http://179.32.53.160/moodle/',
-        'timeout'  => 2.0,
+        // 'timeout'  => 2.0,
     ]);
     return $moodle;
 }
 
-function getMoodleToken(){
-    $moodle = getMoodle();
-    $response = $moodle->request('POST', 'login/token.php', [
-        'form_params' => [
-            'username' => 'admin',
-            'password' => 'Cuenta123*',
-            'service' => 'moodle_mobile_app',
-        ]
-    ]);
-    $token = json_decode($response->getBody()->getContents());
-    return $token->token;
-}
+// function getMoodleTokenTest(){
+//     $moodle = getMoodle();
+//     $response = $moodle->request('POST', 'login/token.php', [
+//         'form_params' => [
+//             'username' => 'admin',
+//             'password' => 'Cuenta123*',
+//             'service' => 'moodle_mobile_app',
+//         ]
+//     ]);
+//     $token = json_decode($response->getBody()->getContents());
+//     return $token->token;
+// }
 
 function getMoodleUser($id){
     $moodle = getMoodle();
@@ -46,6 +46,7 @@ function getMoodleUser($id){
             'wsfunction' => 'core_user_get_users',
             'criteria[0][key]' => 'id',
             'criteria[0][value]' => $id,
+            'moodlewsrestformat' => 'json',
         ]
     ]);
     $user = json_decode($response->getBody()->getContents());
@@ -56,11 +57,10 @@ function getMoodleUserByEmail($email){
     $moodle = getMoodle();
     $response = $moodle->request('GET', 'webservice/rest/server.php', [
         'query' => [
-            'wstoken' => 'ffdbb4a4f4102cf554cd040dd2ecde94',
-            'wsfunction' => 'core_user_get_users_by_field',
-            'field' => 'username',
-            'values[0]' => 'saitama',
-            'moodlewsrestformat' => 'json',
+            'wstoken' => getMoodleToken(),
+            'wsfunction' => 'core_user_get_users',
+            'criteria[0][key]' => 'email',
+            'criteria[0][value]' => $email,
         ]
     ]);
     $user = json_decode($response->getBody()->getContents());
@@ -69,7 +69,7 @@ function getMoodleUserByEmail($email){
 
 function getMoodleUserByUsername($username){
     $moodle = getMoodle();
-    $response = $moodle->request('GET', 'webservice/rest/server.php', [
+    $response = $moodle->request('GET', '/webservice/rest/server.php', [
         'query' => [
             'wstoken' => getMoodleToken(),
             'wsfunction' => 'core_user_get_users',
@@ -80,7 +80,6 @@ function getMoodleUserByUsername($username){
     $user = json_decode($response->getBody()->getContents());
     return $user;
 }
-
 
 function getMoodleUserByField($field, $value){
     $moodle = getMoodle();
@@ -147,3 +146,26 @@ function getMoodleCourseByFieldArray($field, $value){
     $course = json_decode($response->getBody()->getContents());
     return $course;
 }
+
+function updateMoodleUser($id, $data){
+    $moodle = getMoodle();
+    $response = $moodle->request('POST', 'webservice/rest/server.php', [
+        'form_params' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'core_user_update_users',
+            'users[0][id]' => $id,
+            'users[0][username]' => $data["username"],
+            'users[0][firstname]' => $data["firstname"],
+            'users[0][lastname]' => $data["lastname"],
+            'users[0][email]' => $data["email"],
+            'users[0][city]' => $data["city"],
+            'users[0][country]' => $data["country"],
+            'users[0][customfields][0][value]' => $data["customfields"]["value"],
+            'users[0][customfields][0][type]' => $data["customfields"]["name"],
+        ]
+    ]);
+    $user = json_decode($response->getBody()->getContents());
+    return $user;
+}
+
