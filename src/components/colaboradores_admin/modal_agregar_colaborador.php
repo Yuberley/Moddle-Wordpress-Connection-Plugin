@@ -3,18 +3,13 @@
 require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
 require_once plugin_dir_path( __FILE__ ) . '../../../helpers/remove_accent.php';
 
+
 function modal_agregar_colaborador(){
-    
+
     global $wpdb;
-    
-    $sql_empresa="SELECT * FROM {$wpdb->prefix}empresas";
-    $empresas=$wpdb->get_results($sql_empresa);
-    
-    $sql_grupo="SELECT * FROM {$wpdb->prefix}grupos";
-    $grupos=$wpdb->get_results($sql_grupo);
-    
-     
+
     if(isset($_POST['agregar_colaborador'])){
+        
         
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
@@ -25,41 +20,90 @@ function modal_agregar_colaborador(){
         $pais = $_POST['pais'];
         $empresa = $_POST['empresas'];
         $grupo = $_POST['grupos'];
-        
-        $CANTIDAD_INSCRITOS = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupo'";
-        $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS);
-    
-        $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupo'";
-        $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
-    
-        if( $CANTIDAD_INSCRITOS_EN_GRUPO < $CANTIDAD_MAXIMA_EN_GRUPO ){
-    
-            $sql = "INSERT INTO {$wpdb->prefix}colaboradores (nombre, apellido, email, id_empresa, id_grupo) VALUES ('$nombre', '$apellido', '$email', '$empresa', '$grupo')";
-            $respuesta = $wpdb->query($sql);
-    
-            if($respuesta){
-    
-                $user = (object)[
-                    'username' => $usuario,
-                    'firstname' => $nombre,
-                    'lastname' => $apellido,
-                    'email' => $email,
-                    'city' => $ciudad,
-                    'country' => $pais,
-                    'document' => $documento,
-                    'customfield' => 'identification',
-                ];
 
-                $addUserRequest = addMoodleUser($user);
-                var_dump($addUserRequest);
+        
+        $CANTIDAD_INSCRITOS_CONSULTA = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupo'";
+        $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS_CONSULTA);
     
-            } else {
-                echo '<script>alert("Error al agregar el colaborador")</script>';
-            }
+        $CANTIDAD_MAXIMA_CONSULTA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupo'";
+        $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA_CONSULTA);
+        $CATIDAD_LICENCIAS_DISPONIBLES = $CANTIDAD_MAXIMA_EN_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
+
+        var_dump($CATIDAD_LICENCIAS_DISPONIBLES);
+
     
-        } else {
-            echo '<script>alert("No se puede agregar el colaborador, se ha alcanzado el limite de licencias")</script>';
+        if( $CATIDAD_LICENCIAS_DISPONIBLES <= 0 ){
+            echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "¡No se puede agregar más usuarios a este grupo!",
+                        })
+                    </script>';
         }
+
+
+        $usuarioMoodle = getMoodleUserByUsername($usuario);
+        $existeUsuarioMoodle = count($usuarioMoodle->users);
+
+        if( $existeUsuarioMoodle ){
+            echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "¡El nombre de usuario ya está registrado!",
+                          })
+                    </script>';
+        }
+
+        $emailMoodle = getMoodleUserByEmail($email); 
+        $existeEmailMoodle = count($emailMoodle->users);
+
+        if( $existeEmailMoodle ){
+            echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "¡El email ya está registrado!",
+                          })
+                    </script>';
+        }
+
+      
+        if( !$existeUsuarioMoodle && !$existeEmailMoodle && $CATIDAD_LICENCIAS_DISPONIBLES > 0 ){
+
+            $user = (object)[
+                'username' => $usuario,
+                'firstname' => $nombre,
+                'lastname' => $apellido,
+                'email' => $email,
+                'city' => $ciudad,
+                'country' => $pais,
+                'document' => $documento,
+                'customfield' => 'identification',
+            ];
+            
+            $createUserResponse = createMoodleUser($user);
+            
+            $INSERTAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (nombre, apellido, email, id_empresa, id_grupo) VALUES ('$nombre', '$apellido', '$email', '$empresa', '$grupo')";
+            $INSERTAR_USUARIO = $wpdb->query($INSERTAR_USUARIO_CONSULTA);
+            
+            if($INSERTAR_USUARIO == 1){
+                echo '<script>
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Guardado correctamente!",
+                                showConfirmButton: false,
+                                timer: 1000,
+                            });
+                        </script>';
+            }
+
+        }
+
+        
+            
             
     }
 

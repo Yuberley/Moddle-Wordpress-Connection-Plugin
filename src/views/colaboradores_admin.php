@@ -10,10 +10,12 @@ require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_selects.php';
 
 
+
 function colaboradores_admin(){ 
     
     global $wpdb;
     licenseRegistration();
+
 
     $CANTIDAD_DISPONIBLE = '0';
     $CANTIDAD_MAXIMA_EN_GRUPO = '0';
@@ -189,6 +191,8 @@ if(isset($_POST['eliminar'])){
                </div>
            </div>
        </div>
+
+       
        
        <!-- Modal agregar colaborador -->
         '.modal_agregar_colaborador().'
@@ -199,8 +203,8 @@ if(isset($_POST['eliminar'])){
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/removeAccents.js".' ></script>
- 
-   </body>'; 
+        
+    </body>'; 
 
     return data_table_dinamic();
 

@@ -154,7 +154,7 @@ function getMoodleCourseByFieldArray($field, $value){
     return $course;
 }
 
-function addMoodleUser($user){
+function createMoodleUser($user){
     $moodle = getMoodle();
     $response = $moodle->request('POST', 'webservice/rest/server.php', [
         'form_params' => [
