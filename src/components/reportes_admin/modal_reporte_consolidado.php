@@ -15,62 +15,47 @@ function modal_reporte_consolidado(){
             <div class="modal-body ">
 
        
-            <form>
-                    <div class="mb-3">
-                        <select class="select " multiple multiselect-search="true" multiselect-select-all="true">
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                            <option value="4">Four</option>
-                            <option value="5">Five</option>
-                            <option value="6">Six</option>
-                            <option value="7">Seven</option>
-                            <option value="8">Eight</option>
-                        </select>
-                    </div>
+            <form method="POST" id="form_reporte_consolidado" action="../reporte-consolidado" >
 
                     <div class="mb-3 ">
                         <label for="empresa" class="col-form-label">Empresa</label>
-                        <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this,`grupos_consolidado_get`,`grupos_consolidado_set`);">
+                        <select class="form-select" name="consolidado_empresa" id="consolidad_empresas" onChange="filterGroups(this,`consolidado_grupos_get`,`consolidado_grupos_set`);">
                             <option selected value="0">Seleccione una empresa</option>'
                             .select_empresas().
                             '
                         </select>
                     </div>
                     <div class="mb-3 ">
-                        <select hidden class="form-select" name="grupos" id="grupos_consolidado_get">
+                        <select hidden class="form-select" name="grupos" id="consolidado_grupos_get">
                             '.select_grupos().' 
                         </select>
                         <label  class="col-form-label">Grupos</label>
-                        <select class="form-select" name="grupos" id="grupos_consolidado_set" required onChange="filterCoursesConsolidado(this,`consolidado_cursos_basic_get`,`consolidado_cursos_premium_get`,`consolidado_cursos_set`);">
+                        <select class="form-select" name="consolidado_grupos" id="consolidado_grupos_set" required onChange="filterCourses(this,`consolidado_cursos_basic_get`,`consolidado_cursos_premium_get`,`consolidado_cursos_set`);">
                         
-
+            
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label  class="col-form-label">Curso:</label>
-                        <select name="curso_cursos_basic" id="consolidado_cursos_basic_get" hidden class="form-select" >
+                        <label  class="col-form-label">Cursos:</label>
+                        <select name="curso_cursos_basic" id="consolidado_cursos_basic_get" class="select form-control" multiple hidden>
                         '.select_cursos_basic().'
                         </select>
                         
-                        <select name="cursos_premium" id="consolidado_cursos_premium_get" class="form-select" hidden >
+                        <select name="curso_cursos_premium" id="consolidado_cursos_premium_get" class="select form-control" multiple hidden>
                         '.select_cursos_premium().'
                         </select>
-                        <select name="curso" id="consolidado_cursos_set" class="select" multiple multiselect-search="true" multiselect-select-all="true" required>
+                        <select  name="consolidado_cursos[]" id="consolidado_cursos_set" class="select form-control" multiple required>
                         
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label">Estudiantes:</label>
-                        <select class="form-select" >
-                            <option selected>Seleccione los Estudiantes</option>
-                            <option value="1">Juan Perez</option>
-                            <option value="2">Camilo Roa</option>
-                            <option value="3">Daniel Gomez</option>
+                        <label class="col-form-label" id="consolidado_estudiantes">Estudiantes:</label>
+                        <select class="select form-control" name="consolidado_estudiantes[]" id="consolidado_colaboradores_set" multiple required>
+                        
                         </select>
                     </div>
                     <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" >Generar Reporte</button>
+                    <button type="submit" class="btn btn-primary" value="form_consolidado" >Generar Reporte</button>
                     </div>
                 </form>
             </div>  

@@ -56,3 +56,16 @@ require_once plugin_dir_path( __FILE__ ) . '../settings/enviroment.php';
         return $opcionesCursosBasic;
 
     }
+
+    function select_colaboradores(){
+        global $wpdb;
+        $opcionesColaboradores = '';
+        $sql_colaboradores = "SELECT * FROM {$wpdb->prefix}colaboradores";
+        $colaboradores = $wpdb->get_results($sql_colaboradores);
+
+        foreach($colaboradores as $colaborador){
+            $opcionesColaboradores .= '<option value="'.$colaborador->id.'">'.$colaborador->nombre.' '.$colaborador->apellido.'</option>';
+        }
+
+        return $opcionesColaboradores;
+    }

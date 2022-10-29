@@ -16,7 +16,8 @@
 
 define('PATH', plugin_dir_path(__FILE__));
 
-
+//API REST
+require_once PATH . 'api/api_colaboradores.php';
 //shorcode Head
 require_once PATH."src/views/head.php";
 require_once PATH."src/views/colaboradores_usuario.php";

@@ -15,22 +15,21 @@ echo '
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body ">
-            <form>
+            <form  method="POST"  action="../reporte-curso">
                 <div class="mb-3 ">
                     <label for="empresa" class="col-form-label">Empresa</label>
-                    <select class="form-select" name="empresas" id="empresas" onChange="filterGroups(this,`grupos_curso_get`,`grupos_curso_set`);">
+                    <select class="form-select" name="curso_empresa" id="empresas" onChange="filterGroups(this,`grupos_curso_get`,`grupos_curso_set`);">
                         <option selected value="0">Seleccione una empresa</option>'
                         .select_empresas().
                         '
                     </select>
                 </div>
                 <div class="mb-3 ">
-                    <select hidden class="form-select" name="grupos" id="grupos_curso_get">
+                    <select hidden class="form-select" name="curso_grupos" id="grupos_curso_get">
                         '.select_grupos().' 
                     </select>
                     <label  class="col-form-label">Grupos</label>
-                    <select class="form-select" name="grupos" id="grupos_curso_set" required onChange="filterCourses(this,`curso_cursos_basic_get`,`curso_cursos_premium_get`,`curso_cursos_set`);">
-                    
+                    <select class="form-select" name="grupos" id="grupos_curso_set" required onChange="filterCourses(this,`curso_cursos_basic_get`,`curso_cursos_premium_get`,`curso_cursos_set`);">                 
 
                     </select>
                 </div>
@@ -43,7 +42,7 @@ echo '
                     <select name="cursos_premium" id="curso_cursos_premium_get" class="form-select" hidden >
                        '.select_cursos_premium().'
                     </select>
-                    <select name="curso" id="curso_cursos_set" class="form-select" required>
+                    <select name="curso_cursos" id="curso_cursos_set" class="form-select" required>
 
                     </select>
                 </div>

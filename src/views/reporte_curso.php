@@ -2,6 +2,14 @@
 
 function reporte_curso(){
 
+    $empresa = $_POST['curso_empresa'];
+    $grupo = $_POST['curso_grupos'];
+    $curso = $_POST['curso_cursos'];
+
+    echo $empresa.'empresa <br>';
+    echo $grupo.'grupo <br>';
+    echo $curso.'curso <br>';
+
     $response= '
     
 

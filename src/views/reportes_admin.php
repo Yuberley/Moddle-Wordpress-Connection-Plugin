@@ -131,7 +131,7 @@ function reportes_admin(){
 
     
 
-<script src='.plugin_dir_url(__FILE__)."../../assets/js/multiselectDropdown.js".' ></script>
+
 <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
     </body>  ';
 

@@ -2,6 +2,25 @@
 
 function reporte_consolidado(){
 
+    $empresas = $_POST['consolidado_empresa'];  
+    $grupos = $_POST['consolidado_grupos'];
+    $cursos = $_POST['consolidado_cursos'];
+    $estudiantes = $_POST['consolidado_estudiantes'];
+
+    //peticion para traer las calificaciones de un curso
+    $peticion_moodle_calificaciones = file_get_contents(getMoodleUrl().'&wsfunction=gradereport_user_get_grade_items&courseid=8&userid=21');
+    $calificaciones = json_decode($peticion_moodle_calificaciones);
+    var_dump($calificaciones);
+
+    echo $empresas.' empresas <br>';
+    echo $grupos.' grupos <br>';
+    echo ' var_dump($cursos) <br>';
+    var_dump($cursos);
+    echo "<br>";
+   var_dump($estudiantes);
+    echo ' estudiantes <br>';
+
+
     $response = '
     
     <body >
