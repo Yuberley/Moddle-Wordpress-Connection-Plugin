@@ -6,10 +6,11 @@ function modal_editar_colaborador(){
 
     global $wpdb;
 
+    // ingresar el campo usuario en la tabla colaboradores, para que no se pueda repetir el usuario y el email, y poder hacer la validacion en el modal de editar colaborador 
+
     if( isset($_POST['editar_colaborador']) ){
 
-        $idWordPress = $_POST['idWordpressEditar'];
-        $idMoodle = $_POST['idMoodleEditar'];
+        $idUsuario = $_POST['idEditar'];
         $usuario = $_POST['usuarioEditar'];
         $nombre = $_POST['nombreEditar'];
         $apellido = $_POST['apellidoEditar'];
@@ -18,11 +19,12 @@ function modal_editar_colaborador(){
         $ciudad = $_POST['ciudadEditar'];
         $pais = $_POST['paisEditar'];
 
-        $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idWordPress'";
+        $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idUsuario'";
         $respuesta = $wpdb->query($sql);
+        var_dump($respuesta);
 
         $user = (object)[
-            'id' => $idMoodle,
+            'id' => $idUsuario,
             'username' => $usuario,
             'firstname' => $nombre,
             'lastname' => $apellido,
@@ -33,8 +35,17 @@ function modal_editar_colaborador(){
             'customfield' => 'identification',
         ];
 
-        $updateUserResponse = updateMoodleUser($idMoodle, $user);
-        var_dump($updateUserResponse);
+        $updateUserResponse = updateMoodleUser($idUsuario, $user);
+
+        echo '<script>
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Actualizado correctamente!",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                </script>';
 
     }
 
@@ -49,8 +60,7 @@ function modal_editar_colaborador(){
              <div class="modal-body px-5">
                    <div>
                        <form id="editar" method="POST">
-                            <input hidden class="form-control" name="idWordpressEditar" type="text" id="idWordpressEditar" required>
-                            <input hidden class="form-control" name="idMoodleEditar" type="text" id="idMoodleEditar" required>
+                            <input hidden class="form-control" name="idEditar" type="text" id="idEditar" required>
                             <section class="d-flex align-items-center justify-content-center row">
                                     <div class="mb-3 col-12 col-sm-6">
                                         <label  class="form-label" for="nombreEditar">Nombre</label>
