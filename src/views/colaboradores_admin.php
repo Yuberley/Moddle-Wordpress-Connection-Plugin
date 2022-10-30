@@ -17,62 +17,62 @@ function colaboradores_admin(){
     licenseRegistration();
 
 
-    $CANTIDAD_DISPONIBLE = '0';
-    $CANTIDAD_MAXIMA_EN_GRUPO = '0';
+    $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = '0';
+    $CANTIDAD_TOTAL_LICENCIAS_GRUPO = '0';
     $EMPRESA = 'Sin seleccionar';
     $GRUPO = 'Sin seleccionar';
 
     $colaboradores = "";
 
-    if (isset($_POST['filtrar'])){
+    if (isset($_POST['filtrar_colaboradores'])){
         $empresaId = $_POST['select_empresa'];
         $grupoId = $_POST['gruposInner'];
 
-        $EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
-        $EMPRESA = $wpdb->get_results($EMPRESA);
+        $EMPRESA_CONSULTA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
+        $EMPRESA = $wpdb->get_results($EMPRESA_CONSULTA);
         $EMPRESA = $EMPRESA[0]->empresa;
-        $GRUPO = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupoId'";
-        $GRUPO = $wpdb->get_results($GRUPO);
+        $GRUPO_CONSULTA = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupoId'";
+        $GRUPO = $wpdb->get_results($GRUPO_CONSULTA);
         $GRUPO = $GRUPO[0]->nombre;
 
         $CANTIDAD_INSCRITOS = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupoId'";
         $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS);
 
         $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupoId'";
-        $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
+        $CANTIDAD_TOTAL_LICENCIAS_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
+        $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = $CANTIDAD_TOTAL_LICENCIAS_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
 
-        $CANTIDAD_DISPONIBLE = $CANTIDAD_MAXIMA_EN_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
 
+        $EMAIL_COLABORADORES_CONSULTA = "SELECT id, email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
+        $EMAIL_COLABORADORES = $wpdb->get_results($EMAIL_COLABORADORES_CONSULTA);
 
-        $slq_email_colaboradores = "SELECT id, email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
-        $emails_colaboradores = $wpdb->get_results($slq_email_colaboradores);
-    
-        foreach($emails_colaboradores as $email_colaborador){
-            $peticion_moodle = file_get_contents(getMoodleUrl().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email_colaborador->email);
-            $colaborador_moodle = json_decode($peticion_moodle);
+        $colaboradoresMoodle;
 
-            if( $colaborador_moodle[0]->email != "" ){   
-                
-                $idWordpress = $email_colaborador->id;
-                $idMoodle = '`'.$colaborador_moodle[0]->id.'`';
-                $firstname = '`'.$colaborador_moodle[0]->firstname.'`';
-                $lastname = '`'.$colaborador_moodle[0]->lastname.'`';
-                $username = '`'.$colaborador_moodle[0]->username.'`';
-                $document = '`'.$colaborador_moodle[0]->customfields[0]->value.'`';
-                $email = '`'.$colaborador_moodle[0]->email.'`';
-                $city = '`'.$colaborador_moodle[0]->city.'`';
-                $country = '`'.$colaborador_moodle[0]->country.'`';
+        if (count($EMAIL_COLABORADORES) > 0){
+            $colaboradoresMoodle = getMoodleUsersByField('email', $EMAIL_COLABORADORES);
+        }
+
+        foreach($colaboradoresMoodle as $colaborador){
+
+                $userId = '`'.$colaborador->id.'`';
+                $firstname = '`'.$colaborador->firstname.'`';
+                $lastname = '`'.$colaborador->lastname.'`';
+                $username = '`'.$colaborador->username.'`';
+                $document = '`'.$colaborador->customfields[0]->value.'`';
+                $email = '`'.$colaborador->email.'`';
+                $city = '`'.$colaborador->city.'`';
+                $country = '`'.$colaborador->country.'`';
                 
                 $colaboradores .= '
                 <tr>
-                    <td><img src="'.$colaborador_moodle[0]->profileimageurlsmall.'" /></td>
-                    <td>'.$colaborador_moodle[0]->username.'</td>
-                    <td>'.$colaborador_moodle[0]->firstname.'</td>
-                    <td>'.$colaborador_moodle[0]->lastname.'</td>
-                    <td>'.$colaborador_moodle[0]->customfields[0]->value.'</td>
-                    <td>'.$colaborador_moodle[0]->email.'</td>
-                    <td>'.$colaborador_moodle[0]->city.'</td>
-                    <td>'.$colaborador_moodle[0]->country.'</td>
+                    <td><img src="'.$colaborador->profileimageurlsmall.'" /></td>
+                    <td>'.$colaborador->username.'</td>
+                    <td>'.$colaborador->firstname.'</td>
+                    <td>'.$colaborador->lastname.'</td>
+                    <td>'.$colaborador->customfields[0]->value.'</td>
+                    <td>'.$colaborador->email.'</td>
+                    <td>'.$colaborador->city.'</td>
+                    <td>'.$colaborador->country.'</td>
                     <td>
                         <div class="d-flex align-items-center">
                             <button 
@@ -80,30 +80,46 @@ function colaboradores_admin(){
                                 class="btn btn-secondary"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#modal_editar_colaborador"
-                                onclick="editarColaborador('.$idWordpress.', '.$idMoodle.', '.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">
+                                onclick="editarColaborador('.$userId.', '.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">
                                 Editar</button>
-                            <form method="POST" >
-                                <input type="hidden" name="email" value="'.$colaborador_moodle[0]->email.'">
-                                <button type="submit" class="btn btn-outline-danger ms-1" name="eliminar">Eliminar</button>
+                            <form method="POST">
+                                <input type="hidden" name="idEliminar" value="'.$colaborador->id.'">
+                                <button type="submit" class="btn btn-outline-danger ms-1" name="eliminar_usuario">Eliminar</button>
                             </form>
                         </div>
                     </td>
                 </tr>';
-            }
         }
     }
 
-    // funcion para eliminar colaboradores
-if(isset($_POST['eliminar'])){  
-    $email = $_POST['email'];
-    $sql_eliminar_colaborador = "DELETE FROM {$wpdb->prefix}colaboradores WHERE email = '$email'";
-    $wpdb->query($sql_eliminar_colaborador);
 
-    $peticion_buscar_id_moodle = file_get_contents(getMoodleUrl().'&wsfunction=core_user_get_users_by_field&field=email&values[0]='.$email);
-    $colaborador_id_moodle = json_decode($peticion_buscar_id_moodle);
-    $id_moodle = $colaborador_id_moodle[0]->id;
-    $peticion_suspender_colaborador= file_get_contents(getMoodleUrl().'&wsfunction=core_user_update_users&users[0][id]='.$id_moodle.'&users[0][suspended]=1');
-}
+    if(isset($_POST['eliminar_usuario'])){  
+        $idUsuario = $_POST['idEliminar'];
+        
+        $ELIMINAR_COLABORADOR_CONSULTA = "DELETE FROM {$wpdb->prefix}colaboradores WHERE id = '$idUsuario'";
+        $COLABORADOR_ELIMINADO = $wpdb->query($ELIMINAR_COLABORADOR_CONSULTA);
+        
+        if ($COLABORADOR_ELIMINADO){
+            $deleteUser = deleteMoodleUser($idUsuario);
+            echo '<script>
+                    Swal.fire({
+                        icon: "success",
+                        title: "Colaborador eliminado correctamente",
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                </script>';
+        } else {
+            echo '<script>
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error al eliminar colaborador",
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                </script>';
+        }
+    }
 
     echo '
         <body >
@@ -139,9 +155,8 @@ if(isset($_POST['eliminar'])){
                    
                    <div class="col-md-1 float-end">
                        <br>
-                       <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
+                       <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar_colaboradores" id="button-addon2">Filtrar</button>
                    </div>
-    
                </div> 
                </form>
 
@@ -153,9 +168,9 @@ if(isset($_POST['eliminar'])){
                </section>
                <section class="float-end" id="cantidad_licencias">
                        <label class="text-muted">Cantidad de licencias: </label>
-                       <span class="badge bg-primary">'.$CANTIDAD_MAXIMA_EN_GRUPO.'</span>
+                       <span class="badge bg-primary">'.$CANTIDAD_TOTAL_LICENCIAS_GRUPO.'</span>
                        <label class="ps-2 text-muted">Licencias disponibles: </label>
-                       <span class="badge bg-primary">'.$CANTIDAD_DISPONIBLE.'</span>
+                       <span class="badge bg-primary">'.$CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO.'</span>
                </section>
            </div>
 

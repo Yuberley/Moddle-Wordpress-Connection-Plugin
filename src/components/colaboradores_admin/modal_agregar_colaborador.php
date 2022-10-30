@@ -29,9 +29,6 @@ function modal_agregar_colaborador(){
         $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA_CONSULTA);
         $CATIDAD_LICENCIAS_DISPONIBLES = $CANTIDAD_MAXIMA_EN_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
 
-        var_dump($CATIDAD_LICENCIAS_DISPONIBLES);
-
-    
         if( $CATIDAD_LICENCIAS_DISPONIBLES <= 0 ){
             echo '<script>
                         Swal.fire({
@@ -84,26 +81,24 @@ function modal_agregar_colaborador(){
             ];
             
             $createUserResponse = createMoodleUser($user);
+            $userId = $createUserResponse[0]->id;
             
-            $INSERTAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (nombre, apellido, email, id_empresa, id_grupo) VALUES ('$nombre', '$apellido', '$email', '$empresa', '$grupo')";
+            $INSERTAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (id, nombre, apellido, email, id_empresa, id_grupo) VALUES  ('$userId', '$nombre', '$apellido', '$email', '$empresa', '$grupo')";
             $INSERTAR_USUARIO = $wpdb->query($INSERTAR_USUARIO_CONSULTA);
             
-            if($INSERTAR_USUARIO == 1){
+            if( $INSERTAR_USUARIO ){
                 echo '<script>
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
                                 title: "Guardado correctamente!",
                                 showConfirmButton: false,
-                                timer: 1000,
+                                timer: 1500,
                             });
                         </script>';
             }
 
         }
-
-        
-            
             
     }
 
@@ -189,6 +184,5 @@ function modal_agregar_colaborador(){
              </div>
            </div>
          </div>
-       </div>';     
-
+       </div>';
 }
