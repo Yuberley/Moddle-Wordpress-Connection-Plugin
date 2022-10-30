@@ -1,17 +1,27 @@
 <?php
+require_once plugin_dir_path(__FILE__ ) . '../../settings/enviroment.php';
+require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
+
 
 function reporte_curso(){
-
-    $empresa = $_POST['curso_empresa'];
+    global $wpdb;
     $grupo = $_POST['curso_grupos'];
-    $curso = $_POST['curso_cursos'];
-
-    echo $empresa.'empresa <br>';
-    echo $grupo.'grupo <br>';
-    echo $curso.'curso <br>';
-
-    $response= '
+    $id_curso = $_POST['curso_cursos'];
     
+    $ID_EMPRESA = "SELECT id_empresa,nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupo'";
+    $ID_EMPRESA = $wpdb->get_results($ID_EMPRESA);
+    $NOMBRE_GRUPO = $ID_EMPRESA[0]->nombre;
+    $ID_EMPRESA = $ID_EMPRESA[0]->id_empresa;
+    
+    $EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$ID_EMPRESA'";
+    $EMPRESA = $wpdb->get_results($EMPRESA);
+    $EMPRESA = $EMPRESA[0]->empresa;
+
+    $PETICION_CURSO_NAME = file_get_contents(getMoodleUrl().'&wsfunction=core_course_get_courses_by_field&field=id&value='.$id_curso);
+    $NOMBRE_CURSO = json_decode($PETICION_CURSO_NAME);
+    $NOMBRE_CURSO = $NOMBRE_CURSO->courses[0]->fullname;
+    
+    echo '
 
     <body >
         <div class="container mt-5">
@@ -19,27 +29,25 @@ function reporte_curso(){
             <div class="row">
                 <div class="col-md-8"><h1>REPORTES POR CURSO</h1></div>
             </div>
+                <br>
+               
             <div class="row">
-                <div class="col-md-4">
-                    <label for="empresa">Empresa: </label>
-                    <label for="name-empresa"> Sasoftco </label>
-                    <br>
-                    <label for="nit">NIT:  </label>
-                    <label for="nit">  100.55.353</label>
-                </div>
-                <div class="col-md-4">
-                    <label for="grupo">Grupo: </label>
-                    <label for="name-grupo"> Sasoftco 16-09-22 </label>
-                    <br>
-                    <label for="curso">Curso: </label>
-                    <label for="name-curso">  Servicio al Cliente </label>
+                <div class="col-md-12">
+                <section class="float-start" id="">
+                    <label class="text-muted">Empresa: </label>
+                    <span class="badge bg-dark">'.$EMPRESA.'</span>
+                    <label class="ps-2 text-muted">Grupo: </label>
+                    <span class="badge bg-dark">'.$NOMBRE_GRUPO.'</span>
+                    <label class="ps-2 text-muted">Curso: </label>
+                    <span class="badge bg-dark">'.$NOMBRE_CURSO.'</span>
+               </section>
                 </div>
             </div> 
         </div>
         
         <div class="container mt-5">
             
-            <table class="table table-hover" id="table">
+            <table class="table table-hover border" id="table">
                 <thead style="background-color: #041541; color: white;">
                     <tr>
                         <th scope="col">Nombre </th>
@@ -83,32 +91,7 @@ function reporte_curso(){
                     <td>75%</td>
                     
                     </tr>
-                    <tr>
-                    <td>Camilo Mario</td>
-                    <td>Garcia Peña</td>
-                    <td>100.454.343</td>
-                    <td>camilo@gmail.com</td>
-                    <td>Iniciado</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    
-                    </tr>
-                    <tr>
-                    <td>Armando Enrique</td>
-                    <td>Posada Rocha</td>
-                    <td>103.004.334</td>
-                    <td>armado.posada@gmail.com</td>
-                    <td>Iniciado</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    
-                    </tr>
+                   
                 </tbody>
             </table> 
         </div>
@@ -123,31 +106,12 @@ function reporte_curso(){
                 </div>
             </div>
         </div>
-        <script>
-        $("#table").DataTable( {
-            language: {
-                "search": "Buscar: ",
-                "info": "Mostrando del _START_ al _END_ de _TOTAL_ datos",
-                "paginate": {
-                    "first":      "Primera",
-                    "last":       "Ultima",
-                    "next":       "Siguiente",
-                    "previous":   "Anterior"
-                },
-                "lengthMenu":     "Mostrando _MENU_ datos",
-                "emptyTable":     "No hay datos disponibles en la tabla",
-                "zeroRecords":    "No se encontraron datos"
-                
-            },
-            searching: false
-        } );
-        </script>
         
     </body>   
     
     ';
     
-    return $response;
+    return data_table_dinamic();
 
 }
 

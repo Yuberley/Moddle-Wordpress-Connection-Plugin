@@ -1,6 +1,5 @@
 <?php
 require_once plugin_dir_path(__FILE__ ) . '../../settings/enviroment.php';
-require_once plugin_dir_path(__FILE__).'../../src/vendor/autoload.php';
 require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 require_once plugin_dir_path(__FILE__) . '../../src/components/reportes_admin/modal_reporte_curso.php';
 require_once plugin_dir_path(__FILE__) . '../../src/components/reportes_admin/modal_reporte_consolidado.php';
@@ -12,12 +11,22 @@ function reportes_admin(){
 
 
     global $wpdb;
-
+    $EMPRESA = 'Sin seleccionar';
+    $GRUPO = 'Sin seleccionar';
     $colaboradores = "";
 
     if (isset($_POST['filtrar'])){
         $empresaId = $_POST['select_empresa'];
         $grupoId = $_POST['gruposInner'];
+        
+        $EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
+        $EMPRESA = $wpdb->get_results($EMPRESA);
+        $EMPRESA = $EMPRESA[0]->empresa;
+        $GRUPO = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupoId'";
+        $GRUPO = $wpdb->get_results($GRUPO);
+        $GRUPO = $GRUPO[0]->nombre;
+
+
         $slq_email_colaboradores = "SELECT email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
         $emails_colaboradores = $wpdb->get_results($slq_email_colaboradores);
     
@@ -60,9 +69,8 @@ function reportes_admin(){
                 <div class="col-md-3">
                     <label for="empresa">Empresas: </label>
                     <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this,`grupos_get`, `grupos_set`);">
-                        <option selected value="0">Seleccione una Empresa</option>'
-                           .select_empresas().
-        '                   
+                        <option selected value="0">Seleccione una Empresa</option>
+                        '.select_empresas().'                   
                     </select>
                 </div>
                 <div class="col-md-3">
@@ -82,7 +90,13 @@ function reportes_admin(){
 
             </div> 
             </form>
-    </div>
+                <section class="float-start" id="cantidad_licencias">
+                       <label class="text-muted">Empresa: </label>
+                       <span class="badge bg-dark">'.$EMPRESA.'</span>
+                       <label class="ps-2 text-muted">Grupo: </label>
+                       <span class="badge bg-dark">'.$GRUPO.'</span>
+               </section>
+        </div>
 
     <div class="container mt-5">
         
@@ -129,10 +143,7 @@ function reportes_admin(){
     '.modal_reporte_consolidado().'
    
 
-    
-
-
-<script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
+    <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
     </body>  ';
 
     return data_table_dinamic();
