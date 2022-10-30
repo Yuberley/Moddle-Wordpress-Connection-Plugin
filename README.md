@@ -22,7 +22,7 @@ This plugin was bootstrapped with [php](https://www.php.net/docs.php).
 In the project directory, you can run:
 
 ```
-your server apache
+your server apache - mysql
 ```
 
 Runs the app in the development mode.
