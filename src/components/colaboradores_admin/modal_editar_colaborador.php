@@ -6,7 +6,6 @@ function modal_editar_colaborador(){
 
     global $wpdb;
 
-    // ingresar el campo usuario en la tabla colaboradores, para que no se pueda repetir el usuario y el email, y poder hacer la validacion en el modal de editar colaborador 
 
     if( isset($_POST['editar_colaborador']) ){
 
@@ -19,33 +18,75 @@ function modal_editar_colaborador(){
         $ciudad = $_POST['ciudadEditar'];
         $pais = $_POST['paisEditar'];
 
-        $sql = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idUsuario'";
-        $respuesta = $wpdb->query($sql);
-        var_dump($respuesta);
 
-        $user = (object)[
-            'id' => $idUsuario,
-            'username' => $usuario,
-            'firstname' => $nombre,
-            'lastname' => $apellido,
-            'email' => $email,
-            'city' => $ciudad,
-            'country' => $pais,
-            'document' => $documento,
-            'customfield' => 'identification',
-        ];
+        // Se valida que el nombre de usuario no esté registrado en moodle, 
+        // excepto el usuario que se está editando, para el caso en el que el 
+        // nombre de usuario esté registrado en moodle, se verifica que el id 
+        // sea diferente para confirmar si ya existe otro usuario con ese nombre de usuario.
+        $usuarioMoodle = getMoodleUserByUsername($usuario);
+        $existeUsuarioMoodle = count($usuarioMoodle->users);
+    
+        $existeUsuarioIgualMoodle = $existeUsuarioMoodle && $usuarioMoodle->users[0]->id != $idUsuario;
+    
+        if( $existeUsuarioIgualMoodle ){
+            echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "¡El nombre de usuario '.$usuario.' ya está registrado!",
+                        })
+                    </script>';
+        }
 
-        $updateUserResponse = updateMoodleUser($idUsuario, $user);
+        // Se valida que el email no esté registrado en moodle,
+        // excepto el email que se está editando, para el caso en el que el
+        // email esté registrado en moodle, se verifica que el id
+        // sea diferente para confirmar si ya existe otro usuario con ese email.
+        $emailMoodle = getMoodleUserByEmail($email);
+        $existeEmailMoodle = count($emailMoodle->users);
 
-        echo '<script>
+        $existeEmailIgualMoodle = $existeEmailMoodle && $emailMoodle->users[0]->id != $idUsuario;
+
+        if( $existeEmailIgualMoodle ){
+            echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "¡El email '.$emai.' ya está registrado!",
+                        })
+                    </script>';
+        }
+
+        if ( !$existeUsuarioIgualMoodle && !$existeEmailIgualMoodle ){
+
+            $user = (object)[
+                'id' => $idUsuario,
+                'username' => $usuario,
+                'firstname' => $nombre,
+                'lastname' => $apellido,
+                'email' => $email,
+                'city' => $ciudad,
+                'country' => $pais,
+                'document' => $documento,
+                'customfield' => 'identification',
+            ];
+            
+            $updateUserResponse = updateMoodleUser($idUsuario, $user);
+
+            $EDITAR_USUARIO_CONSULTA = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idUsuario'";
+            $USUARIO_EDITADO = $wpdb->query($EDITAR_USUARIO_CONSULTA);
+
+            echo '<script>
                     Swal.fire({
-                        position: "center",
                         icon: "success",
-                        title: "Actualizado correctamente!",
+                        title: "¡Usuario editado!",
+                        text: "El usuario ha sido editado correctamente",
                         showConfirmButton: false,
-                        timer: 1500,
-                    });
+                        timer: 2000,
+                    })
                 </script>';
+
+        }
 
     }
 

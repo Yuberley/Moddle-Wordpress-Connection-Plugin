@@ -52,21 +52,6 @@ function getMoodleUser($id){
     return $user;
 }
 
-function getMoodleUserByEmail($email){
-    $moodle = getMoodle();
-    $response = $moodle->request('GET', 'webservice/rest/server.php', [
-        'query' => [
-            'wstoken' => getMoodleToken(),
-            'moodlewsrestformat' => 'json',
-            'wsfunction' => 'core_user_get_users',
-            'criteria[0][key]' => 'email',
-            'criteria[0][value]' => $email,
-        ]
-    ]);
-    $user = json_decode($response->getBody()->getContents());
-    return $user;
-}
-
 function getMoodleUserByUsername($username){
     $moodle = getMoodle();
     $response = $moodle->request('GET', 'webservice/rest/server.php', [
@@ -76,6 +61,21 @@ function getMoodleUserByUsername($username){
             'wsfunction' => 'core_user_get_users',
             'criteria[0][key]' => 'username',
             'criteria[0][value]' => $username,
+        ]
+    ]);
+    $user = json_decode($response->getBody()->getContents());
+    return $user;
+}
+
+function getMoodleUserByEmail($email){
+    $moodle = getMoodle();
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
+        'query' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'core_user_get_users',
+            'criteria[0][key]' => 'email',
+            'criteria[0][value]' => $email,
         ]
     ]);
     $user = json_decode($response->getBody()->getContents());

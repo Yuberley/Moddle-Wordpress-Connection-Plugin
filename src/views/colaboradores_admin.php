@@ -10,7 +10,6 @@ require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_selects.php';
 
 
-
 function colaboradores_admin(){ 
     
     global $wpdb;
@@ -99,23 +98,25 @@ function colaboradores_admin(){
         $ELIMINAR_COLABORADOR_CONSULTA = "DELETE FROM {$wpdb->prefix}colaboradores WHERE id = '$idUsuario'";
         $COLABORADOR_ELIMINADO = $wpdb->query($ELIMINAR_COLABORADOR_CONSULTA);
         
-        if ($COLABORADOR_ELIMINADO){
+        if ( $COLABORADOR_ELIMINADO ){
             $deleteUser = deleteMoodleUser($idUsuario);
             echo '<script>
                     Swal.fire({
                         icon: "success",
                         title: "Colaborador eliminado correctamente",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2000
                     })
                 </script>';
-        } else {
+        } 
+
+        if ( !$COLABORADOR_ELIMINADO ) {
             echo '<script>
                     Swal.fire({
                         icon: "error",
                         title: "Error al eliminar colaborador",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2000
                     })
                 </script>';
         }

@@ -8,9 +8,10 @@ function modal_agregar_colaborador(){
 
     global $wpdb;
 
+
     if(isset($_POST['agregar_colaborador'])){
         
-        
+
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
         $usuario = remove_accent( strtolower( $_POST['usuario'] ) );
@@ -48,7 +49,7 @@ function modal_agregar_colaborador(){
                         Swal.fire({
                             icon: "error",
                             title: "Oops...",
-                            text: "¡El nombre de usuario ya está registrado!",
+                            text: "¡El nombre de usuario '.$usuario.' ya está registrado!",
                           })
                     </script>';
         }
@@ -61,7 +62,7 @@ function modal_agregar_colaborador(){
                         Swal.fire({
                             icon: "error",
                             title: "Oops...",
-                            text: "¡El email ya está registrado!",
+                            text: "¡El email '.$email.' ya está registrado!",
                           })
                     </script>';
         }
@@ -83,18 +84,31 @@ function modal_agregar_colaborador(){
             $createUserResponse = createMoodleUser($user);
             $userId = $createUserResponse[0]->id;
             
-            $INSERTAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (id, nombre, apellido, email, id_empresa, id_grupo) VALUES  ('$userId', '$nombre', '$apellido', '$email', '$empresa', '$grupo')";
-            $INSERTAR_USUARIO = $wpdb->query($INSERTAR_USUARIO_CONSULTA);
+            // El colborador se crea en moodle y en wordpress con el mismo  
+            // identificador (id que retorna moodle al crear el usuraio) por 
+            // facilidd de y actualizacion y eliminacion de usuarios.
+            $GUARDAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (id, nombre, apellido, email, id_empresa, id_grupo) VALUES  ('$userId', '$nombre', '$apellido', '$email', '$empresa', '$grupo')";
+            $USUARIO_GUARDADO = $wpdb->query($GUARDAR_USUARIO_CONSULTA);
             
-            if( $INSERTAR_USUARIO ){
+            if( $USUARIO_GUARDADO ){
                 echo '<script>
                             Swal.fire({
                                 position: "center",
                                 icon: "success",
                                 title: "Guardado correctamente!",
                                 showConfirmButton: false,
-                                timer: 1500,
+                                timer: 2000,
                             });
+                        </script>';
+            } 
+
+            if ( !$USUARIO_GUARDADO ) {
+                echo '<script>
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "¡No se pudo guardar el usuario!",
+                            })
                         </script>';
             }
 
