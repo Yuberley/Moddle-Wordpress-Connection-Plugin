@@ -143,7 +143,43 @@ function deleteMoodleUser($id){
 
 
 
+function subscribeCoursesMoodleUser($userId, $courses){
+    $queryValues = [];
+    foreach($courses as $key => $course){
+        $queryValues[] = "enrolments[$key][roleid]=5";
+        $queryValues[] = "enrolments[$key][userid]=$userId";
+        $queryValues[] = "enrolments[$key][courseid]=$course";
+        $queryValues[] = "enrolments[$key][timestart]=".time();
+        $queryValues[] = "enrolments[$key][timeend]=".strtotime('+1 year');
+    }
 
+    $moodle = getMoodle();
+    $response = $moodle->request('POST', 'webservice/rest/server.php', [
+        'form_params' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'enrol_manual_enrol_users',
+            'enrolments[0][roleid]' => 5,
+        ] + $queryValues
+    ]);
+    $user = json_decode($response->getBody()->getContents());
+    return $user;
+}
+
+
+
+function getMoodleCourses(){
+    $moodle = getMoodle();
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
+        'query' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'core_course_get_courses',
+        ]
+    ]);
+    $courses = json_decode($response->getBody()->getContents());
+    return $courses;
+}
 
 
 
