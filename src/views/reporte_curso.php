@@ -2,6 +2,7 @@
 require_once plugin_dir_path(__FILE__ ) . '../../settings/enviroment.php';
 require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_tables_report.php';
+require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
 
 
 function reporte_curso(){
@@ -18,10 +19,9 @@ function reporte_curso(){
     $EMPRESA = $wpdb->get_results($EMPRESA);
     $EMPRESA = $EMPRESA[0]->empresa;
 
-    //trae el nombre del curso de moodle
-    $PETICION_CURSO_NAME = file_get_contents(getMoodleUrl().'&wsfunction=core_course_get_courses_by_field&field=id&value='.$id_curso);
-    $NOMBRE_CURSO = json_decode($PETICION_CURSO_NAME);
-    $NOMBRE_CURSO = $NOMBRE_CURSO->courses[0]->fullname;
+
+    $NOMBRE_CURSO = getMoodleCourse($id_curso);
+    $NOMBRE_CURSO = $NOMBRE_CURSO[0]->fullname;
 
     //peticion para traer las calificaciones de un curso y saber la cantidad de modulos
     $peticion_moodle_calificaciones = file_get_contents(getMoodleUrl().'&wsfunction=gradereport_user_get_grade_items&courseid='.$id_curso);
@@ -37,21 +37,21 @@ function reporte_curso(){
     }
     
     //colaboradores del grupo
-    $peticion_colaboradores = "SELECT * FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupo'";
-    $peticion_colaboradores = $wpdb->get_results($peticion_colaboradores);
+    $PETICION_COLABORADORES = "SELECT * FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupo'";
+    $PETICION_COLABORADORES = $wpdb->get_results($PETICION_COLABORADORES);
     $body_table = '';
-    foreach($peticion_colaboradores as $peticion_colaborador){
+    foreach($PETICION_COLABORADORES as $PETICION_COLABORADOR){
         //obtener calificaciones de cada colaborador
-        $peticion_moodle_calificaciones = file_get_contents(getMoodleUrl().'&wsfunction=gradereport_user_get_grade_items&courseid='.$id_curso.'&userid='.$peticion_colaborador->id);
-        $calificaciones = json_decode($peticion_moodle_calificaciones);
+        // $peticion_moodle_calificaciones = file_get_contents(getMoodleUrl().'&wsfunction=gradereport_user_get_grade_items&courseid='.$id_curso.'&userid='.$PETICION_COLABORADOR->id);
+        $calificaciones = getMoodleGradesUser($id_curso,$PETICION_COLABORADOR->id);
 
         $calificaciones = $calificaciones->usergrades;
         $gradeitems = $calificaciones[0]->gradeitems;
         $body_table .= '<tr>';
-        $body_table .= '<td>'.$peticion_colaborador->nombre.'</td>';
-        $body_table .= '<td>'.$peticion_colaborador->apellido.'</td>';
-        $body_table .= '<td>'.$peticion_colaborador->documento.'</td>';
-        $body_table .= '<td>'.$peticion_colaborador->email.'</td>';
+        $body_table .= '<td>'.$PETICION_COLABORADOR->nombre.'</td>';
+        $body_table .= '<td>'.$PETICION_COLABORADOR->apellido.'</td>';
+        $body_table .= '<td>'.$PETICION_COLABORADOR->documento.'</td>';
+        $body_table .= '<td>'.$PETICION_COLABORADOR->email.'</td>';
         
         //calificaciones de modulos
         $calificacion_modulos=100*$cantidad_modulos;

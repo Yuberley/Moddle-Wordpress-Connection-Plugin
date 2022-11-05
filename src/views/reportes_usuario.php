@@ -87,8 +87,7 @@ function reportes_usuario(){
             </div> 
             </form>
                 <section class="float-start" id="cantidad_licencias">
-                       <label class="text-muted">Empresa: </label>
-                       <span class="badge bg-dark">'.$EMPRESA.'</span>
+                       
                        <label class="ps-2 text-muted">Grupo: </label>
                        <span class="badge bg-dark">'.$GRUPO.'</span>
                </section>

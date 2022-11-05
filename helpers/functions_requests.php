@@ -280,3 +280,19 @@ function getMoodleCourseByFieldArray($field, $value){
     $course = json_decode($response->getBody()->getContents());
     return $course;
 }
+
+
+function getMoodleGradesUser($courseId, $userId){
+    $moodle = getMoodle();
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
+        'query' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'gradereport_user_get_grade_items',
+            'courseid' => $courseId,
+            'userid' => $userId,
+        ]
+    ]);
+    $grades = json_decode($response->getBody()->getContents());
+    return $grades;
+}

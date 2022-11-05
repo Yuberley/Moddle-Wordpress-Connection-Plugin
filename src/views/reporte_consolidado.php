@@ -1,12 +1,16 @@
 <?php
 require_once plugin_dir_path(__FILE__ ) . '../../settings/enviroment.php';
 require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
+require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
+require_once plugin_dir_path(__FILE__) . '../../helpers/functions_tables_report.php';
 
 function reporte_consolidado(){
     global $wpdb;
     $grupo = $_POST['consolidado_grupos'];
     $cursos = $_POST['consolidado_cursos'];
     $estudiantes = $_POST['consolidado_estudiantes'];
+    $numero_cursos= count($cursos);
+    
 
     $ID_EMPRESA = "SELECT id_empresa,nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupo'";
     $ID_EMPRESA = $wpdb->get_results($ID_EMPRESA);
@@ -17,19 +21,23 @@ function reporte_consolidado(){
     $EMPRESA = $wpdb->get_results($EMPRESA);
     $EMPRESA = $EMPRESA[0]->empresa;
    
+    $body_table='';
+    foreach($estudiantes as $estudiante){
+        $INFORMACION_ESTUDIANTE = 'SELECT * FROM '.$wpdb->prefix.'colaboradores WHERE id = '.$estudiante;
+        $INFORMACION_ESTUDIANTE = $wpdb->get_results($INFORMACION_ESTUDIANTE);
+        $body_table .= '<tr>';
+        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->nombre.'</td>';
+        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->apellido.'</td>';
+        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->documento.'</td>';
+        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->email.'</td>';
 
-    // //peticion para traer las calificaciones de un curso
-    // $peticion_moodle_calificaciones = file_get_contents(getMoodleUrl().'&wsfunction=gradereport_user_get_grade_items&courseid=8&userid=21');
-    // $calificaciones = json_decode($peticion_moodle_calificaciones);
-    // var_dump($calificaciones);
+        foreach($cursos as $curso){
+            $calificaciones = getMoodleGradesUser($curso,$estudiante);
+           
 
-    // echo $empresa.' empresas <br>';
-    // echo $grupo.' grupos <br>';
-    // echo ' var_dump($cursos) <br>';
-    // var_dump($cursos);
-    // echo "<br>";
-    // var_dump($estudiantes);
-    // echo ' estudiantes <br>';
+        }
+
+    }
 
 
     echo '
@@ -61,9 +69,7 @@ function reporte_consolidado(){
                         <th scope="col">Apellido</th>
                         <th scope="col">Documento</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Curso 1</th>
-                        <th scope="col">Curso 2</th>
-                        <th scope="col">Curso 3</th>
+                        '.crear_columnas_curso($cursos).'
                         <th scope="col">Promedio</th>
                         
                     </tr>
@@ -78,7 +84,6 @@ function reporte_consolidado(){
                     <td>0%</td>
                     <td>0%</td>
                     <td>0%</td>
-                    <td>0%</td>
                     
                     </tr>
                     <tr>
@@ -86,7 +91,6 @@ function reporte_consolidado(){
                     <td>Pinzon Garcia</td>
                     <td>103.004.334</td>
                     <td>armado.posada@gmail.com</td>
-                    <td>25%</td>
                     <td>25%</td>
                     <td>25%</td>
                     <td>25%</td>
