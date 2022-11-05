@@ -37,7 +37,7 @@ function reporte_curso(){
     }
     
     //colaboradores del grupo
-    $peticion_colaboradores = "SELECT id FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupo'";
+    $peticion_colaboradores = "SELECT * FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupo'";
     $peticion_colaboradores = $wpdb->get_results($peticion_colaboradores);
     $body_table = '';
     foreach($peticion_colaboradores as $peticion_colaborador){
@@ -48,17 +48,36 @@ function reporte_curso(){
         $calificaciones = $calificaciones->usergrades;
         $gradeitems = $calificaciones[0]->gradeitems;
         $body_table .= '<tr>';
-        $body_table .= '<td>'.$calificaciones[0]->userid.'</td>';
-        $body_table .= '<td>'.$calificaciones[0]->userfullname.'</td>';
-
+        $body_table .= '<td>'.$peticion_colaborador->nombre.'</td>';
+        $body_table .= '<td>'.$peticion_colaborador->apellido.'</td>';
+        $body_table .= '<td>'.$peticion_colaborador->documento.'</td>';
+        $body_table .= '<td>'.$peticion_colaborador->email.'</td>';
+        
+        //calificaciones de modulos
+        $calificacion_modulos=100*$cantidad_modulos;
+        $progreso_curso=0;
         foreach($gradeitems as $gradeitem){
             if(contiene_evaluacion($gradeitem->itemname)){
-                $body_table .= '<td>'.$gradeitem->gradeformatted.'</td>';
+                
+                if($gradeitem->gradeformatted == '-'){
+                    $body_table .= '<td>0  %</td>';
+                }else{
+                    $body_table .= '<td>100%</td>';
+                    $progreso_curso += 100;
+                }
+            }   }
+            
+            $body_table .= '<td>'.$progreso_curso/$cantidad_modulos.'%</td>';
+            //estado del curso
+            if($progreso_curso == 0){
+                $body_table .= '<td> <span class="badge rounded-pill bg-secondary">Sin iniciar</span> </td>';}
+            else if($progreso_curso == $calificacion_modulos){
+                $body_table .= '<td> <span class="badge rounded-pill bg-success">Finalizado</span> </td>';}
+            else{
+                $body_table .= '<td> <span class="badge rounded-pill bg-primary">En Curso</span> </td>';
             }
-        }
-
-        $body_table .= '</tr>';
-    
+            $body_table .= '</tr>';
+            
     }
    
     echo '
@@ -94,9 +113,9 @@ function reporte_curso(){
                         <th scope="col">Apellido</th>
                         <th scope="col">Documento</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Estado</th>
                         '.crear_columnas_modulos($cantidad_modulos).'
                         <th scope="col">Progreso</th>
+                        <th scope="col">Estado</th>
                         
                     </tr>
                 </thead>
