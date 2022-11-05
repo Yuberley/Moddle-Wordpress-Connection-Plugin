@@ -4,7 +4,7 @@ require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
 require_once plugin_dir_path( __FILE__ ) . '../../../helpers/remove_accent.php';
 
 
-function modal_agregar_colaborador(){
+function modal_agregar_colaborador_admin(){
 
     global $wpdb;
 
@@ -96,9 +96,9 @@ function modal_agregar_colaborador(){
 
             $subscribedCourses =  subscribeCoursesMoodleUser( $userId, $courses );
             
-            // El colborador se crea en moodle y en wordpress con el mismo  
-            // identificador (id que retorna moodle al crear el usuraio) por 
-            // facilidd de y actualizacion y eliminacion de usuarios.
+            // El colaborador se crea en moodle y en wordpress con el mismo  
+            // identificador (id que retorna moodle al crear el usuario) por 
+            // facilidad de actualizacion y eliminacion de usuarios.
             $GUARDAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (id, nombre, apellido, email, id_empresa, id_grupo) VALUES  ('$userId', '$nombre', '$apellido', '$email', '$empresa', '$grupo')";
             $USUARIO_GUARDADO = $wpdb->query($GUARDAR_USUARIO_CONSULTA);
             

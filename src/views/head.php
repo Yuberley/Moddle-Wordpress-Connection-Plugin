@@ -1,7 +1,10 @@
 <?php
 
+require_once plugin_dir_path(__FILE__) . '../../helpers/license_registration.php';
+
 function head(){
     
+    licenseRegistration();
     echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
 
     $response ='

@@ -57,3 +57,16 @@ function select_cursos_basic(){
     return $opcionesCursosBasic;
 
 }
+
+function select_grupos_usuarios($empresaId){
+    global $wpdb;
+    $opcionesGruposUsuarios = '';
+    $sql_grupos_usuarios = "SELECT * FROM {$wpdb->prefix}grupos WHERE id_empresa = $empresaId";
+    $grupos_usuarios = $wpdb->get_results($sql_grupos_usuarios);
+    
+    foreach($grupos_usuarios as $grupo_usuario){
+        $opcionesGruposUsuarios .= '<option value="'.$grupo_usuario->id.'">'.$grupo_usuario->nombre.'</option>';
+    }
+
+    return $opcionesGruposUsuarios;
+}
