@@ -17,16 +17,8 @@ require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_adm
 // }
 
 
-// function getRoleUserWordpress(){
-//     $current_user = wp_get_current_user();
-//     $roles = $current_user->roles;
-//     $role = array_shift( $roles );
-//     return $role;
-// }
-
-
 function colaboradores_admin(){ 
-    
+
     global $wpdb;
 
     $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = '#';
@@ -240,6 +232,7 @@ function colaboradores_admin(){
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/removeAccents.js".' ></script>
+        // <script src='.plugin_dir_url(__FILE__)."../../assets/js/loadingButton.js".' ></script>
         
     </body>'; 
 
