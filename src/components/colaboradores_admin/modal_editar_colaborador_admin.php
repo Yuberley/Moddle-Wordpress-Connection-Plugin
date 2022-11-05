@@ -2,7 +2,7 @@
 
 require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
 
-function modal_editar_colaborador(){
+function modal_editar_colaborador_admin(){
 
     global $wpdb;
 
@@ -91,7 +91,6 @@ function modal_editar_colaborador(){
     }
 
     echo '
-       <!-- Modal agregar usuario -->
        <div class="modal fade" id="modal_editar_colaborador" data-bs-backdrop="static" tabindex="-1" >
          <div class="modal-dialog modal-lg modal-dialog-centered">
            <div class="modal-content">
