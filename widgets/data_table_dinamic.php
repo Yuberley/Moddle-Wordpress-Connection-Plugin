@@ -30,9 +30,7 @@ function data_table_dinamic(){
             buttons: [
                {
                 extend: "excel",
-                text: "Exportar Excel",
-                className: "btn btn-success",
-                title: "Reporte Consolidado",
+                text: "Exportar Excel",         
                },
                {
                 extend: "copy",

@@ -27,20 +27,22 @@ function licenseRegistration(){
                 $fecha = $separador_fecha[0];       
                 
                 //consulta el nombre de la empresa en la base de datos
-                $sql_nombre_empresa = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$id_user'";
-                $empresa = $wpdb->get_var($sql_nombre_empresa);
+                $SQL_NOMBRE_EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$id_user'";
+                $NOMBRE_EMPRESADB = $wpdb->get_var($SQL_NOMBRE_EMPRESA);
+                if ($EMPRESADB!=null) {
+                    $empresa = $NOMBRE_EMPRESADB;
+                }
                 
 
-                $cadena = $item->name;
-                $separador = " ";
-                $cadena_separada = explode($separador,$cadena);
+                $nombre_paquete = $item->name;
+                $array_nombre_paquete = explode(" ",$nombre_paquete);
                 
-                if($cadena_separada[1] == "Personal"){
-                    $tipo_licencia = strtolower($cadena_separada[2]);
+                if($array_nombre_paquete[1] == "Personal"){
+                    $tipo_licencia = strtolower($array_nombre_paquete[2]);
                     $cantidad_licencia = 1;
-                }else if ($cadena_separada[1] == "Empresas"){
-                    $tipo_licencia = strtolower($cadena_separada[2]);
-                    $cantidad_licencia=$orden->line_items[0]->quantity;
+                }else if ($array_nombre_paquete[1] == "Empresas"){
+                    $tipo_licencia = strtolower($array_nombre_paquete[2]);
+                    $cantidad_licencia=$item->quantity;
                 }
         
                 // obtiene el nombre de  el grupo y revisa si esta repetido   
