@@ -232,7 +232,6 @@ function colaboradores_admin(){
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/removeAccents.js".' ></script>
-        // <script src='.plugin_dir_url(__FILE__)."../../assets/js/loadingButton.js".' ></script>
         
     </body>'; 
 
