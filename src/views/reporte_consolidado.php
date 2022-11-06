@@ -99,7 +99,10 @@ function reporte_consolidado(){
                 </tbody>
             </table> 
         </div>
+        <div class="container mt-5">
+        
 
+        </div>
         
     </body>   
     
