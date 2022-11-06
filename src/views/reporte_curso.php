@@ -93,7 +93,7 @@ function reporte_curso(){
         <div class="container mt-5">
    
             <div class="row">
-                <div class="col-md-8"><h1>REPORTES POR CURSO</h1></div>
+                <div class="col-md-8"><h1>REPORTES POR CURSO 📘</h1></div>
             </div>
                 <br>
                

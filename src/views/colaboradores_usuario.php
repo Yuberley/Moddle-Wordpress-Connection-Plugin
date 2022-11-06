@@ -131,6 +131,11 @@ function colaboradores_usuario(){
             <div class="container mt-5">
                 <div class="row">
                     <div class="col-md-8"><h1>COLABORADORES 👥</h1></div>
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-outline-dark" >📂 Ir a reportes</button>
+                        </div>
+                    </div>
                 </div>
         
                 <hr>
@@ -141,9 +146,9 @@ function colaboradores_usuario(){
                             <section class="float-start" id="cantidad_licencias">
                                 <span class="badge rounded-pill bg-dark"></span>
                                 <label class="text-muted">Empresa: </label>
-                                <span class="badge bg-primary">'.$NOMBRE_EMPRESA.'</span>
+                                <span class="badge bg-dark">'.$NOMBRE_EMPRESA.'</span>
                                 <label class="ps-2 text-muted">Grupo: </label>
-                                <span class="badge bg-primary">'.$NOMBRE_GRUPO.'</span>
+                                <span class="badge bg-dark">'.$NOMBRE_GRUPO.'</span>
                             </section>
                             <section class="float-start mt-1" id="cantidad_licencias">
                                 <label class="text-muted">Días disponibles de licencia: </label>
@@ -151,9 +156,9 @@ function colaboradores_usuario(){
                             </section>
                             <section class="float-start mt-1" id="cantidad_licencias">
                                 <label class="text-muted">Cantidad de licencias: </label>
-                                <span class="badge bg-primary">'.$CANTIDAD_TOTAL_LICENCIAS_GRUPO.'</span>
+                                <span class="badge bg-dark">'.$CANTIDAD_TOTAL_LICENCIAS_GRUPO.'</span>
                                 <label class="ps-2 text-muted">Licencias disponibles: </label>
-                                <span class="badge bg-primary">'.$CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO.'</span>
+                                <span class="badge bg-dark">'.$CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO.'</span>
                             </section>
                         </div>
                     </div>

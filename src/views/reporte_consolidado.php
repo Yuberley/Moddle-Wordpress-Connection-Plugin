@@ -67,7 +67,7 @@ function reporte_consolidado(){
         <div class="container mt-5">
    
             <div class="row">
-                <div class="col-md-8"><h1>REPORTE CONSOLIDADO</h1></div>
+                <div class="col-md-8"><h1>REPORTE CONSOLIDADO 📚</h1></div>
                 <br>
             </div>
             <div class="row">

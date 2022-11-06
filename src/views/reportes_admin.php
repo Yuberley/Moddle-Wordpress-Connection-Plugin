@@ -55,7 +55,12 @@ function reportes_admin(){
         <body >
         <div class="container mt-5">
             <div class="row">
-                <div class="col-md-8"><h1>REPORTES</h1></div>
+                <div class="col-md-8"><h1>REPORTES 📂</h1></div>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-outline-dark" >👥 Ir a colaboradores</button>
+                    </div>
+                </div>
             </div>
             <form method="POST">
             <div class="row">
