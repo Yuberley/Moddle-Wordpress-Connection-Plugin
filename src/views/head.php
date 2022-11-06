@@ -20,50 +20,6 @@ function head(){
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
-    <!-- Buscador  -->
-    <script type="text/javascript">
-        (function(document) {
-        "use strict";
-
-        var LightTableFilter = (function(Arr) {
-
-            var _input;
-
-            function _onInputEvent(e) {
-            _input = e.target;
-            var tables = document.getElementsByClassName(_input.getAttribute("data-table"));
-            Arr.forEach.call(tables, function(table) {
-                Arr.forEach.call(table.tBodies, function(tbody) {
-                Arr.forEach.call(tbody.rows, _filter);
-                });
-            });
-            }
-
-            function _filter(row) {
-            var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
-            row.style.display = text.indexOf(val) === -1 ? "none" : "table-row";
-            }
-
-            return {
-            init: function() {
-                var inputs = document.getElementsByClassName("light-table-filter");
-                Arr.forEach.call(inputs, function(input) {
-                input.oninput = _onInputEvent;
-                });
-            }
-            };
-        })(Array.prototype);
-
-        document.addEventListener("readystatechange", function() {
-            if (document.readyState === "complete") {
-            LightTableFilter.init();
-            }
-        });
-
-        })(document);
-    </script>
-
-
     <!-- DataTables --> 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/datatables.min.css"/>
  

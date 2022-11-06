@@ -12,28 +12,30 @@ function reporte_consolidado(){
     $numero_cursos= count($cursos);
     
 
-    $ID_EMPRESA = "SELECT id_empresa,nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupo'";
+    $ID_EMPRESA = "SELECT id_empresa,nombre FROM {$wpdb->prefix}grupos WHERE id = $grupo";
     $ID_EMPRESA = $wpdb->get_results($ID_EMPRESA);
     $NOMBRE_GRUPO = $ID_EMPRESA[0]->nombre;
     $ID_EMPRESA = $ID_EMPRESA[0]->id_empresa;
     
-    $EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$ID_EMPRESA'";
+    $EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = $ID_EMPRESA";
     $EMPRESA = $wpdb->get_results($EMPRESA);
     $EMPRESA = $EMPRESA[0]->empresa;
+
+    $listEstudiantesId = implode(',', $estudiantes);
+    $INFORMACION_ESTUDIANTE_CONSULTA = "SELECT * FROM {$wpdb->prefix}colaboradores WHERE id IN ($listEstudiantesId)";
+    $INFORMACION_ESTUDIANTE = $wpdb->get_results($INFORMACION_ESTUDIANTE_CONSULTA);
    
     $body_table='';
-    foreach($estudiantes as $estudiante){
-        $INFORMACION_ESTUDIANTE = 'SELECT * FROM '.$wpdb->prefix.'colaboradores WHERE id = '.$estudiante;
-        $INFORMACION_ESTUDIANTE = $wpdb->get_results($INFORMACION_ESTUDIANTE);
-        $body_table .= '<tr>';
-        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->nombre.'</td>';
-        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->apellido.'</td>';
-        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->documento.'</td>';
-        $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->email.'</td>';
+    foreach($INFORMACION_ESTUDIANTE as $estudiante){
+        $body_table .= '<tr>
+                            <td>'.$estudiante->nombre.'</td>
+                            <td>'.$estudiante->apellido.'</td>
+                            <td>'.$estudiante->documento.'</td>
+                            <td>'.$estudiante->email.'</td>';
 
         $promedio_total = 0;
         foreach($cursos as $curso){
-            $calificaciones = getMoodleGradesUser($curso,$estudiante);
+            $calificaciones = getMoodleGradesUser($curso, $estudiante->id);
             $calificaciones = $calificaciones->usergrades;
             $gradeitems = $calificaciones[0]->gradeitems;
             $cantidad_modulos = 0;

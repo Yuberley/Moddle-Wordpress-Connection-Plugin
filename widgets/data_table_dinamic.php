@@ -25,7 +25,7 @@ function data_table_dinamic(){
                 "zeroRecords":    "No se encontraron datos"
                 
             }, 
-            searching: false,
+            searching: true,
             dom: "Bfrtip",
             buttons: [
                {

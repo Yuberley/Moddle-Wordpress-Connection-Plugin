@@ -22,7 +22,7 @@ function colaboradores_usuario(){
 
     $NOMBRE_EMPRESA = $EMPRESA->empresa;
     $NOMBRE_GRUPO = 'Sin seleccionar';
-    $DIAS_RESTANTES_SUBSCRIPCION = 'Sin seleccionar';
+    $DIAS_RESTANTES_SUBSCRIPCION = '<span class="badge bg-dark">Sin seleccionar</span>';
 
     $colaboradores = "";
 
@@ -37,7 +37,8 @@ function colaboradores_usuario(){
 
         $FECHA_ACTUAL = new DateTime();
         $DIAS_RESTANTES_SUBSCRIPCION = $FECHA_INICIO_SUBSCRIPCION->diff($FECHA_ACTUAL);
-        $DIAS_RESTANTES_SUBSCRIPCION = 365 - $DIAS_RESTANTES_SUBSCRIPCION->days . ' dias restantes';
+        $DIAS_RESTANTES_SUBSCRIPCION = 365 - $DIAS_RESTANTES_SUBSCRIPCION->days;
+        $DIAS_RESTANTES_SUBSCRIPCION = $DIAS_RESTANTES_SUBSCRIPCION <= 0 ? '<span class="badge bg-secondary">0 dias restantes</span>' : '<span class="badge bg-success">'.$DIAS_RESTANTES_SUBSCRIPCION.' dias restantes </span>';
 
         $CANTIDAD_INSCRITOS = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupoId'";
         $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS);
@@ -129,47 +130,54 @@ function colaboradores_usuario(){
         <body >
             <div class="container mt-5">
                 <div class="row">
-                    <div class="col-md-8"><h1>COLABORADORES</h1></div>
+                    <div class="col-md-8"><h1>COLABORADORES 👥</h1></div>
                 </div>
-                <form method="POST">
-                    <div class="row">
-                        <div class="col-md-4"> 
-                            <br>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
-                            </div>
-                        </div>
-                        <div class="col-md-1"></div>
-                        <div class="col-md-3"></div>
-                        <div class="col-md-3">
-                            <label for="grupos">Grupos: </label>
-                            <select class="form-select" name="gruposInner" id="grupos_set" required>
-                                '.select_grupos_usuarios($empresaId).'
-                            </select>
-                        </div>
-                        
-                        <div class="col-md-1 float-end">
-                            <br>
-                            <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar_colaboradores" id="button-addon2">Filtrar</button>
-                        </div>
-                    </div> 
-                </form>
+        
+                <hr>
 
-                <section class="float-start" id="cantidad_licencias">
-                        <label class="text-muted">Empresa: </label>
-                        <span class="badge bg-dark">'.$NOMBRE_EMPRESA.'</span>
-                        <label class="ps-2 text-muted">Grupo: </label>
-                        <span class="badge bg-dark">'.$NOMBRE_GRUPO.'</span>
-                        <label class="ps-2 text-muted">Tiene: </label>
-                        <span class="badge bg-success">'.$DIAS_RESTANTES_SUBSCRIPCION.'</span>
-                        
-                </section>
-                <section class="float-end" id="cantidad_licencias">
-                        <label class="text-muted">Cantidad de licencias: </label>
-                        <span class="badge bg-primary">'.$CANTIDAD_TOTAL_LICENCIAS_GRUPO.'</span>
-                        <label class="ps-2 text-muted">Licencias disponibles: </label>
-                        <span class="badge bg-primary">'.$CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO.'</span>
-                </section>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="w-100 mt-2">
+                            <section class="float-start" id="cantidad_licencias">
+                                <span class="badge rounded-pill bg-dark"></span>
+                                <label class="text-muted">Empresa: </label>
+                                <span class="badge bg-primary">'.$NOMBRE_EMPRESA.'</span>
+                                <label class="ps-2 text-muted">Grupo: </label>
+                                <span class="badge bg-primary">'.$NOMBRE_GRUPO.'</span>
+                            </section>
+                            <section class="float-start mt-1" id="cantidad_licencias">
+                                <label class="text-muted">Días disponibles de licencia: </label>
+                                '.$DIAS_RESTANTES_SUBSCRIPCION.'
+                            </section>
+                            <section class="float-start mt-1" id="cantidad_licencias">
+                                <label class="text-muted">Cantidad de licencias: </label>
+                                <span class="badge bg-primary">'.$CANTIDAD_TOTAL_LICENCIAS_GRUPO.'</span>
+                                <label class="ps-2 text-muted">Licencias disponibles: </label>
+                                <span class="badge bg-primary">'.$CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO.'</span>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="col-7">
+                        <form method="POST">
+                            <div class="row">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6">
+                                <label for="grupos">Grupos: </label>
+                                <select class="form-select" name="gruposInner" id="grupos_set" required>
+                                '.select_grupos_usuarios($empresaId).'
+                                </select>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-1 float-end">
+                                    <br>
+                                    <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar_colaboradores" id="button-addon2">Filtrar</button>
+                                </div>
+                            </div> 
+                        </form>
+                    </div>
+                </div>    
+
             </div>
             
             <div class="container mt-5">
