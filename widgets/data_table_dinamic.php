@@ -26,6 +26,23 @@ function data_table_dinamic(){
                 
             }, 
             searching: false,
+            dom: "Bfrtip",
+            buttons: [
+               {
+                extend: "excel",
+                text: "Exportar Excel",
+                className: "btn btn-success",
+                title: "Reporte Consolidado",
+               },
+               {
+                extend: "copy",
+                text: "Copiar",
+               },
+               {
+                extend: "print",
+                text: "Imprimir",
+               }
+            ],
         } );
         </script>';
 

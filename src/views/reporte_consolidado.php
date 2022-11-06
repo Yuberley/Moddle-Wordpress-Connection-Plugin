@@ -31,12 +31,31 @@ function reporte_consolidado(){
         $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->documento.'</td>';
         $body_table .= '<td>'.$INFORMACION_ESTUDIANTE[0]->email.'</td>';
 
+        $promedio_total = 0;
         foreach($cursos as $curso){
             $calificaciones = getMoodleGradesUser($curso,$estudiante);
-           
-
+            $calificaciones = $calificaciones->usergrades;
+            $gradeitems = $calificaciones[0]->gradeitems;
+            $cantidad_modulos = 0;
+            $progreso_curso = 0;
+            foreach($gradeitems as $gradeitem){
+                if(contiene_evaluacion($gradeitem->itemname)){
+                    $cantidad_modulos++;
+                    if($gradeitem->gradeformatted != '-'){
+                        $progreso_curso += 100;
+                    }
+                }
+            }
+            if($cantidad_modulos != 0){
+                $progreso_curso = $progreso_curso/$cantidad_modulos;
+            }
+            
+            $promedio_total += $progreso_curso;
+            $body_table .= '<td>'.$progreso_curso.'%</td>';
         }
-
+        $promedio_total = $promedio_total/$numero_cursos;
+        $body_table .= '<td>'.$promedio_total.'%</td>';
+        $body_table .= '</tr>';
     }
 
 
@@ -76,40 +95,11 @@ function reporte_consolidado(){
                 </thead>
                 <tbody id="personas">
                     <!-- Aqui se cargan los datos de la base de datos -->
-                    <tr>
-                    <td>Camilo Esteban</td>
-                    <td>Morales Peña</td>
-                    <td>100.663.773</td>
-                    <td>camilo@gmail.com</td>
-                    <td>0%</td>
-                    <td>0%</td>
-                    <td>0%</td>
-                    
-                    </tr>
-                    <tr>
-                    <td>Maria Andrea</td>
-                    <td>Pinzon Garcia</td>
-                    <td>103.004.334</td>
-                    <td>armado.posada@gmail.com</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    <td>25%</td>
-                    
-                    </tr>
+                    '.$body_table.'
                 </tbody>
             </table> 
         </div>
-        <div class="container mt-5">
-        
-        <div class="row">
-            <div class="col-md-8"><h1></h1></div>
-                <div class="col-md-4"> 
-                    <div class="input-group mb-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success">Descargar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         
     </body>   
     
