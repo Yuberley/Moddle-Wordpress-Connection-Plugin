@@ -25,11 +25,11 @@ echo '
                     </select>
                 </div>
                 <div class="mb-3 ">
-                    <select hidden class="form-select" name="curso_grupos" id="grupos_curso_get">
+                    <select hidden class="form-select" name="grupos" id="grupos_curso_get">
                         '.select_grupos().' 
                     </select>
                     <label  class="col-form-label">Grupos</label>
-                    <select class="form-select" name="grupos" id="grupos_curso_set" required onChange="filterCourses(this,`curso_cursos_basic_get`,`curso_cursos_premium_get`,`curso_cursos_set`);">                 
+                    <select class="form-select" name="curso_grupos" id="grupos_curso_set" required onChange="filterCourses(this,`curso_cursos_basic_get`,`curso_cursos_premium_get`,`curso_cursos_set`);">                 
 
                     </select>
                 </div>
