@@ -1,25 +1,31 @@
 <?php
 
 require_once plugin_dir_path(__FILE__) . '../../settings/enviroment.php';
-require_once plugin_dir_path(__FILE__) . '../../helpers/license_registration.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
-require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_agregar_colaborador.php';
-require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_editar_colaborador.php';
 require_once plugin_dir_path(__FILE__) . '../../src/vendor/autoload.php';
 require_once plugin_dir_path(__FILE__) . '../../widgets/data_table_dinamic.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_selects.php';
+require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_agregar_colaborador_admin.php';
+require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_editar_colaborador_admin.php';
+
+
+// function getRoleUserWordpress(){
+//     $current_user = wp_get_current_user();
+//     $roles = $current_user->roles;
+//     $role = array_shift( $roles );
+//     return $role;
+// }
 
 
 function colaboradores_admin(){ 
-    
+
     global $wpdb;
-    licenseRegistration();
 
-
-    $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = '0';
-    $CANTIDAD_TOTAL_LICENCIAS_GRUPO = '0';
-    $EMPRESA = 'Sin seleccionar';
-    $GRUPO = 'Sin seleccionar';
+    $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = '#';
+    $CANTIDAD_TOTAL_LICENCIAS_GRUPO = '#';
+    $NOMBRE_EMPRESA = 'Sin seleccionar';
+    $NOMBRE_GRUPO = 'Sin seleccionar';
+    $DIAS_RESTANTES_SUBSCRIPCION = 'Sin seleccionar';
 
     $colaboradores = "";
 
@@ -28,24 +34,28 @@ function colaboradores_admin(){
         $grupoId = $_POST['gruposInner'];
 
         $EMPRESA_CONSULTA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
-        $EMPRESA = $wpdb->get_results($EMPRESA_CONSULTA);
-        $EMPRESA = $EMPRESA[0]->empresa;
-        $GRUPO_CONSULTA = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE id = '$grupoId'";
-        $GRUPO = $wpdb->get_results($GRUPO_CONSULTA);
-        $GRUPO = $GRUPO[0]->nombre;
+        $EMPRESA = $wpdb->get_row($EMPRESA_CONSULTA);
+        $NOMBRE_EMPRESA = $EMPRESA->empresa;
 
-        $CANTIDAD_INSCRITOS = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupoId'";
+        $GRUPO_CONSULTA = "SELECT nombre, fecha_inicio, cantidad_licencia  FROM {$wpdb->prefix}grupos WHERE id = $grupoId";
+        $GRUPO = $wpdb->get_row($GRUPO_CONSULTA);
+        $NOMBRE_GRUPO = $GRUPO->nombre;
+        
+        $FECHA_ACTUAL = new DateTime();
+        $FECHA_INICIO_SUBSCRIPCION = new DateTime($GRUPO->fecha_inicio);
+        $DIAS_RESTANTES_SUBSCRIPCION = $FECHA_INICIO_SUBSCRIPCION->diff($FECHA_ACTUAL);
+        $DIAS_RESTANTES_SUBSCRIPCION = 365 - $DIAS_RESTANTES_SUBSCRIPCION->days . ' dias restantes';
+
+        $CANTIDAD_INSCRITOS = "SELECT count(*) FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupoId'";
         $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS);
 
-        $CANTIDAD_MAXIMA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupoId'";
-        $CANTIDAD_TOTAL_LICENCIAS_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA);
+        $CANTIDAD_TOTAL_LICENCIAS_GRUPO = $GRUPO->cantidad_licencia;
         $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = $CANTIDAD_TOTAL_LICENCIAS_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
-
 
         $EMAIL_COLABORADORES_CONSULTA = "SELECT id, email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
         $EMAIL_COLABORADORES = $wpdb->get_results($EMAIL_COLABORADORES_CONSULTA);
 
-        $colaboradoresMoodle;
+        $colaboradoresMoodle  = [];
 
         if (count($EMAIL_COLABORADORES) > 0){
             $colaboradoresMoodle = getMoodleUsersByField('email', $EMAIL_COLABORADORES);
@@ -129,43 +139,46 @@ function colaboradores_admin(){
                    <div class="col-md-8"><h1>COLABORADORES</h1></div>
                </div>
                <form method="POST">
-               <div class="row">
-                   <div class="col-md-4"> 
-                      <br>
-                       <div class="input-group mb-3">
-                           <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
-                       </div>
-                   </div>
-                   <div class="col-md-1"></div>
-                   <div class="col-md-3">
-                       <label for="empresa">Empresas: </label>
-                       <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this,`grupos_get`,`grupos_set`);">
-                        <option selected value="0">Seleccione una Empresa</option>
-                            '.select_empresas().'                   
-                       </select>
-                   </div>
-                   <div class="col-md-3">
-                       <select hidden class="form-select" name="select_grupo" id="grupos_get">
-                            '.select_grupos().'            
-                       </select>
-                       <label for="grupos">Grupos: </label>
-                        <select class="form-select" name="gruposInner" id="grupos_set" required>
-    
-                        </select>
-                   </div>
-                   
-                   <div class="col-md-1 float-end">
-                       <br>
-                       <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar_colaboradores" id="button-addon2">Filtrar</button>
-                   </div>
-               </div> 
+                    <div class="row">
+                        <div class="col-md-4"> 
+                            <br>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3">
+                            <label for="empresa">Empresas: </label>
+                            <select class="form-select"  name="select_empresa" id="select_empresa" onChange="filterGroups(this,`grupos_get`,`grupos_set`);">
+                                <option selected value="0">Seleccione una Empresa</option>
+                                    '.select_empresas().'                   
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select hidden class="form-select" name="select_grupo" id="grupos_get">
+                                    '.select_grupos().'            
+                            </select>
+                            <label for="grupos">Grupos: </label>
+                                <select class="form-select" name="gruposInner" id="grupos_set" required>
+            
+                                </select>
+                        </div>
+                        
+                        <div class="col-md-1 float-end">
+                            <br>
+                            <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar_colaboradores" id="button-addon2">Filtrar</button>
+                        </div>
+                    </div> 
                </form>
 
                <section class="float-start" id="cantidad_licencias">
                        <label class="text-muted">Empresa: </label>
-                       <span class="badge bg-dark">'.$EMPRESA.'</span>
+                       <span class="badge bg-dark">'.$NOMBRE_EMPRESA.'</span>
                        <label class="ps-2 text-muted">Grupo: </label>
-                       <span class="badge bg-dark">'.$GRUPO.'</span>
+                       <span class="badge bg-dark">'.$NOMBRE_GRUPO.'</span>
+                       <label class="ps-2 text-muted">Tiene: </label>
+                       <span class="badge bg-success">'.$DIAS_RESTANTES_SUBSCRIPCION.'</span>
+                       
                </section>
                <section class="float-end" id="cantidad_licencias">
                        <label class="text-muted">Cantidad de licencias: </label>
@@ -211,14 +224,15 @@ function colaboradores_admin(){
        
        
        <!-- Modal agregar colaborador -->
-        '.modal_agregar_colaborador().'
+        '.modal_agregar_colaborador_admin().'
 
         <!-- Modal editar colaborador -->
-        '.modal_editar_colaborador().'
+        '.modal_editar_colaborador_admin().'
 
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/removeAccents.js".' ></script>
+        // <script src='.plugin_dir_url(__FILE__)."../../assets/js/loadingButton.js".' ></script>
         
     </body>'; 
 

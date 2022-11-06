@@ -4,7 +4,7 @@ require_once plugin_dir_path( __FILE__ ) . '../../../settings/enviroment.php';
 require_once plugin_dir_path( __FILE__ ) . '../../../helpers/remove_accent.php';
 
 
-function modal_agregar_colaborador(){
+function modal_agregar_colaborador_admin(){
 
     global $wpdb;
 
@@ -22,12 +22,19 @@ function modal_agregar_colaborador(){
         $empresa = $_POST['empresas'];
         $grupo = $_POST['grupos'];
 
+
+        $GRUPO_CONSULTA = "SELECT cantidad_licencia, fecha_inicio, tipo_licencia FROM {$wpdb->prefix}grupos WHERE id = $grupo";
+        $GRUPO = $wpdb->get_row($GRUPO_CONSULTA);
+
+        $TIPO_LICENCIA = $GRUPO->tipo_licencia;
+
+        $FECHA_INICIO_SUBSCRIPCION = strtotime($GRUPO->fecha_inicio);
+        $FECHA_FINAL_SUBSCRIPCION = strtotime($GRUPO->fecha_inicio.'+1 year');
         
-        $CANTIDAD_INSCRITOS_CONSULTA = "SELECT count(*) FROM wp_colaboradores WHERE id_grupo = '$grupo'";
+        $CANTIDAD_INSCRITOS_CONSULTA = "SELECT count(*) FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupo'";
         $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS_CONSULTA);
     
-        $CANTIDAD_MAXIMA_CONSULTA = "SELECT cantidad_licencia FROM wp_grupos WHERE id = '$grupo'";
-        $CANTIDAD_MAXIMA_EN_GRUPO = $wpdb->get_var($CANTIDAD_MAXIMA_CONSULTA);
+        $CANTIDAD_MAXIMA_EN_GRUPO = $GRUPO->cantidad_licencia;
         $CATIDAD_LICENCIAS_DISPONIBLES = $CANTIDAD_MAXIMA_EN_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
 
         if( $CATIDAD_LICENCIAS_DISPONIBLES <= 0 ){
@@ -69,7 +76,7 @@ function modal_agregar_colaborador(){
 
       
         if( !$existeUsuarioMoodle && !$existeEmailMoodle && $CATIDAD_LICENCIAS_DISPONIBLES > 0 ){
-
+            
             $user = (object)[
                 'username' => $usuario,
                 'firstname' => $nombre,
@@ -83,10 +90,15 @@ function modal_agregar_colaborador(){
             
             $createUserResponse = createMoodleUser($user);
             $userId = $createUserResponse[0]->id;
+
+            $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()[$TIPO_LICENCIA] );
+            $courses = array_merge( $coursesRequest->courses );
+
+            $subscribedCourses =  subscribeCoursesMoodleUser( $userId, $courses );
             
-            // El colborador se crea en moodle y en wordpress con el mismo  
-            // identificador (id que retorna moodle al crear el usuraio) por 
-            // facilidd de y actualizacion y eliminacion de usuarios.
+            // El colaborador se crea en moodle y en wordpress con el mismo  
+            // identificador (id que retorna moodle al crear el usuario) por 
+            // facilidad de actualizacion y eliminacion de usuarios.
             $GUARDAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (id, nombre, apellido, email, id_empresa, id_grupo) VALUES  ('$userId', '$nombre', '$apellido', '$email', '$empresa', '$grupo')";
             $USUARIO_GUARDADO = $wpdb->query($GUARDAR_USUARIO_CONSULTA);
             
