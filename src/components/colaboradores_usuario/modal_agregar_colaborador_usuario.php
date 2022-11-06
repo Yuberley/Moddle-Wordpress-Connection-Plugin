@@ -7,11 +7,11 @@ require_once plugin_dir_path( __FILE__ ) . '../../../helpers/remove_accent.php';
 function modal_agregar_colaborador_usuario(){
 
     global $wpdb;
-
+    $user_login= get_current_user_id();
+    $empresaId = get_userdata($user_login)->id;
 
     if(isset($_POST['agregar_colaborador'])){
         
-        $user_login= get_current_user_id();
 
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
@@ -21,7 +21,7 @@ function modal_agregar_colaborador_usuario(){
         $ciudad = $_POST['ciudad'];
         $pais = $_POST['pais'];
         $grupo = $_POST['grupos'];
-        $empresa = get_userdata($user_login)->id;
+        $empresa = $empresaId;
 
 
         $GRUPO_CONSULTA = "SELECT cantidad_licencia, fecha_inicio, tipo_licencia FROM {$wpdb->prefix}grupos WHERE id = $grupo";
@@ -100,7 +100,7 @@ function modal_agregar_colaborador_usuario(){
             // El colaborador se crea en moodle y en wordpress con el mismo  
             // identificador (id que retorna moodle al crear el usuario) por 
             // facilidad de actualizacion y eliminacion de usuarios.
-            $GUARDAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (id, nombre, apellido, email, id_empresa, id_grupo) VALUES  ('$userId', '$nombre', '$apellido', '$email', '$empresa', '$grupo')";
+            $GUARDAR_USUARIO_CONSULTA = "INSERT INTO {$wpdb->prefix}colaboradores (id, nombre, apellido, documento, email, id_empresa, id_grupo) VALUES  ('$userId', '$nombre', '$apellido', '$documento', '$email', '$empresa', '$grupo')";
             $USUARIO_GUARDADO = $wpdb->query($GUARDAR_USUARIO_CONSULTA);
             
             if( $USUARIO_GUARDADO ){
@@ -144,7 +144,7 @@ function modal_agregar_colaborador_usuario(){
                             <div class="mb-3 col-12 col-sm-12">
                                 <label for="consolidado" class="col-form-label">Grupos</label>
                                 <select class="form-select" name="grupos" id="grupos_agregar_set" required>
-                                    '.select_grupos().'
+                                    '.select_grupos_usuarios($empresaId).'
                                 </select>
                             </div>
                         </section>
@@ -165,7 +165,7 @@ function modal_agregar_colaborador_usuario(){
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="documento">Documento</label>
-                                    <input class="form-control" name="documento" type="number" id="docimento" required>
+                                    <input class="form-control" name="documento" type="number" id="documento" min="10000" max="10000000000000" required>
                                 </div>
                             </section>
                             <section class="d-flex align-items-center justify-content-center row">

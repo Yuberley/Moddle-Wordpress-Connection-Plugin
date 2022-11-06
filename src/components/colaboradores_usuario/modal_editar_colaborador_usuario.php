@@ -71,7 +71,7 @@ function modal_editar_colaborador_usuario(){
             
             $updateUserResponse = updateMoodleUser($idUsuario, $user);
 
-            $EDITAR_USUARIO_CONSULTA = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', email = '$email' WHERE id = '$idUsuario'";
+            $EDITAR_USUARIO_CONSULTA = "UPDATE {$wpdb->prefix}colaboradores SET nombre = '$nombre', apellido = '$apellido', documento = '$documento',  email = '$email' WHERE id = '$idUsuario'";
             $USUARIO_EDITADO = $wpdb->query($EDITAR_USUARIO_CONSULTA);
 
             echo '<script>
@@ -116,7 +116,7 @@ function modal_editar_colaborador_usuario(){
                                 </div>
                                 <div class="mb-3 col-12 col-sm-6">
                                     <label class="form-label" for="documentoEditar">Documento</label>
-                                    <input class="form-control" name="documentoEditar" id="documentoEditar" type="number"  required>
+                                    <input class="form-control" name="documentoEditar" id="documentoEditar" type="number" min="10000" max="10000000000000" required>
                                 </div>
                             </section>
                             <section class="d-flex align-items-center justify-content-center row">
