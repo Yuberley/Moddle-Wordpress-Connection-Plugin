@@ -261,19 +261,19 @@ function subscribeCoursesMoodleUser($userId, $courses){
 //     return $courses;
 // }
 
-// function getMoodleCourse($id){
-//     $moodle = getMoodle();
-//     $response = $moodle->request('GET', 'webservice/rest/server.php', [
-//         'query' => [
-//             'wstoken' => getMoodleToken(),
-//             'moodlewsrestformat' => 'json',
-//             'wsfunction' => 'core_course_get_courses',
-//             'options[ids][0]' => $id,
-//         ]
-//     ]);
-//     $course = json_decode($response->getBody()->getContents());
-//     return $course;
-// }
+function getMoodleCourse($id){
+    $moodle = getMoodle();
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
+        'query' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'core_course_get_courses',
+            'options[ids][0]' => $id,
+        ]
+    ]);
+    $course = json_decode($response->getBody()->getContents());
+    return $course;
+}
 
 // function getMoodleCourseByField($field, $value){
 //     $moodle = getMoodle();
