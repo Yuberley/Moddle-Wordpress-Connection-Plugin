@@ -65,3 +65,21 @@ function ActivarPlugin(){
     $wpdb->query($sql_colaboradores);
 }
 register_activation_hook(__FILE__, 'ActivarPlugin');
+
+function custom_login_redirect(){
+    
+    wp_redirect( home_url('home-admin') );
+    exit();
+}
+
+add_action('wp_login','custom_login_redirect');
+
+function custom_logout_redirect(){
+    wp_redirect( home_url() );
+    exit();
+}
+
+add_action('wp_logout','custom_logout_redirect');
+
+
+
