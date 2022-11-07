@@ -59,14 +59,19 @@ function reportes_usuario(){
    echo '
         <body >
         <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-8"><h1>REPORTES 📂</h1></div>
-                <div class="col-md-4">
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-outline-dark" >👥 Ir a colaboradores</button>
+            <div class="border-bottom mb-4">
+                <div class="row">
+                    <div class="col-md-8"><h1>REPORTES 📂</h1></div>
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-end">
+                            <a href="'.get_site_url().'/colaboradores-usuario/">
+                                <button class="btn btn-outline-dark" >👥 Ir a colaboradores</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            
             <form method="POST">
             <div class="row">
                 <div class="col-md-7"> 

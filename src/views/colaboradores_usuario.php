@@ -129,16 +129,18 @@ function colaboradores_usuario(){
     echo '
         <body >
             <div class="container mt-5">
-                <div class="row">
-                    <div class="col-md-8"><h1>COLABORADORES 👥</h1></div>
-                    <div class="col-md-4">
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-outline-dark" >📂 Ir a reportes</button>
+                <div class="border-bottom mb-4">
+                    <div class="row">
+                        <div class="col-md-8"><h1>COLABORADORES 👥</h1></div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-end">
+                                <a href="'.get_site_url().'/reportes-usuario/">
+                                    <button class="btn btn-outline-dark" >📂 Ir a reportes</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-        
-                <hr>
 
                 <div class="row">
                     <div class="col-5">

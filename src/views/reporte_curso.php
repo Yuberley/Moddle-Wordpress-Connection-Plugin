@@ -91,11 +91,18 @@ function reporte_curso(){
 
     <body >
         <div class="container mt-5">
-   
-            <div class="row">
-                <div class="col-md-8"><h1>REPORTES POR CURSO 📘</h1></div>
+            <div class="border-bottom mb-4">
+                <div class="row">
+                    <div class="col-md-8"><h1>REPORTES POR CURSO 📘</h1></div>
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-end">
+                            <a href="javascript:history.back()">
+                                <button class="btn btn-outline-dark" >🔙 Volver</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-                <br>
                
             <div class="row">
                 <div class="col-md-12">

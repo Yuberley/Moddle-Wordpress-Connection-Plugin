@@ -90,11 +90,10 @@ function colaboradores_admin(){
                                 class="btn btn-secondary"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#modal_editar_colaborador"
-                                onclick="editarColaborador('.$userId.', '.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">
-                                Editar ✏️</button>
+                                onclick="editarColaborador('.$userId.', '.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">Editar</button>
                             <form method="POST">
                                 <input type="hidden" name="idEliminar" value="'.$colaborador->id.'">
-                                <button type="submit" class="btn btn-outline-danger ms-1" name="eliminar_usuario">Eliminar ❌</button>
+                                <button type="submit" class="btn btn-outline-danger ms-1" name="eliminar_usuario">Eliminar</button>
                             </form>
                         </div>
                     </td>
@@ -136,16 +135,19 @@ function colaboradores_admin(){
     echo '
         <body>
            <div class="container mt-5">
-               <div class="row">
-                   <div class="col-md-8"><h1>COLABORADORES 👥</h1></div>
-                    <div class="col-md-4">
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-outline-dark" >📂 Ir a reportes</button>
+                <div class="border-bottom mb-4">
+                    <div class="row">
+                        <div class="col-md-8"><h1>COLABORADORES 👥</h1></div>
+                        <div class="col-md-4">
+                            <div class="d-flex justify-content-end">
+                                <a href="'.get_site_url().'/reportes-admin/">
+                                    <button class="btn btn-outline-dark" >📂 Ir a reportes</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
-               </div>
+                </div>
 
-               <hr>
 
                 <div class="row">
                     <div class="col-5">
@@ -198,7 +200,6 @@ function colaboradores_admin(){
                     </div>
                 </div>                  
            </div>
-
 
            <div class="container mt-5">
                <table class="table order-table table-hover border" id="table" >

@@ -58,7 +58,9 @@ function reportes_admin(){
                 <div class="col-md-8"><h1>REPORTES 📂</h1></div>
                 <div class="col-md-4">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-outline-dark" >👥 Ir a colaboradores</button>
+                        <a href="'.get_site_url().'/colaboradores-admin/">
+                            <button class="btn btn-outline-dark" >👥 Ir a colaboradores</button>
+                        </a>
                     </div>
                 </div>
             </div>
