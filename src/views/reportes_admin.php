@@ -9,6 +9,19 @@ require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
 
 function reportes_admin(){
 
+    $userLogin = get_current_user_id();
+    $userRole = get_userdata($userLogin)->roles[0];
+
+    if ($userRole == 'customer') {
+        wp_redirect('/primedigital/reportes-usuario/');
+        exit;
+    }
+
+    if ($userRole != 'administrator' && $userRole != 'customer') {
+        wp_redirect('/primedigital/');
+        exit;
+    }
+
 
     global $wpdb;
     $EMPRESA = 'Sin seleccionar';

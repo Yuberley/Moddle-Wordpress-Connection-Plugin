@@ -20,6 +20,7 @@ function getWoocommerce(){
 function getMoodle(){
     $moodle = new \GuzzleHttp\Client([
         'base_uri' => 'http://179.32.53.160/moodle/',
+        'timeout'  => 2.0,
     ]);
     return $moodle;
 }

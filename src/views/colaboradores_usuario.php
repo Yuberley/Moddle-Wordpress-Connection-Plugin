@@ -17,6 +17,7 @@ function colaboradores_usuario(){
 
     $user_login= get_current_user_id();
     $empresaId = get_userdata($user_login)->id;
+
     $EMPRESA_CONSULTA = "SELECT id, empresa FROM {$wpdb->prefix}empresas WHERE id = '$empresaId'";
     $EMPRESA = $wpdb->get_row($EMPRESA_CONSULTA);
 
