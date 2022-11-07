@@ -54,23 +54,27 @@ function reportes_admin(){
    echo '
         <body >
         <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-8"><h1>REPORTES 📂</h1></div>
-                <div class="col-md-4">
-                    <div class="d-flex justify-content-end">
-                        <a href="'.get_site_url().'/colaboradores-admin/">
-                            <button class="btn btn-outline-dark" >👥 Ir a colaboradores</button>
-                        </a>
+            <div class="border-bottom mb-4">
+                <div class="row">
+                    <div class="col-md-8"><h1>REPORTES 📂</h1></div>
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-end">
+                            <a href="'.get_site_url().'/colaboradores-admin/">
+                                <button class="btn btn-outline-dark" >👥 Ir a colaboradores</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
             <form method="POST">
             <div class="row">
-                <div class="col-md-4"> 
-                    <br>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
-                    </div>
+                <div class="col-md-4 pt-3 d-flex align-items-center"> 
+                    <section class="float-start" id="cantidad_licencias">
+                        <label class="text-muted">Empresa: </label>
+                        <span class="badge bg-dark">'.$EMPRESA.'</span>
+                        <label class="ps-2 text-muted">Grupo: </label>
+                        <span class="badge bg-dark">'.$GRUPO.'</span>
+                    </section>
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-3">
@@ -97,12 +101,6 @@ function reportes_admin(){
 
             </div> 
             </form>
-                <section class="float-start" id="cantidad_licencias">
-                       <label class="text-muted">Empresa: </label>
-                       <span class="badge bg-dark">'.$EMPRESA.'</span>
-                       <label class="ps-2 text-muted">Grupo: </label>
-                       <span class="badge bg-dark">'.$GRUPO.'</span>
-               </section>
         </div>
 
     <div class="container mt-5">

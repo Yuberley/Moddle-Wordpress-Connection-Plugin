@@ -71,18 +71,20 @@ function reportes_usuario(){
                     </div>
                 </div>
             </div>
-            
+
             <form method="POST">
             <div class="row">
-                <div class="col-md-7"> 
-                    <br>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control light-table-filter" data-table="order-table" placeholder="Buscar Colaborador">
+                <div class="col-md-6"> 
+                    <div class="col-md-4 pt-3 d-flex align-items-center">
+                        <section class="float-start" id="cantidad_licencias">
+                            <label class="ps-2 text-muted">Grupo: </label>
+                            <span class="badge bg-dark">'.$GRUPO.'</span>
+                        </section>
                     </div>
                 </div>
                 <div class="col-md-1"></div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                        <label for="grupos">Grupos: </label>
                         <select class="form-select" name="gruposInner" id="grupos_usuario" required>
                         '.select_grupos_usuarios($empresaId).'
@@ -96,11 +98,6 @@ function reportes_usuario(){
 
             </div> 
             </form>
-                <section class="float-start" id="cantidad_licencias">
-                       
-                       <label class="ps-2 text-muted">Grupo: </label>
-                       <span class="badge bg-dark">'.$GRUPO.'</span>
-               </section>
         </div>
 
     <div class="container mt-5">
