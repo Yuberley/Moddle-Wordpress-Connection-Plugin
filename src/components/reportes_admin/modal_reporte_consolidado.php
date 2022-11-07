@@ -36,7 +36,10 @@ function modal_reporte_consolidado(){
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label  class="col-form-label">Cursos:</label>
+                        <div>
+                            <label  class="" >Cursos:</label>
+                            <span class="badge rounded-pill bg-light text-dark float-end">Presione la tecla Ctrl o Shift para seleccionar varias opciones</span>
+                        </div>
                         <select name="curso_cursos_basic" id="consolidado_cursos_basic_get" class="select form-control" multiple hidden>
                         '.select_cursos_basic().'
                         </select>
@@ -49,7 +52,10 @@ function modal_reporte_consolidado(){
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label" id="consolidado_estudiantes">Estudiantes:</label>
+                        <div>
+                            <label class="" id="consolidado_estudiantes">Estudiantes:</label>
+                            <span class="badge rounded-pill bg-light text-dark float-end">Presione la tecla Ctrl o Shift para seleccionar varias opciones</span>
+                        </div>
                         <select class="select form-control" name="consolidado_estudiantes[]" id="consolidado_colaboradores_set" multiple required>
                         
                         </select>

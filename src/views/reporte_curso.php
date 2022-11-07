@@ -63,7 +63,7 @@ function reporte_curso(){
                 if(contiene_evaluacion($gradeitem->itemname)){
                     
                     if($gradeitem->gradeformatted == '-'){
-                        $body_table .= '<td>0  %</td>';
+                        $body_table .= '<td>0%</td>';
                     }else{
                         $body_table .= '<td>100%</td>';
                         $progreso_curso += 100;
@@ -81,7 +81,7 @@ function reporte_curso(){
                 }
                 $body_table .= '</tr>';
         }else{
-            $body_table .= '<td>0  %</td>';
+            $body_table .= '<td>0%</td>';
             $body_table .= '<td>No hay Modulos</td>';
             $body_table .= '</tr>';
         }
