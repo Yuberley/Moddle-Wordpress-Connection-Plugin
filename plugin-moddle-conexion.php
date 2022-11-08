@@ -56,7 +56,7 @@ function ActivarPlugin(){
     `id` INT NOT NULL AUTO_INCREMENT,
     `nombre` VARCHAR(45) NOT NULL,
     `apellido` VARCHAR(45) NOT NULL,
-    `documento` INT(15) NOT NULL UNIQUE,
+    `documento` INT(15) NOT NULL,
     `email` VARCHAR(45) NOT NULL UNIQUE,
     `id_empresa` INT NOT NULL,
     `id_grupo` INT NOT NULL,
@@ -65,3 +65,21 @@ function ActivarPlugin(){
     $wpdb->query($sql_colaboradores);
 }
 register_activation_hook(__FILE__, 'ActivarPlugin');
+
+function custom_login_redirect(){
+    
+    wp_redirect( home_url('home-admin') );
+    exit();
+}
+
+add_action('wp_login','custom_login_redirect');
+
+function custom_logout_redirect(){
+    wp_redirect( home_url() );
+    exit();
+}
+
+add_action('wp_logout','custom_logout_redirect');
+
+
+

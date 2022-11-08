@@ -8,7 +8,7 @@ function modal_reporte_curso_usuario($empresaId) {
 
 echo '
 <div class="modal fade" id="modal_reporte_curso" data-bs-backdrop="static" tabindex="-1" >
-<div class="modal-dialog ">
+<div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" >Reporte por Curso</h5>
@@ -19,8 +19,9 @@ echo '
 
                 <div class="mb-3 ">
                     <label  class="col-form-label">Grupos</label>
-                    <select class="form-select" name="curso_grupos" id="grupos_curso_set" required onChange="filterCourses(this,`curso_cursos_basic_get`,`curso_cursos_premium_get`,`curso_cursos_set`);">                 
-                    '.select_grupos_usuarios($empresaId).'
+                    <select class="form-select" name="curso_grupos" id="grupos_curso_set" required onChange="filterCourses(this,`curso_cursos_basic_get`,`curso_cursos_premium_get`,`curso_cursos_set`);">
+                        <option selected >Seleccione un grupo</option>               
+                        '.select_grupos_usuarios($empresaId).'
                     </select>
                 </div>
                 <div class="mb-3">

@@ -9,14 +9,6 @@ require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_adm
 require_once plugin_dir_path(__FILE__) . '../../src/components/colaboradores_admin/modal_editar_colaborador_admin.php';
 
 
-// function getRoleUserWordpress(){
-//     $current_user = wp_get_current_user();
-//     $roles = $current_user->roles;
-//     $role = array_shift( $roles );
-//     return $role;
-// }
-
-
 function colaboradores_admin(){ 
 
 
@@ -25,11 +17,6 @@ function colaboradores_admin(){
 
     if ($userRole == 'customer') {
         wp_redirect('/primedigital/colaboradores-usuario/');
-        exit;
-    }
-
-    if ($userRole != 'administrator' && $userRole != 'customer') {
-        wp_redirect('/primedigital/');
         exit;
     }
 

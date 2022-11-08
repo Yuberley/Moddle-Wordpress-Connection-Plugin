@@ -9,7 +9,6 @@ require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
 
 function reportes_usuario(){
 
-
     global $wpdb;
     $EMPRESA = 'Sin seleccionar';
     $GRUPO = 'Sin seleccionar';

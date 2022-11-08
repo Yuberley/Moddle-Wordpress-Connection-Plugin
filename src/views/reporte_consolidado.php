@@ -5,6 +5,7 @@ require_once plugin_dir_path(__FILE__) . '../../helpers/functions_requests.php';
 require_once plugin_dir_path(__FILE__) . '../../helpers/functions_tables_report.php';
 
 function reporte_consolidado(){
+
     global $wpdb;
     $grupo = $_POST['consolidado_grupos'];
     $cursos = $_POST['consolidado_cursos'];

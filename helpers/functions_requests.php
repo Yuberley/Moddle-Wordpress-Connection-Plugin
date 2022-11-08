@@ -20,7 +20,6 @@ function getWoocommerce(){
 function getMoodle(){
     $moodle = new \GuzzleHttp\Client([
         'base_uri' => 'http://179.32.53.160/moodle/',
-        'timeout'  => 2.0,
     ]);
     return $moodle;
 }
@@ -184,14 +183,14 @@ function getMoodleCoursesByCategory($categoryId){
 }
 
 
-function subscribeCoursesMoodleUser($userId, $courses){
+function subscribeCoursesMoodleUser($userId, $initialDate, $finalDate, $courses){
     $queryValues = [];
     foreach($courses as $key => $course){
         $queryValues['enrolments['.$key.'][roleid]'] = 5;
         $queryValues['enrolments['.$key.'][userid]'] = $userId;
         $queryValues['enrolments['.$key.'][courseid]'] = $course->id;
-        $queryValues['enrolments['.$key.'][timestart]'] = time();
-        $queryValues['enrolments['.$key.'][timeend]'] = strtotime('+1 year');   
+        $queryValues['enrolments['.$key.'][timestart]'] = $initialDate;
+        $queryValues['enrolments['.$key.'][timeend]'] = $finalDate;   
     }
 
     $moodle = getMoodle();

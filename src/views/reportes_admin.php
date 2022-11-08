@@ -17,11 +17,6 @@ function reportes_admin(){
         exit;
     }
 
-    if ($userRole != 'administrator' && $userRole != 'customer') {
-        wp_redirect('/primedigital/');
-        exit;
-    }
-
 
     global $wpdb;
     $EMPRESA = 'Sin seleccionar';

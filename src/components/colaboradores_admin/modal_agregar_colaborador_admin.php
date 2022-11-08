@@ -30,6 +30,8 @@ function modal_agregar_colaborador_admin(){
 
         $FECHA_INICIO_SUBSCRIPCION = strtotime($GRUPO->fecha_inicio);
         $FECHA_FINAL_SUBSCRIPCION = strtotime($GRUPO->fecha_inicio.'+1 year');
+        $FECHA_ACTUAL = strtotime( date("Y-m-d") );
+        $SUBSCRIPCION_ACTIVA = $FECHA_ACTUAL > $FECHA_INICIO_SUBSCRIPCION && $FECHA_ACTUAL < $FECHA_FINAL_SUBSCRIPCION;
         
         $CANTIDAD_INSCRITOS_CONSULTA = "SELECT count(*) FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupo'";
         $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS_CONSULTA);
@@ -74,8 +76,17 @@ function modal_agregar_colaborador_admin(){
                     </script>';
         }
 
+        if( !$SUBSCRIPCION_ACTIVA ){
+            echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "¡La suscripción de este grupo ha expirado!",
+                          })
+                    </script>';
+        }
       
-        if( !$existeUsuarioMoodle && !$existeEmailMoodle && $CATIDAD_LICENCIAS_DISPONIBLES > 0 ){
+        if( !$existeUsuarioMoodle && !$existeEmailMoodle && $CATIDAD_LICENCIAS_DISPONIBLES > 0 && $SUBSCRIPCION_ACTIVA ){
             
             $user = (object)[
                 'username' => $usuario,
@@ -94,7 +105,7 @@ function modal_agregar_colaborador_admin(){
             $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()[$TIPO_LICENCIA] );
             $courses = array_merge( $coursesRequest->courses );
 
-            $subscribedCourses =  subscribeCoursesMoodleUser( $userId, $courses );
+            $subscribedCourses =  subscribeCoursesMoodleUser( $userId, $FECHA_INICIO_SUBSCRIPCION, $FECHA_FINAL_SUBSCRIPCION, $courses );
             
             // El colaborador se crea en moodle y en wordpress con el mismo  
             // identificador (id que retorna moodle al crear el usuario) por 
@@ -115,6 +126,7 @@ function modal_agregar_colaborador_admin(){
             } 
 
             if ( !$USUARIO_GUARDADO ) {
+                $deleteUser = deleteMoodleUser($userId);
                 echo '<script>
                             Swal.fire({
                                 icon: "error",

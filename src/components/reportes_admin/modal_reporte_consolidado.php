@@ -6,7 +6,7 @@ require_once plugin_dir_path( __FILE__ ) . '../../../helpers/functions_selects.p
 function modal_reporte_consolidado(){
     echo '
     <div class="modal fade" id="modal_reporte_consolidado" data-bs-backdrop="static" tabindex="-1" >
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" >Reporte por Consolidado</h5>
@@ -20,9 +20,8 @@ function modal_reporte_consolidado(){
                     <div class="mb-3 ">
                         <label for="empresa" class="col-form-label">Empresa</label>
                         <select class="form-select" name="consolidado_empresa" id="consolidad_empresas" onChange="filterGroups(this,`consolidado_grupos_get`,`consolidado_grupos_set`);">
-                            <option selected value="0">Seleccione una empresa</option>'
-                            .select_empresas().
-                            '
+                            <option selected value="0">Seleccione una empresa</option>
+                            '.select_empresas().'
                         </select>
                     </div>
                     <div class="mb-3 ">
@@ -36,7 +35,10 @@ function modal_reporte_consolidado(){
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label  class="col-form-label">Cursos:</label>
+                        <div>
+                            <label  class="" >Cursos:</label>
+                            <span class="badge rounded-pill bg-light text-dark float-end">Presione Ctrl o Shift para selección múltiples</span>
+                        </div>
                         <select name="curso_cursos_basic" id="consolidado_cursos_basic_get" class="select form-control" multiple hidden>
                         '.select_cursos_basic().'
                         </select>
@@ -47,15 +49,26 @@ function modal_reporte_consolidado(){
                         <select  name="consolidado_cursos[]" id="consolidado_cursos_set" class="select form-control" multiple required>
                         
                         </select>
+                        <div class="form-check form-switch">
+                            <span class="float-start">Selecionar todos</<span>
+                            <input class="form-check-input" id="selectAllCourses" type="checkbox" id="flexSwitchCheckDefault">
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="col-form-label" id="consolidado_estudiantes">Estudiantes:</label>
+                        <div>
+                            <label class="" id="consolidado_estudiantes">Estudiantes:</label>
+                            <span class="badge rounded-pill bg-light text-dark float-end">Presione Ctrl o Shift para selección múltiples</span>
+                        </div>
                         <select class="select form-control" name="consolidado_estudiantes[]" id="consolidado_colaboradores_set" multiple required>
                         
                         </select>
+                        <div class="form-check form-switch">
+                            <span class="float-start">Selecionar todos</<span>
+                            <input class="form-check-input" id="selectAllStudents" type="checkbox" id="flexSwitchCheckDefault">
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary" value="form_consolidado" >Generar Reporte</button>
+                    <div class="d-flex justify-content-center" id="reporte_consolidado_button">
+                        <button type="submit" class="btn btn-primary" value="form_consolidado" >Generar Reporte</button>
                     </div>
                 </form>
             </div>  
