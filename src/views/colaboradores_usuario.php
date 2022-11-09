@@ -86,10 +86,7 @@ function colaboradores_usuario(){
                                 data-bs-target="#modal_editar_colaborador"
                                 onclick="editarColaborador('.$userId.', '.$firstname.', '.$lastname.', '.$username.', '.$document.', '.$email.', '.$city.', '.$country.')">
                                 Editar</button>
-                            <form method="POST">
-                                <input type="hidden" name="idEliminar" value="'.$colaborador->id.'">
-                                <button type="submit" class="btn btn-outline-danger ms-1" name="eliminar_usuario">Eliminar</button>
-                            </form>
+                                <button type="submit" class="btn btn-outline-danger ms-1" onclick="deleteCollaborator('.$userId.', '.$firstname.', '.$lastname.')" >Eliminar</button>
                         </div>
                     </td>
                 </tr>';
@@ -229,6 +226,7 @@ function colaboradores_usuario(){
             '.modal_editar_colaborador_usuario().'
 
             <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
+            <script src='.plugin_dir_url(__FILE__)."../../assets/js/deleteCollaborator.js".' ></script>
             <script src='.plugin_dir_url(__FILE__)."../../assets/js/removeAccents.js".' ></script>
             
                 

@@ -20,7 +20,7 @@ echo '
                 <div class="mb-3 ">
                     <label  class="col-form-label">Grupos</label>
                     <select class="form-select" name="curso_grupos" id="grupos_curso_set" required onChange="filterCourses(this,`curso_cursos_basic_get`,`curso_cursos_premium_get`,`curso_cursos_set`);">
-                        <option selected >Seleccione un grupo</option>               
+                        <option selected disabled >Seleccione un grupo</option>               
                         '.select_grupos_usuarios($empresaId).'
                     </select>
                 </div>

@@ -19,7 +19,7 @@ echo '
                 <div class="mb-3 ">
                     <label for="empresa" class="col-form-label">Empresa</label>
                     <select class="form-select" name="curso_empresa" id="empresas" onChange="filterGroups(this,`grupos_curso_get`,`grupos_curso_set`);">
-                        <option selected >Seleccione una empresa</option>
+                        <option selected disabled >Seleccione una empresa</option>
                         '.select_empresas().'
                     </select>
                 </div>
