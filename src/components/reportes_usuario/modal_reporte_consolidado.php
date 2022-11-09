@@ -20,12 +20,13 @@ function modal_reporte_consolidado_usuario($empresaId){
                     <div class="mb-3 ">
                         <label  class="col-form-label">Grupos: </label>
                         <select class="form-select" name="consolidado_grupos" id="consolidado_grupos_set" required onChange="filterCourses(this,`consolidado_cursos_basic_get`,`consolidado_cursos_premium_get`,`consolidado_cursos_set`);">
+                            <option value="" selected disabled>Seleccione un grupo</option>
                             '.select_grupos_usuarios($empresaId).'
                         </select>
                     </div>
                     <div class="mb-3">
                          <div>
-                            <label  class="" >Cursos: </label>
+                            <label class="" >Cursos: </label>
                             <span class="badge rounded-pill bg-light text-dark float-end">Presione Ctrl o Shift para selección múltiple</span>
                         </div>
                         <select name="curso_cursos_basic" id="consolidado_cursos_basic_get" class="select form-control" multiple hidden>

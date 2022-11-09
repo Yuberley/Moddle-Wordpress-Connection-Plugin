@@ -20,7 +20,7 @@ function modal_reporte_consolidado(){
                     <div class="mb-3 ">
                         <label for="empresa" class="col-form-label">Empresa</label>
                         <select class="form-select" name="consolidado_empresa" id="consolidad_empresas" onChange="filterGroups(this,`consolidado_grupos_get`,`consolidado_grupos_set`);">
-                            <option selected value="0">Seleccione una empresa</option>
+                            <option selected disabled value="">Seleccione una empresa</option>
                             '.select_empresas().'
                         </select>
                     </div>

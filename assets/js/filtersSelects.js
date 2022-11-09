@@ -1,6 +1,6 @@
 function filterGroups(event, get_element, set_element){
     let grupos = document.getElementById(get_element);
-    let options_grupos = "";
+    let options_grupos = "<option value='' selected disabled>Seleccione un grupo</option>";
     for(let i = 0; i < grupos.options.length; i++){
         if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
             options_grupos += "<option value="+grupos.options[i].value+">"+grupos.options[i].text+"</option>";
@@ -21,10 +21,6 @@ function filterCourses(event, get_element_basic, get_element_premium, set_elemen
 
     if(event.options[event.selectedIndex].text.includes("premium")){
         cursos_inner.innerHTML = cursos_premium.innerHTML;    
-    }
-    
-    if(event.options[event.selectedIndex].text.includes("Seleccione")){
-        cursos_inner.innerHTML = "";    
     }
         
 }
@@ -90,21 +86,3 @@ setTimeout(function(){
     });
 
 }, 1000);
-
-
-// function selectAllSwitch(selectAll, selectBox, option){
-//     $(selectAll).click(function() {
-//         if($(selectAll).is(':checked') ){
-//             $(".selectColaborador").prop("checked", true);
-//             $(selectBox + option).attr("selected","selected");
-//         }else{
-//             $(".selectColaborador").prop("checked", false);
-//             $(selectBox + option).removeAttr("selected");
-//         }   
-//     });
-// }
-
-// setTimeout(() => {
-//     selectAllSwitch("#selectAllStudents", ".consolidado_colaboradores_set", " option");
-//     selectAllSwitch("#selectAllCourses", ".consolidado_cursos_set", " option");
-// }, 1000);
