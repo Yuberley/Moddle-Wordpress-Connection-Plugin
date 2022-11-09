@@ -107,6 +107,13 @@ function modal_agregar_colaborador_admin(){
 
             $subscribedCourses =  subscribeCoursesMoodleUser( $userId, $FECHA_INICIO_SUBSCRIPCION, $FECHA_FINAL_SUBSCRIPCION, $courses );
             
+            
+            if($TIPO_LICENCIA=="premium"){
+                $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()["basic"] );
+                $courses = array_merge( $coursesRequest->courses );
+    
+                $subscribedCourses =  subscribeCoursesMoodleUser( $userId, $FECHA_INICIO_SUBSCRIPCION, $FECHA_FINAL_SUBSCRIPCION, $courses );
+            }
             // El colaborador se crea en moodle y en wordpress con el mismo  
             // identificador (id que retorna moodle al crear el usuario) por 
             // facilidad de actualizacion y eliminacion de usuarios.

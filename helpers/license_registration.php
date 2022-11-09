@@ -24,7 +24,9 @@ function licenseRegistration(){
                 $empresa = $orden->billing->company;
                 $fechaconvert = $orden->date_created;
                 $separador_fecha = explode("T", $fechaconvert);
-                $fecha = $separador_fecha[0];       
+                $fecha = $separador_fecha[0];
+                $FECHA_INICIO_SUBSCRIPCION = strtotime($fecha);
+                $FECHA_FINAL_SUBSCRIPCION = strtotime($fecha.'+1 year');       
                 
                 //consulta el nombre de la empresa en la base de datos
                 $SQL_NOMBRE_EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$id_user'";
@@ -39,7 +41,50 @@ function licenseRegistration(){
                 
                 if($array_nombre_paquete[1] == "Personal"){
                     $tipo_licencia = strtolower($array_nombre_paquete[2]);
-                    $cantidad_licencia = 1;
+                    $cantidad_licencia = 1;                  
+                        
+                    $usuarioMoodle = getMoodleUserByUsername($orden->billing->email);
+                    $existeUsuarioMoodle = count($usuarioMoodle->users);
+                    $emailMoodle = getMoodleUserByEmail($orden->billing->email); 
+                    $existeEmailMoodle = count($emailMoodle->users);
+
+                    if( !$existeUsuarioMoodle && !$existeEmailMoodle){
+                        $user_new = (object)[
+                            'username' => $orden->billing->email,
+                            'firstname' => $orden->billing->first_name,
+                            'lastname' => $orden->billing->last_name,
+                            'email' => $orden->billing->email,
+                            'city' => $orden->billing->city,
+                            'country' => $orden->billing->country,
+                            'document' => '',
+                            'customfield'=> 'identification',
+                        ];
+    
+                        $createUserResponse = createMoodleUser($user_new);
+                        $id_user_moodle = $createUserResponse[0]->id;
+                        
+                        $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()[$tipo_licencia] );
+                        $courses = array_merge( $coursesRequest->courses );
+            
+                        $subscribedCourses =  subscribeCoursesMoodleUser( $id_user_moodle, $FECHA_INICIO_SUBSCRIPCION, $FECHA_FINAL_SUBSCRIPCION, $courses );
+
+                        if($tipo_licencia=="premium"){
+                            $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()["basic"] );
+                            $courses = array_merge( $coursesRequest->courses );
+                
+                            $subscribedCourses =  subscribeCoursesMoodleUser( $id_user_moodle, $FECHA_INICIO_SUBSCRIPCION, $FECHA_FINAL_SUBSCRIPCION, $courses );
+                        }
+
+                        $data = [
+                            'status' => 'completed',     
+                        ];
+                    
+                        $update = $WOOCOMMERCE_CONECTION->put('orders/'.$orden_id, $data);
+                        
+
+                    }
+                    return;
+
                 }else if ($array_nombre_paquete[1] == "Empresas"){
                     $tipo_licencia = strtolower($array_nombre_paquete[2]);
                     $cantidad_licencia=$item->quantity;

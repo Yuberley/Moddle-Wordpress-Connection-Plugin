@@ -78,7 +78,7 @@ function reporte_curso(){
                 else if($progreso_curso == $calificacion_modulos){
                     $body_table .= '<td> <span class="badge rounded-pill bg-success">Finalizado</span> </td>';}
                 else{
-                    $body_table .= '<td> <span class="badge rounded-pill bg-primary">En Curso</span> </td>';
+                    $body_table .= '<td> <span class="badge rounded-pill bg-primary">En curso</span> </td>';
                 }
                 $body_table .= '</tr>';
         }else{
