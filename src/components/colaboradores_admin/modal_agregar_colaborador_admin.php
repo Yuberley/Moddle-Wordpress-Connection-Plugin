@@ -101,9 +101,20 @@ function modal_agregar_colaborador_admin(){
             
             $createUserResponse = createMoodleUser($user);
             $userId = $createUserResponse[0]->id;
+            
+            $courses = [];
 
-            $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()[$TIPO_LICENCIA] );
-            $courses = array_merge( $coursesRequest->courses );
+            if ( $TIPO_LICENCIA == 'basic' ){
+                $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()['basic'] );
+                $courses = array_merge( $coursesRequest->courses );
+            }
+
+            if ( $TIPO_LICENCIA == 'premium' ){
+                $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()['basic'] );
+                $courses = array_merge( $courses, $coursesRequest->courses );
+                $coursesRequest = getMoodleCoursesByCategory( getMoodleCategoryId()['premium'] );
+                $courses = array_merge( $courses, $coursesRequest->courses );
+            }
 
             $subscribedCourses =  subscribeCoursesMoodleUser( $userId, $FECHA_INICIO_SUBSCRIPCION, $FECHA_FINAL_SUBSCRIPCION, $courses );
             

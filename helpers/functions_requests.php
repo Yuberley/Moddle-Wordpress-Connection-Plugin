@@ -17,12 +17,6 @@ function getWoocommerce(){
     return $woocommerce;
 }
 
-function getMoodle(){
-    $moodle = new \GuzzleHttp\Client([
-        'base_uri' => 'http://179.32.53.160/moodle/',
-    ]);
-    return $moodle;
-}
 
 // function getMoodleTokenTest(){
 //     $moodle = getMoodle();
@@ -35,21 +29,6 @@ function getMoodle(){
 //     ]);
 //     $token = json_decode($response->getBody()->getContents());
 //     return $token->token;
-// }
-
-// function getMoodleUser($id){
-//     $moodle = getMoodle();
-//     $response = $moodle->request('GET', '/webservice/rest/server.php', [
-//         'query' => [
-//             'wstoken' => getMoodleToken(),
-//             'moodlewsrestformat' => 'json',
-//             'wsfunction' => 'core_user_get_users',
-//             'criteria[0][key]' => 'id',
-//             'criteria[0][value]' => $id,
-//         ]
-//     ]);
-//     $user = json_decode($response->getBody()->getContents());
-//     return $user;
 // }
 
 
@@ -206,61 +185,6 @@ function subscribeCoursesMoodleUser($userId, $initialDate, $finalDate, $courses)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-// function getMoodleAllCourses(){
-//     $moodle = getMoodle();
-//     $response = $moodle->request('GET', 'webservice/rest/server.php', [
-//         'query' => [
-//             'wstoken' => getMoodleToken(),
-//             'moodlewsrestformat' => 'json',
-//             'wsfunction' => 'core_course_get_courses',
-//         ]
-//     ]);
-//     $courses = json_decode($response->getBody()->getContents());
-//     return $courses;
-// }
-
-
-// function getMoodleUserByField($field, $value){
-//     $moodle = getMoodle();
-//     $response = $moodle->request('GET', 'webservice/rest/server.php', [
-//         'query' => [
-//             'wstoken' => getMoodleToken(),
-//             'moodlewsrestformat' => 'json',
-//             'wsfunction' => 'core_user_get_users',
-//             'criteria[0][key]' => $field,
-//             'criteria[0][value]' => $value,
-//         ]
-//     ]);
-//     $user = json_decode($response->getBody()->getContents());
-//     return $user;
-// }
-
-
-// function getMoodleUserCourses($id){
-//     $moodle = getMoodle();
-//     $response = $moodle->request('GET', 'webservice/rest/server.php', [
-//         'query' => [
-//             'wstoken' => getMoodleToken(),
-//             'moodlewsrestformat' => 'json',
-//             'wsfunction' => 'core_enrol_get_users_courses',
-//             'userid' => $id,
-//         ]
-//     ]);
-//     $courses = json_decode($response->getBody()->getContents());
-//     return $courses;
-// }
-
 function getMoodleCourse($id){
     $moodle = getMoodle();
     $response = $moodle->request('GET', 'webservice/rest/server.php', [
@@ -275,19 +199,6 @@ function getMoodleCourse($id){
     return $course;
 }
 
-// function getMoodleCourseByField($field, $value){
-//     $moodle = getMoodle();
-//     $response = $moodle->request('GET', 'webservice/rest/server.php', [
-//         'query' => [
-//             'wstoken' => getMoodleToken(),
-//             'moodlewsrestformat' => 'json',
-//             'wsfunction' => 'core_course_get_courses',
-//             'options['.$field.']' => $value,
-//         ]
-//     ]);
-//     $course = json_decode($response->getBody()->getContents());
-//     return $course;
-// }
 
 function getMoodleCourseByFieldArray($field, $value){
     $moodle = getMoodle();
