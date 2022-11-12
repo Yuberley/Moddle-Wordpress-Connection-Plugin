@@ -31,7 +31,7 @@ function modal_agregar_colaborador_admin(){
         $FECHA_INICIO_SUBSCRIPCION = strtotime($GRUPO->fecha_inicio);
         $FECHA_FINAL_SUBSCRIPCION = strtotime($GRUPO->fecha_inicio.'+1 year');
         $FECHA_ACTUAL = strtotime( date("Y-m-d") );
-        $SUBSCRIPCION_ACTIVA = $FECHA_ACTUAL > $FECHA_INICIO_SUBSCRIPCION && $FECHA_ACTUAL < $FECHA_FINAL_SUBSCRIPCION;
+        $SUBSCRIPCION_ACTIVA = $FECHA_ACTUAL >= $FECHA_INICIO_SUBSCRIPCION && $FECHA_ACTUAL < $FECHA_FINAL_SUBSCRIPCION;
         
         $CANTIDAD_INSCRITOS_CONSULTA = "SELECT count(*) FROM {$wpdb->prefix}colaboradores WHERE id_grupo = '$grupo'";
         $CANTIDAD_INSCRITOS_EN_GRUPO = $wpdb->get_var($CANTIDAD_INSCRITOS_CONSULTA);

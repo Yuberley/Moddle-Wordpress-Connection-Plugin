@@ -14,12 +14,12 @@ function colaboradores_admin(){
 
     $userLogin = get_current_user_id();
     $userRole = get_userdata($userLogin)->roles[0];
-
+    
     if ($userRole == 'customer') {
         wp_redirect('/primedigital/colaboradores-usuario/');
         exit;
     }
-
+    
     global $wpdb;
 
     $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = '#';

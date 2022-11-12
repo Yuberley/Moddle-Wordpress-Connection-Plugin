@@ -229,3 +229,18 @@ function getMoodleGradesUser($courseId, $userId){
     $grades = json_decode($response->getBody()->getContents());
     return $grades;
 }
+
+function getMoodleGradesCourse($courseId){
+    $moodle = getMoodle();
+    $response = $moodle->request('GET', 'webservice/rest/server.php', [
+        'query' => [
+            'wstoken' => getMoodleToken(),
+            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'gradereport_user_get_grade_items',
+            'courseid' => $courseId,
+        ]
+    ]);
+    $grades = json_decode($response->getBody()->getContents());
+    return $grades;
+}
+

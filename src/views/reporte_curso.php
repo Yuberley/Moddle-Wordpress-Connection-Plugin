@@ -26,8 +26,7 @@ function reporte_curso(){
     $NOMBRE_CURSO = $NOMBRE_CURSO[0]->fullname;
 
     //peticion para traer las calificaciones de un curso y saber la cantidad de modulos
-    $peticion_moodle_calificaciones = file_get_contents(getMoodleUrl().'&wsfunction=gradereport_user_get_grade_items&courseid='.$id_curso);
-    $calificaciones = json_decode($peticion_moodle_calificaciones);
+    $calificaciones = getMoodleGradesCourse($id_curso);
     $calificaciones = $calificaciones->usergrades;
     
     $gradeitems = $calificaciones[0]->gradeitems;

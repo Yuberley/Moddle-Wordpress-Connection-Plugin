@@ -27,10 +27,9 @@ function select_grupos(){
 }
 
 function select_cursos_premium(){
-    $peticion_moodle_cursos_basic = file_get_contents(getMoodleUrl().'&wsfunction=core_course_get_courses_by_field&field=category&value='.getMoodleCategoryId()['basic']);
-    $peticion_moodle_cursos_premium = file_get_contents(getMoodleUrl().'&wsfunction=core_course_get_courses_by_field&field=category&value='.getMoodleCategoryId()['premium']);
-    $cursos_basic = json_decode($peticion_moodle_cursos_basic);
-    $cursos_premium = json_decode($peticion_moodle_cursos_premium);
+  
+    $cursos_basic = getMoodleCoursesByCategory( getMoodleCategoryId()['basic'] );
+    $cursos_premium = getMoodleCoursesByCategory( getMoodleCategoryId()['premium'] );
 
     $opcionesCursosPremium = '';
     foreach($cursos_basic->courses as $curso){
@@ -45,9 +44,8 @@ function select_cursos_premium(){
 }
 
 function select_cursos_basic(){
-    $peticion_moodle_cursos_basic = file_get_contents(getMoodleUrl().'&wsfunction=core_course_get_courses_by_field&field=category&value='.getMoodleCategoryId()['basic']);
 
-    $cursos_basic = json_decode($peticion_moodle_cursos_basic);
+    $cursos_basic = getMoodleCoursesByCategory( getMoodleCategoryId()['basic'] );
 
     $opcionesCursosBasic = '';
     foreach($cursos_basic->courses as $curso){
