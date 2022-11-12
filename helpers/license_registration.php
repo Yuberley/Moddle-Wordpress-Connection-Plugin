@@ -31,7 +31,7 @@ function licenseRegistration(){
                 //consulta el nombre de la empresa en la base de datos
                 $SQL_NOMBRE_EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$id_user'";
                 $NOMBRE_EMPRESADB = $wpdb->get_var($SQL_NOMBRE_EMPRESA);
-                if ($EMPRESADB!=null) {
+                if ($NOMBRE_EMPRESADB!=null) {
                     $empresa = $NOMBRE_EMPRESADB;
                 }
                 
