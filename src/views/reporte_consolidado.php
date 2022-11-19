@@ -13,10 +13,10 @@ function reporte_consolidado(){
     $numero_cursos= count($cursos);
     
 
-    $ID_EMPRESA = "SELECT id_empresa,nombre FROM {$wpdb->prefix}grupos WHERE id = $grupo";
-    $ID_EMPRESA = $wpdb->get_results($ID_EMPRESA);
-    $NOMBRE_GRUPO = $ID_EMPRESA[0]->nombre;
-    $ID_EMPRESA = $ID_EMPRESA[0]->id_empresa;
+    $DATOS_GRUPO = "SELECT id_empresa,nombre FROM {$wpdb->prefix}grupos WHERE id = $grupo";
+    $DATOS_GRUPO = $wpdb->get_results($DATOS_GRUPO);
+    $NOMBRE_GRUPO = $DATOS_GRUPO[0]->nombre;
+    $ID_EMPRESA = $DATOS_GRUPO[0]->id_empresa;
     
     $EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = $ID_EMPRESA";
     $EMPRESA = $wpdb->get_results($EMPRESA);
@@ -54,9 +54,11 @@ function reporte_consolidado(){
             }
             
             $promedio_total += $progreso_curso;
+            $progreso_curso = round($progreso_curso, 2);
             $body_table .= '<td>'.$progreso_curso.'%</td>';
         }
         $promedio_total = $promedio_total/$numero_cursos;
+        $promedio_total = round($promedio_total, 2);
         $body_table .= '<td>'.$promedio_total.'%</td>';
         $body_table .= '</tr>';
     }
@@ -71,7 +73,7 @@ function reporte_consolidado(){
                     <div class="col-md-8"><h1>REPORTE CONSOLIDADO 📚</h1></div>
                     <div class="col-md-4">
                         <div class="d-flex justify-content-end">
-                            <a href="javascript:history.back()">
+                            <a href="'.get_site_url().'/reportes-admin/">
                                 <button class="btn btn-outline-dark" >🔙 Volver</button>
                             </a>
                         </div>

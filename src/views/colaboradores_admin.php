@@ -54,13 +54,13 @@ function colaboradores_admin(){
         $CANTIDAD_TOTAL_LICENCIAS_GRUPO = $GRUPO->cantidad_licencia;
         $CANTIDAD_LICENCIAS_DISPONIBLES_GRUPO = $CANTIDAD_TOTAL_LICENCIAS_GRUPO - $CANTIDAD_INSCRITOS_EN_GRUPO;
 
-        $EMAIL_COLABORADORES_CONSULTA = "SELECT id, email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
-        $EMAIL_COLABORADORES = $wpdb->get_results($EMAIL_COLABORADORES_CONSULTA);
+        $SQL_COLABORADORES = "SELECT id, email FROM {$wpdb->prefix}colaboradores WHERE id_empresa = '$empresaId' AND id_grupo = '$grupoId'";
+        $WP_COLABORADORES = $wpdb->get_results($SQL_COLABORADORES);
 
         $colaboradoresMoodle  = [];
 
-        if (count($EMAIL_COLABORADORES) > 0){
-            $colaboradoresMoodle = getMoodleUsersByField('email', $EMAIL_COLABORADORES);
+        if (count($WP_COLABORADORES) > 0){
+            $colaboradoresMoodle = getMoodleUsersByField('id', $WP_COLABORADORES);
         }
 
         foreach($colaboradoresMoodle as $colaborador){

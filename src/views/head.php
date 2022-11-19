@@ -18,8 +18,10 @@ function head(){
 
     $response ='
                 <head>
-                <!-- sweetalert2 -->
-
+                <!-- flechas input number -->
+                <style> input[type=number]::-webkit-outer-spin-button,
+                input[type=number]::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
+                input[type=number] {-moz-appearance:textfield;}</style>
                 <!-- jquery -->
                 <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
 

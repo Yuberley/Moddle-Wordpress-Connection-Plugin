@@ -36,7 +36,7 @@ select_grupos_consolidado.addEventListener("change", filterColaboradores);
 
 function filterColaboradores(){
 
-    const base_url = window.location.origin;
+    const base_url = window.location.origin+"/primedigital";
     
     value_select = select_grupos_consolidado.value;
     let colaboradores = document.getElementById("consolidado_colaboradores_set");
@@ -63,11 +63,9 @@ setTimeout(function(){
     $("#selectAllStudents").click(function() {
 
         if($("#selectAllStudents").is(':checked') ){
-            $(".selectColaborador").prop("checked", true);
-            $("#consolidado_colaboradores_set option").attr("selected","selected");
+            $('#consolidado_colaboradores_set option').prop('selected', true);
         }else{
-            $(".selectColaborador").prop("checked", false);
-            $("#consolidado_colaboradores_set option").removeAttr("selected");
+            $('#consolidado_colaboradores_set option').prop('selected', false);
         }
     });
 
@@ -76,12 +74,10 @@ setTimeout(function(){
 setTimeout(function(){
     $("#selectAllCourses").click(function() {
 
-        if($("#selectAllCourses").is(':checked') ){
-            $(".selectColaborador").prop("checked", true);
-            $("#consolidado_cursos_set option").attr("selected","selected");
+        if($("#selectAllCourses").is(':checked') ){           
+            $('#consolidado_cursos_set option').prop('selected', true);
         }else{
-            $(".selectColaborador").prop("checked", false);
-            $("#consolidado_cursos_set option").removeAttr("selected");
+            $('#consolidado_cursos_set option').prop('selected', false);
         }
     });
 

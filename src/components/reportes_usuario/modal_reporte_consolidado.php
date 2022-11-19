@@ -15,7 +15,7 @@ function modal_reporte_consolidado_usuario($empresaId){
             <div class="modal-body ">
 
        
-            <form method="POST" id="form_reporte_consolidado" action="../reporte-consolidado" >
+            <form method="POST" id="form_reporte_consolidado" action="../reporte-consolidado" onsubmit="loadingAlertGenerateReport()">
 
                     <div class="mb-3 ">
                         <label  class="col-form-label">Grupos: </label>

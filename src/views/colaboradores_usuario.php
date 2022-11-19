@@ -53,7 +53,7 @@ function colaboradores_usuario(){
         $colaboradoresMoodle = [];
 
         if (count($EMAIL_COLABORADORES) > 0){
-            $colaboradoresMoodle = getMoodleUsersByField('email', $EMAIL_COLABORADORES);
+            $colaboradoresMoodle = getMoodleUsersByField('id', $EMAIL_COLABORADORES);
         }
 
         foreach($colaboradoresMoodle as $colaborador){

@@ -69,8 +69,9 @@ function reporte_curso(){
                         $progreso_curso += 100;
                     }
                 }   }
-                
-                $body_table .= '<td>'.$progreso_curso/$cantidad_modulos.'%</td>';
+                $progreso_curso_redondeado = round($progreso_curso/$cantidad_modulos,2);
+            
+                $body_table .= '<td>'.$progreso_curso_redondeado.'%</td>';
                 //estado del curso
                 if($progreso_curso == 0){
                     $body_table .= '<td> <span class="badge rounded-pill bg-secondary">Sin iniciar</span> </td>';}
@@ -96,7 +97,7 @@ function reporte_curso(){
                     <div class="col-md-8"><h1>REPORTES POR CURSO 📘</h1></div>
                     <div class="col-md-4">
                         <div class="d-flex justify-content-end">
-                            <a href="javascript:history.back()">
+                            <a href="'.get_site_url().'/reportes-admin/">
                                 <button class="btn btn-outline-dark" >🔙 Volver</button>
                             </a>
                         </div>

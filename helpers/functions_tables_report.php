@@ -3,13 +3,23 @@ require_once plugin_dir_path( __FILE__ ) . '../settings/enviroment.php';
 require_once plugin_dir_path(__FILE__ ) . 'functions_requests.php';
 
 function contiene_evaluacion($palabra){
+    
     if (strpos($palabra, 'Evaluación Módulo') !== false) {       
         return true;
-    }elseif (strpos($palabra, 'evaluacion modulo') !== false) {       
-            return true;
-    }elseif (strpos($palabra, 'Evaluacion Modulo') !== false) {       
+    }
+    if (strpos($palabra, 'evaluacion modulo') !== false) {       
             return true;
     }
+    if (strpos($palabra, 'Evaluacion Modulo') !== false) {       
+            return true;
+    }
+    if (strpos($palabra, 'EVALUACIÓN MÓDULO') !== false) {       
+        return true;
+    }
+    if (strpos($palabra, 'EVALUACION MODULO') !== false) {       
+        return true;
+    }
+
     return false;
 }
 

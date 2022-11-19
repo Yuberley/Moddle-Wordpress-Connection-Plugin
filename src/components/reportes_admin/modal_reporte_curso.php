@@ -15,7 +15,7 @@ echo '
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body ">
-            <form  method="POST"  action="../reporte-curso">
+            <form  method="POST"  action="../reporte-curso" onsubmit="loadingAlertGenerateReport()">
                 <div class="mb-3 ">
                     <label for="empresa" class="col-form-label">Empresa</label>
                     <select class="form-select" name="curso_empresa" id="empresas" onChange="filterGroups(this,`grupos_curso_get`,`grupos_curso_set`);">

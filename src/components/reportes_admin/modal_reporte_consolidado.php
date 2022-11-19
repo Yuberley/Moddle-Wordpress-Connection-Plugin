@@ -15,7 +15,7 @@ function modal_reporte_consolidado(){
             <div class="modal-body ">
 
        
-            <form method="POST" id="form_reporte_consolidado" action="../reporte-consolidado" >
+            <form method="POST" id="form_reporte_consolidado" action="../reporte-consolidado" onsubmit="loadingAlertGenerateReport()">
 
                     <div class="mb-3 ">
                         <label for="empresa" class="col-form-label">Empresa</label>
@@ -37,7 +37,7 @@ function modal_reporte_consolidado(){
                     <div class="mb-3">
                         <div>
                             <label  class="" >Cursos:</label>
-                            <span class="badge rounded-pill bg-light text-dark float-end">Presione Ctrl o Shift para selección múltiples</span>
+                            <span class="badge rounded-pill bg-light text-dark float-end">Presione Ctrl o Shift para selección múltiple</span>
                         </div>
                         <select name="curso_cursos_basic" id="consolidado_cursos_basic_get" class="select form-control" multiple hidden>
                         '.select_cursos_basic().'
@@ -68,7 +68,7 @@ function modal_reporte_consolidado(){
                         </div>
                     </div>
                     <div class="d-flex justify-content-center" id="reporte_consolidado_button">
-                        <button type="submit" class="btn btn-primary" value="form_consolidado" >Generar Reporte</button>
+                        <button type="submit" id="generarButton" class="btn btn-primary" value="form_consolidado" >Generar Reporte</button>
                     </div>
                 </form>
             </div>  
