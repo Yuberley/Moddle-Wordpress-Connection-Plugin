@@ -16,7 +16,7 @@ function colaboradores_admin(){
     $userRole = get_userdata($userLogin)->roles[0];
     
     if ($userRole == 'customer') {
-        wp_redirect('/primedigital/colaboradores-usuario/');
+        wp_redirect('/colaboradores-usuario/');
         exit;
     }
     

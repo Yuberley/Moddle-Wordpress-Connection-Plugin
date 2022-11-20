@@ -13,7 +13,7 @@ function reportes_admin(){
     $userRole = get_userdata($userLogin)->roles[0];
 
     if ($userRole == 'customer') {
-        wp_redirect('/primedigital/reportes-usuario/');
+        wp_redirect('/reportes-usuario/');
         exit;
     }
 

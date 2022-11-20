@@ -36,7 +36,7 @@ select_grupos_consolidado.addEventListener("change", filterColaboradores);
 
 function filterColaboradores(){
 
-    const base_url = window.location.origin+"/primedigital";
+    const base_url = window.location.origin;
     
     value_select = select_grupos_consolidado.value;
     let colaboradores = document.getElementById("consolidado_colaboradores_set");
