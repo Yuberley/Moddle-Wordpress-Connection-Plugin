@@ -28,14 +28,20 @@ function licenseRegistration(){
                 $FECHA_INICIO_SUBSCRIPCION = strtotime($fecha);
                 $FECHA_FINAL_SUBSCRIPCION = strtotime($fecha.'+1 year');       
                 
-                //consulta el nombre de la empresa en la base de datos
-                $SQL_NOMBRE_EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$id_user'";
-                $NOMBRE_EMPRESADB = $wpdb->get_var($SQL_NOMBRE_EMPRESA);
-                if ($NOMBRE_EMPRESADB!=null) {
-                    $empresa = $NOMBRE_EMPRESADB;
-                }
+                //consulta el nombre de la empresa en la base de datos y analiza si existe
+                //$SQL_NOMBRE_EMPRESA = "SELECT empresa FROM {$wpdb->prefix}empresas WHERE id = '$id_user'";
+                $SQL_EMPRESA = "SELECT id, empresa FROM {$wpdb->prefix}empresas WHERE empresa = '$empresa'";
+                $EMPRESADB = $wpdb->get_results($SQL_EMPRESA);
                 
-
+                $numero_de_empresas_db = count($EMPRESADB);
+                
+                if ($numero_de_empresas_db == 1 && $EMPRESADB[0]->id==$id_user) {
+                    $empresa = $EMPRESADB[0]->empresa;
+                }elseif($numero_de_empresas_db >= 1){
+                    $numero_de_empresas_db++;
+                    $empresa = $empresa."...".$numero_de_empresas_db;                   
+                }  
+                
                 $nombre_paquete = $item->name;
                 $array_nombre_paquete = explode(" ",$nombre_paquete);
                 
@@ -96,11 +102,15 @@ function licenseRegistration(){
                 $grupo_existente = $wpdb->get_var($sql_grupos_existentes);
                 
                 $digito_final_grupo = 1;
-                while ($grupo_existente != null) {
+                while ($grupo_existente != NULL) {
                     $digito_final_grupo++;
-                    $nombre_grupo .= " Grupo ".$digito_final_grupo;
-                    $sql_grupos_existentes = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE nombre = '$nombre_grupo'";
+                    $nombre_grupo_consulta = $nombre_grupo." Grupo ".$digito_final_grupo;
+                    $sql_grupos_existentes = "SELECT nombre FROM {$wpdb->prefix}grupos WHERE nombre = '$nombre_grupo_consulta'";
                     $grupo_existente = $wpdb->get_var($sql_grupos_existentes);
+                    
+                }
+                if ($digito_final_grupo > 1) {
+                    $nombre_grupo = $nombre_grupo." Grupo ".$digito_final_grupo;
                 }
 
                 //consulta si los datos de usuario en la base de datos
