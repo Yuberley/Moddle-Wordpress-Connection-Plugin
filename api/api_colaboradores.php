@@ -20,5 +20,6 @@ function api_colaboradores(){
     return $colaboradores;
     
 
+    
 }
 add_action('rest_api_init', 'api_colaboradores');
