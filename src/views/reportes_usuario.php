@@ -150,6 +150,9 @@ function reportes_usuario(){
 
     <!-- Modal Reporte Consolidado -->
     '.modal_reporte_consolidado_usuario($empresaId).'
+
+    <!-- listado de empresas -->
+    <script>'.select_empresas_listado().'</script>
    
 
     <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>

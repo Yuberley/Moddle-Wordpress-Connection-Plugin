@@ -16,10 +16,11 @@ function licenseRegistration(){
 
         //filtra las ordenes que esten en estado processing
         if($orden->status=="processing" ){
+            $orden_id = $orden->id;
+            $id_grupo = $orden_id;
 
             foreach($orden->line_items as $item){
-                
-                $orden_id = $orden->id;
+                $id_grupo = $id_grupo + 1;
                 $id_user = $orden->customer_id;
                 $empresa = $orden->billing->company;
                 $fechaconvert = $orden->date_created;
@@ -39,7 +40,7 @@ function licenseRegistration(){
                     $empresa = $EMPRESADB[0]->empresa;
                 }elseif($numero_de_empresas_db >= 1){
                     $numero_de_empresas_db++;
-                    $empresa = $empresa."...".$numero_de_empresas_db;                   
+                    $empresa = $empresa." - ".$numero_de_empresas_db;                   
                 }  
                 
                 $nombre_paquete = $item->name;
@@ -122,7 +123,7 @@ function licenseRegistration(){
                 $wpdb->query($sql_empresa);
 
                 // guarda el grupo y las licencia en la base de datos
-                $sql_grupo = "INSERT INTO {$wpdb->prefix}grupos (nombre,id_empresa,tipo_licencia,cantidad_licencia,fecha_inicio) VALUES ('$nombre_grupo','$id_user','$tipo_licencia','$cantidad_licencia','$fecha')";
+                $sql_grupo = "INSERT INTO {$wpdb->prefix}grupos (id,nombre,id_empresa,tipo_licencia,cantidad_licencia,fecha_inicio) VALUES ('$id_grupo','$nombre_grupo','$id_user','$tipo_licencia','$cantidad_licencia','$fecha')";
                 $wpdb->query($sql_grupo);
 
                 

@@ -230,6 +230,8 @@ function colaboradores_usuario(){
 
             <!-- Modal editar usuario -->
             '.modal_editar_colaborador_usuario().'
+            <!-- listado de empresas -->
+            <script>'.select_empresas_listado().'</script>
 
             <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>
             <script src='.plugin_dir_url(__FILE__)."../../assets/js/deleteCollaborator.js".' ></script>

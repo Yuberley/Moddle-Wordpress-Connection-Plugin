@@ -42,7 +42,7 @@ function ActivarPlugin(){
     $wpdb->query($sql_empresas);
 
     $sql_grupos="CREATE TABLE IF NOT EXISTS {$wpdb->prefix}grupos(
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT NOT NULL ,
     `nombre` VARCHAR(100) NOT NULL,
     `id_empresa` INT NOT NULL,
     `tipo_licencia` VARCHAR(15) NOT NULL,
