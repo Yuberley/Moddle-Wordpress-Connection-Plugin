@@ -194,6 +194,11 @@ function colaboradores_admin(){
                                     <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar_colaboradores" id="button-addon2">Filtrar</button>
                                 </div>
                             </div> 
+                            <div class="row">
+                                <div class="col-md-12 mt-2 d-flex justify-content-center">                                    
+                                    <span class="badge bg-light text-dark">Para obtener información sobre tus colaboradores primero debes filtrar </span>                                  
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>                  
@@ -238,6 +243,13 @@ function colaboradores_admin(){
 
         <!-- Modal editar colaborador -->
         '.modal_editar_colaborador_admin().'
+
+
+        <!-- listado de empresas -->
+        <script>'.select_empresas_listado().'</script>
+       
+
+
 
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/filtersSelects.js".' ></script>
         <script src='.plugin_dir_url(__FILE__)."../../assets/js/editCollaborator.js".' ></script>

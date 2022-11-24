@@ -69,3 +69,41 @@ function select_grupos_usuarios($empresaId){
 
     return $opcionesGruposUsuarios;
 }
+
+function select_empresas_listado(){
+    global $wpdb;
+    $SQL_EMPRESAS = "SELECT id,empresa FROM {$wpdb->prefix}empresas";
+    $empresas = $wpdb->get_results($SQL_EMPRESAS);
+    $SQL_GRUPOS = "SELECT id_empresa, nombre, id FROM {$wpdb->prefix}grupos";
+    $grupos = $wpdb->get_results($SQL_GRUPOS);
+    $empresas_grupos=" ";
+    $empresas_grupos .= '   
+        
+    const listado_empresas = [
+        ';
+            foreach ($empresas as $empresa) {
+                $empresas_grupos .='{
+                    id: '.$empresa->id.', 
+                    nombreEmpresa: "'.$empresa->empresa.'",
+                    grupos: [';
+                        foreach ($grupos as $grupo) {
+                            
+                            if($grupo->id_empresa == $empresa->id){
+                                
+                                $empresas_grupos .='{
+                                    id: '.$grupo->id.', 
+                                    nombreGrupo: "'.$grupo->nombre.'"
+                                },';
+                            }
+                        }
+                $empresas_grupos .=']
+                },';
+            }
+        $empresas_grupos .='
+    ];
+    
+
+    ';
+;
+return $empresas_grupos;
+}

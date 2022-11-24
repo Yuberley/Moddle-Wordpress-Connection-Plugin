@@ -178,7 +178,13 @@ function colaboradores_usuario(){
                                     <br>
                                     <button class="btn btn-secondary float-end" value="123" type="submit" name="filtrar_colaboradores" id="button-addon2">Filtrar</button>
                                 </div>
-                            </div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-0"></div>
+                                <div class="col-md-8 mt-2 col-sm-12 d-flex justify-content-center">                                    
+                                    <span class="badge bg-light text-dark">Para obtener información sobre tus colaboradores primero debes filtrar </span>                                  
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>    

@@ -109,6 +109,12 @@ function reportes_admin(){
                     <button class="btn btn-secondary" value="123" type="submit" name="filtrar" id="button-addon2">Filtrar</button>
                 </div>
 
+            </div>
+            <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-7 mt-2 d-flex justify-content-center">                                    
+                    <span class="badge bg-light text-dark">Para obtener información sobre tus colaboradores primero debes filtrar </span>                                  
+                </div>
             </div> 
             </form>
         </div>

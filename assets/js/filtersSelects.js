@@ -1,10 +1,11 @@
-function filterGroups(event, get_element, set_element){
-    let grupos = document.getElementById(get_element);
+function filterGroups(event,get_element ,set_element){
+    let empresaId = event.options[event.selectedIndex].value;
+    const gruposSelect = listado_empresas.filter( empresa => empresa.id == empresaId && empresa.grupos)[0].grupos;
+
     let options_grupos = "<option value='' selected disabled>Seleccione un grupo</option>";
-    for(let i = 0; i < grupos.options.length; i++){
-        if(grupos.options[i].text.includes(event.options[event.selectedIndex].text)){
-            options_grupos += "<option value="+grupos.options[i].value+">"+grupos.options[i].text+"</option>";
-        }
+    for(let i = 0; i < gruposSelect.length ; i++){
+        options_grupos += "<option value="+gruposSelect[i].id+">"+gruposSelect[i].nombreGrupo+"</option>";
+        
     }
     document.getElementById(set_element).innerHTML = options_grupos;
  
