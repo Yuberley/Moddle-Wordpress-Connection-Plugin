@@ -26,6 +26,7 @@ require_once PATH."src/views/reportes_usuario.php";
 require_once PATH."src/views/reportes_admin.php";
 require_once PATH."src/views/reporte_curso.php";
 require_once PATH."src/views/reporte_consolidado.php";
+require_once PATH."src/views/license_registration_executable.php";
 
 
 //crear tablas en la base de datos al activar el plugin

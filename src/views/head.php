@@ -8,7 +8,7 @@ function head(){
     $userRole = get_userdata($userLogin)->roles[0];
     
     if ($userRole != 'administrator' && $userRole != 'customer') {
-        wp_redirect('/primedigital/');
+        wp_redirect(home_url());
         exit;
     }
 
